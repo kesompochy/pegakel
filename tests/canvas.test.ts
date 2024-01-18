@@ -1,5 +1,7 @@
+import Canvas from "~/components/Canvas.vue";
+
 describe("canvas", () => {
-  it("test", () => {
-    expect(true).toBe(true);
+  it("canvas", async () => {
+    expect("Canvas").toBe(Canvas.__name)
   });
 });
