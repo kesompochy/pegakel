@@ -13,6 +13,7 @@
     "vue": "^3.3.8"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.12",
     "@types/node": "^20.11.5",
     "@vitejs/plugin-vue": "^4.5.0",
     "@vue/test-utils": "^2.4.4",
