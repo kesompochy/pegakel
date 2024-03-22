@@ -3,10 +3,10 @@ export default class ColorState {
   g: number;
   b: number;
   a: number;
-  constructor() {
-    this.r = 0;
-    this.g = 0;
-    this.b = 0;
-    this.a = 0;
+  constructor(r: number = 0, g: number = 0, b: number = 0, a: number = 0) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+    this.a = a;
   }
 }

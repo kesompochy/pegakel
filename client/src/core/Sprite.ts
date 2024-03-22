@@ -7,6 +7,6 @@ export default class Sprite {
   constructor(width: number, height: number) {
     this.width = width;
     this.height = height;
-    this.pixels = new Array(width).fill(new Array(height).fill(new ColorState()));
+    this.pixels = Array.from({ length: height }, () => Array(width).fill(new ColorState(0, 0, 0, 0)));
   }
 }

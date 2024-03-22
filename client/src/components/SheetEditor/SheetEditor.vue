@@ -1,9 +1,9 @@
 <script setup lang="ts">
+  const name = 'SheetEditor'
 </script>
 
 <template>
-  <canvas/>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 </style>
