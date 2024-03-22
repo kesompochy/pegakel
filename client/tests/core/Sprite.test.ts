@@ -9,6 +9,9 @@ describe('Sprite', () => {
   })
   it("should have a pixel color state", () => {
     const sprite = new Sprite(10, 20);
-    expect(sprite.pixels).toEqual(new Array(10).fill(new Array(20).fill(new ColorState())));
+    expect(sprite.pixels[0][0]).toStrictEqual(new ColorState(0, 0, 0, 0));
+    expect(sprite.pixels[19][9]).toStrictEqual(new ColorState(0, 0, 0, 0));
+    expect(sprite.pixels[20]).toBeUndefined();
+    expect(sprite.pixels[10][20]).toBeUndefined();
   })
 })
