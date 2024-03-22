@@ -1,5 +1,5 @@
-import Sprite from './Sprite';
-import SpriteGroup from './SpriteGroup';
+import Sprite from "./Sprite";
+import SpriteGroup from "./SpriteGroup";
 
 export default class Sheets {
   sprites: Sprite[];
@@ -10,11 +10,8 @@ export default class Sheets {
     this.sprites = [];
     this.groups = {};
   }
-  addSprite(width: number, height: number) {
-    this.sprites.push(new Sprite(width, height));
-  }
-  createGroup(name: string) {
-    this.groups[name] = new SpriteGroup(name);
+  init() {
+    const initSprite = new Sprite(16, 16);
+    this.sprites.push(initSprite);
   }
 }
-

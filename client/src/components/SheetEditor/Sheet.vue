@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import Sheet from './Sheet.vue'
-  const name =   'SheetEditor'
 </script>
 
 <template>
-  <Sheet/>
+  <div class="sheet-container">
+    <span>This is the sheet</span>
+  </div>
 </template>
 
 <style scoped lang="scss">
