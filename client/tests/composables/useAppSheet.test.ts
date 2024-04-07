@@ -3,8 +3,8 @@ import { ref } from "vue";
 import Sheet from "~/core/Sheet";
 
 describe("useAppSheet", () => {
-  let currentSheet;
-  let currentSpriteNumber;
+  let currentSheet: ReturnType<typeof useAppSheet>["currentSheet"];
+  let currentSpriteNumber: ReturnType<typeof useAppSheet>["currentSpriteNumber"];
 
   beforeAll(() => {
     currentSheet = useAppSheet().currentSheet;
