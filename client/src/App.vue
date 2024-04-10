@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
-  const { currentMode, currentComponent, setMode } = useAppMode()
+  const { currentMode, currentComponent, setMode, modes } = useAppMode()
   const { currentSheet, currentSpriteNumber } = useAppSheet()
+  setMode(modes.SHEET_EDITOR)
 </script>
 
 <template>
