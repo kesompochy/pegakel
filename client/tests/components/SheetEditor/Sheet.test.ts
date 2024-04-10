@@ -1,4 +1,4 @@
-import Sheet from "./components/SheetEditor/Sheet.vue";
+import Sheet from "~/components/SheetEditor/Sheet.vue";
 import { mount } from "@vue/test-utils";
 
 describe("Sheet", () => {
