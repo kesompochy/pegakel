@@ -9,7 +9,7 @@
 <template>
   <div>
     <h1>MODE: {{ currentMode }}</h1>
-    <component :is="currentComponent" :sprite="currentSheet.sprites[currentSpriteNumber]"/>
+    <component :is="currentComponent" :sheet="currentSheet" :sprite="currentSheet.sprites[currentSpriteNumber]"/>
   </div>
 </template>
 

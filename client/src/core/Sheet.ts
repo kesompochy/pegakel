@@ -10,8 +10,4 @@ export default class Sheets {
     this.sprites = [];
     this.groups = {};
   }
-  init() {
-    const initSprite = new Sprite(16, 16);
-    this.sprites.push(initSprite);
-  }
 }
