@@ -2,8 +2,10 @@
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
   const { currentMode, currentComponent, setMode, modes } = useAppMode()
-  const { currentSheet, currentSpriteNumber } = useAppSheet()
+  const { currentSheet, currentSpriteNumber, initSheetForTest } = useAppSheet()
   setMode(modes.SHEET_EDITOR)
+  initSheetForTest()
+  console.log(currentSheet.value)
 </script>
 
 <template>

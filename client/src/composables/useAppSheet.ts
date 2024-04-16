@@ -8,5 +8,9 @@ export default function useAppSheet() {
 
   currentSheet.value = SheetLogic.createSheet("sheet");
 
-  return { currentSheet, currentSpriteNumber };
+  const initSheetForTest = () => {
+    currentSheet.value = SheetLogic.generateSheetForTest();
+  }
+
+  return { currentSheet, currentSpriteNumber, initSheetForTest };
 }
