@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { defineProps, onMounted, ref } from 'vue'
 import Sheet from '~/core/Sheet'
-import Sprite from '~/core/Sprite'
-import * as canvasUtils from '~/utils/canvas'
 
-const props = defineProps<{ sheet: Sheet }>()
+const props = defineProps<{ sheet: Sheet, focusedSprite: number }>()
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+
+const debug = true;
 
 onMounted(() => {
   const canvas = canvasRef.value
@@ -43,12 +43,20 @@ const drawSheet = (ctx: CanvasRenderingContext2D, sheet: Sheet) => {
     })
   })
   canvases.forEach((canvas, index) => {
-    ctx.drawImage(canvas, index, index)
+    ctx.drawImage(canvas, index * canvas.width, index * canvas.height)
+    if ( props.focusedSprite === index ) {
+      ctx.strokeStyle = 'red'
+      ctx.lineWidth = 1
+      ctx.strokeRect(index * canvas.width, index * canvas.height, canvas.width, canvas.height)
+    }
   })
 }
 </script>
 
 <template>
+  <div class="debug" v-if="debug">
+    <pre>{{ props.sheet }}</pre>
+  </div>
   <div class="sheet-container">
     <span>This is the sheet</span>
     <canvas id="sheet" ref="canvasRef"></canvas>
@@ -59,5 +67,12 @@ const drawSheet = (ctx: CanvasRenderingContext2D, sheet: Sheet) => {
 #sheet {
   width: 100%;
   height: 100%;
+}
+.debug {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white;
+  padding: 1rem;
 }
 </style>
