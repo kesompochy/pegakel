@@ -10,7 +10,7 @@ export default function useAppSheet() {
 
   const initSheetForTest = () => {
     currentSheet.value = SheetLogic.generateSheetForTest();
-  }
+  };
 
   return { currentSheet, currentSpriteNumber, initSheetForTest };
 }

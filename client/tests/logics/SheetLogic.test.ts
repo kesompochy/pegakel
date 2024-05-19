@@ -15,5 +15,5 @@ describe("SheetLogic", () => {
     SheetLogic.init(sheet);
     SheetLogic.addSprite(sheet);
     expect(sheet.sprites.length).toBe(2);
-  })
+  });
 });

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { defineProps, onMounted, ref } from 'vue'
+import { defineProps, onMounted, ref, watch } from 'vue'
 import Sheet from '~/core/Sheet'
 
 const props = defineProps<{ sheet: Sheet, focusedSprite: number }>()
-
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
 const debug = true;
@@ -22,7 +21,36 @@ onMounted(() => {
   drawSheet(ctx, props.sheet)
 })
 
+watch(() => props.sheet, () => {
+  const canvas = canvasRef.value
+  if (!canvas) {
+    return
+  }
+
+  const ctx = canvas.getContext('2d')
+  if (!ctx) {
+    return
+  }
+
+  drawSheet(ctx, props.sheet)
+})
+watch(() => props.focusedSprite, () => {
+  const canvas = canvasRef.value
+  if (!canvas) {
+    return
+  }
+
+  const ctx = canvas.getContext('2d')
+  if (!ctx) {
+    return
+  }
+
+  drawSheet(ctx, props.sheet)
+})
+
 const drawSheet = (ctx: CanvasRenderingContext2D, sheet: Sheet) => {
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
   const sprites = sheet.sprites
   const canvases = sprites.map(sprite => {
     return document.createElement('canvas')
