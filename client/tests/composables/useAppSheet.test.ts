@@ -3,17 +3,17 @@ import Sheet from "~/core/Sheet";
 
 describe("useAppSheet", () => {
   let currentSheet: ReturnType<typeof useAppSheet>["currentSheet"];
-  let currentSpriteNumber: ReturnType<typeof useAppSheet>["currentSpriteNumber"];
+  let currentSpriteId: ReturnType<typeof useAppSheet>["currentSpriteId"];
 
   beforeAll(() => {
     currentSheet = useAppSheet().currentSheet;
-    currentSpriteNumber = useAppSheet().currentSpriteNumber;
+    currentSpriteId = useAppSheet().currentSpriteId;
   });
 
   it("should return a sheet object", () => {
     expect(currentSheet.value).toBeInstanceOf(Sheet);
   });
   it("should return a current selected sprite number", () => {
-    expect(currentSpriteNumber.value).toBe(0);
+    expect(currentSpriteId.value).toBe(0);
   });
 });

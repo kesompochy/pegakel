@@ -82,9 +82,6 @@ const drawSheet = (ctx: CanvasRenderingContext2D, sheet: Sheet) => {
 </script>
 
 <template>
-  <div class="debug" v-if="debug">
-    <pre>{{ props.sheet }}</pre>
-  </div>
   <div class="sheet-container">
     <span>This is the sheet</span>
     <canvas id="sheet" ref="canvasRef"></canvas>

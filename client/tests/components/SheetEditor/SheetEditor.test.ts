@@ -6,7 +6,7 @@ const sheet = sheetLogics.generateSheetForTest();
 const props = {
   sheet: sheet,
   focusedSprite: 0,
-  changeModeHandler: vi.fn(),
+  handleChangeMode: vi.fn(),
 };
 
 describe("SheetEditor", () => {
