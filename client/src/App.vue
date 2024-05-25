@@ -1,17 +1,17 @@
 <script setup lang="ts">
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
-  const { currentMode, currentComponent, setMode, modes } = useAppMode()
+  const { currentMode, currentComponent, setMode } = useAppMode()
+  import { modes } from '~/composables/consts'
   const { currentSheet, currentSpriteNumber, initSheetForTest } = useAppSheet()
   setMode(modes.SHEET_EDITOR)
   initSheetForTest()
-  console.log(currentSheet.value)
 </script>
 
 <template>
   <div>
     <h1>MODE: {{ currentMode }}</h1>
-    <component :is="currentComponent" :sheet="currentSheet" :sprite="currentSheet.sprites[currentSpriteNumber]"/>
+    <component :is="currentComponent" :sheet="currentSheet" :sprite="currentSheet.sprites[currentSpriteNumber]" :changeModeHandler="setMode"/> 
   </div>
 </template>
 

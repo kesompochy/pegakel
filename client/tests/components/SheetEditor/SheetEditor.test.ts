@@ -6,13 +6,14 @@ const sheet = sheetLogics.generateSheetForTest();
 const props = {
   sheet: sheet,
   focusedSprite: 0,
+  changeModeHandler: vi.fn(),
 };
 
 describe("SheetEditor", () => {
   let wrapper: any;
   beforeAll(() => {
     wrapper = mount(SheetEditor, {
-    props: props,
+      props: props,
     });
   });
   it("should render sheet container div element", () => {

@@ -1,6 +1,7 @@
 import useAppMode from "~/composables/useAppMode";
 import SpriteEditor from "~/components/SpriteEditor/SpriteEditor.vue";
 import SheetEditor from "~/components/SheetEditor/SheetEditor.vue";
+import { modes } from "~/composables/useAppMode";
 
 describe("useAppMode", () => {
   it("should initialize with default mode", () => {
@@ -9,7 +10,7 @@ describe("useAppMode", () => {
     expect(currentMode.value).toBe("SpriteEditor");
   });
   it("should change mode", () => {
-    const { currentMode, setMode, modes, currentComponent } = useAppMode();
+    const { currentMode, setMode, currentComponent } = useAppMode();
     setMode(modes.SHEET_EDITOR);
     expect(currentComponent.value).toStrictEqual(SheetEditor);
     expect(currentMode.value).toBe("SheetEditor");

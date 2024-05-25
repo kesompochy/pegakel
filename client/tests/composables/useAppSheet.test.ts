@@ -1,5 +1,4 @@
 import useAppSheet from "~/composables/useAppSheet";
-import { ref } from "vue";
 import Sheet from "~/core/Sheet";
 
 describe("useAppSheet", () => {
