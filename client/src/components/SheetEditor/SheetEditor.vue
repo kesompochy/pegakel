@@ -5,7 +5,7 @@
   import { modes } from '~/composables/consts'
 
   import { defineProps } from 'vue'
-  const props = defineProps<{ sheet: Sheet, changeModeHandler: Function }>()
+  const props = defineProps<{ sheet: Sheet, handleChangeMode: Function }>()
 
   const { focusedSprite, updateFocusedSprite } = useSheet()
   
@@ -13,7 +13,7 @@
     updateFocusedSprite((focusedSprite.value + 1) % props.sheet.sprites.length)
   }
   const changeModeToSpriteEditor = () => {
-    props.changeModeHandler(modes.SPRITE_EDITOR)
+    props.handleChangeMode(modes.SPRITE_EDITOR, focusedSprite.value)
   }
 </script>
 <script lang="ts">

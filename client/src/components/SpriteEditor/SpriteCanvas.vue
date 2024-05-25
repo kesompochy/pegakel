@@ -2,12 +2,14 @@
 import { onMounted, ref, defineProps } from 'vue'
 import ColorState from '~/core/ColorState'
 import useSpriteCanvas from '~/composables/SpriteEditor/useSpriteCanvas'
+import Sprite from '~/core/Sprite'
 import { resizeCanvas, translateClickPositionToSpritePosition, registerCallbackCanvasPointerDownOrMove, drawPixel } from '~/utils/canvas'
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
 const props = defineProps({
   width: Number,
   height: Number,
+  sprite: Sprite
 })
 const { sprite, updateSprite } = useSpriteCanvas(props)
 

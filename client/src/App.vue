@@ -6,12 +6,23 @@
   const { currentSheet, currentSpriteNumber, initSheetForTest } = useAppSheet()
   setMode(modes.SHEET_EDITOR)
   initSheetForTest()
+
+  const handleChangeMode = (mode: typeof modes[keyof typeof modes], spriteId: number) => {
+    setMode(mode)
+    currentSpriteNumber.value = spriteId
+  }
 </script>
 
 <template>
   <div>
     <h1>MODE: {{ currentMode }}</h1>
-    <component :is="currentComponent" :sheet="currentSheet" :sprite="currentSheet.sprites[currentSpriteNumber]" :changeModeHandler="setMode"/> 
+    <component 
+      :is="currentComponent" 
+      :sheet="currentSheet" 
+      :sprite="currentSheet.sprites[currentSpriteNumber]"
+      :spriteId="currentSpriteNumber"
+      :handleChangeMode="handleChangeMode"
+    /> 
   </div>
 </template>
 
