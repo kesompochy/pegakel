@@ -9,4 +9,8 @@ describe('SpriteGroup', () => {
     const spriteGroup = new SpriteGroup('test');
     expect(spriteGroup.sprites).toEqual([]);
   });
+  it("should have a palette", () => {
+    const spriteGroup = new SpriteGroup('test');
+    expect(spriteGroup.palette).toEqual([]);
+  });
 });
