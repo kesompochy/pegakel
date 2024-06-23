@@ -3,6 +3,7 @@
   import Sheet from '~/core/Sheet'
   import useSheet from '~/composables/SheetEditor/useSheet'
   import { modes } from '~/composables/consts'
+  import sheetLogics from '~/logics/SheetLogic'
 
   import { defineProps } from 'vue'
   const props = defineProps<{ sheet: Sheet, handleChangeMode: Function }>()
@@ -15,6 +16,9 @@
   const changeModeToSpriteEditor = () => {
     props.handleChangeMode(modes.SPRITE_EDITOR, focusedSprite.value)
   }
+  const addSprite = () => {
+    sheetLogics.addSprite(props.sheet)
+  }
 </script>
 <script lang="ts">
   export default {
@@ -26,6 +30,7 @@
   <SheetComponent :sheet="props.sheet" :focusedSprite="focusedSprite"/>
   <button @click="proceedFocusedSprite()">Next</button>
   <button @click="changeModeToSpriteEditor()">Edit</button>
+  <button @click="addSprite()">Add</button>
 </template>
 
 <style scoped lang="scss">

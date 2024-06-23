@@ -1,7 +1,7 @@
 import Sprite from "./Sprite";
 import SpriteGroup from "./SpriteGroup";
 
-export default class Sheets {
+export default class Sheet {
   sprites: Sprite[];
   name: string;
   groups: { [key: string]: SpriteGroup };

@@ -5,8 +5,6 @@ import Sheet from '~/core/Sheet'
 const props = defineProps<{ sheet: Sheet, focusedSprite: number }>()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
-const debug = true;
-
 onMounted(() => {
   const canvas = canvasRef.value
   if (!canvas) {
@@ -71,11 +69,13 @@ const drawSheet = (ctx: CanvasRenderingContext2D, sheet: Sheet) => {
     })
   })
   canvases.forEach((canvas, index) => {
-    ctx.drawImage(canvas, index * canvas.width, index * canvas.height)
+    const left = index * canvas.width
+    const top = 0 
+    ctx.drawImage(canvas, left, top)
     if ( props.focusedSprite === index ) {
       ctx.strokeStyle = 'red'
       ctx.lineWidth = 1
-      ctx.strokeRect(index * canvas.width, index * canvas.height, canvas.width, canvas.height)
+      ctx.strokeRect(left, top, canvas.width, canvas.height)
     }
   })
 }

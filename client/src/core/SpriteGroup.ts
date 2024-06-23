@@ -4,7 +4,7 @@ export default class SpriteGroup {
   name: string;
   palette: ColorState[];
   constructor(name?: string) {
-    name = name || 'undefined';
+    name = name || "undefined";
     this.name = name;
     this.sprites = [];
     this.palette = [];
