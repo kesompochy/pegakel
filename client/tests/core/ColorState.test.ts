@@ -15,4 +15,8 @@ describe('ColorState', () => {
     expect(colorState.b).toBe(255);
     expect(colorState.a).toBe(255);
   });
+  it("should return a hex color", () => {
+    const colorState = new ColorState(255, 255, 255, 255);
+    expect(colorState.hex).toBe("#ffffff");
+  })
 });
