@@ -1,4 +1,4 @@
-import ColorState from './ColorState';
+import ColorState from "./ColorState";
 
 export default class Sprite {
   width: number;

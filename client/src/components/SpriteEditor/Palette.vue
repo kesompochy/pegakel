@@ -1,23 +1,34 @@
 <script setup lang="ts">
 import { defineProps, computed } from 'vue';
 import ColorState from '~/core/ColorState'
+import ColorSelector from './ColorSelector.vue'
 
 const props = defineProps<{
   colors: ColorState[];
+  handleChoosePaletteCell: (cellId: number) => void;
+  activeColor: number;
+  handleUpdatePalette: (color: ColorState, cellId: number) => void;
 }>();
-
-const colors: ColorState[] = new Array(16);
-
+const colors = computed(() => new Array(16).fill(null).map((_, index) => props.colors[index]));
+const currentColor = computed(() => colors.value[props.activeColor] || new ColorState());
 </script>
 
 <template>
   <div class="palette container">
     <div
-      v-for="color in colors"
+      v-for="(color, index) in colors"
       class="color-cell"
-      :style="{backgroundColor: color ? color.hex : 'transparent'}"
+      :style="{
+        backgroundColor: color ? color.hex : 'transparent',
+        border: activeColor === index ? '2px solid black' : '1px solid black' 
+      }"
+      @click="props.handleChoosePaletteCell(index)"
     ></div>
   </div>
+  <ColorSelector 
+    :currentColor="currentColor" 
+    :handleConfirmColor="color => props.handleUpdatePalette(color, activeColor)"
+    />
 </template>
 
 <style scoped lang="scss">

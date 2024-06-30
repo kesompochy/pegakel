@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref, defineProps } from 'vue'
+import { onMounted, ref, defineProps, PropType } from 'vue'
 import ColorState from '~/core/ColorState'
 import Sprite from '~/core/Sprite'
 import { resizeCanvas, translateClickPositionToSpritePosition, registerCallbackCanvasPointerDownOrMove, drawPixel } from '~/utils/canvas'
 import spriteLogic from '~/logics/SpriteLogic'
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+import type Tool from '~/core/Tool'
 
 const props = defineProps({
-  sprite: Sprite
+  sprite: Sprite,
+  activeColorState: ColorState,
+  activeTool: String as PropType<Tool>
 })
 
 const redraw = (ctx: CanvasRenderingContext2D) => {
@@ -36,8 +39,15 @@ const handleCanvasClick = (event: MouseEvent) => {
 
   const {x, y} = translateClickPositionToSpritePosition(canvas, event, sprite.width, sprite.height)
   if (x === undefined || y === undefined) return
-
-  spriteLogic.updateSprite(props.sprite, {x: x, y: y, color: new ColorState(255, 0, 0, 255)})
+ 
+  let color;
+  if (props.activeTool === "draw") {
+    color = props.activeColorState 
+  } else if (props.activeTool === "erase") {
+    color = new ColorState(0, 0, 0, 0)
+  }
+  color = color || new ColorState(0, 0, 0, 1)
+  spriteLogic.updateSprite(props.sprite, {x: x, y: y, color: new ColorState(color.r, color.g, color.b, color.a)})
   
   redraw(ctx)
 }

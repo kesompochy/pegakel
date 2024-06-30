@@ -5,6 +5,9 @@
   import Sprite from '~/core/Sprite'
   import { modes } from '~/composables/consts'
   import SpriteGroup from '~/core/SpriteGroup'
+  import useSpriteEditor from '~/composables/SpriteEditor/useSpriteEditor'
+  import SpriteGroupLogic from '~/logics/SpriteGroupLogic'
+  import ColorState from '~/core/ColorState'
 
   import { defineProps } from 'vue'
   const props = defineProps<{
@@ -13,16 +16,37 @@
     spriteId: number,
     spriteGroup: SpriteGroup,
   }>()
+  const { activeColor, updateActiveColor, activeTool, updateActiveTool } = useSpriteEditor()
 
   const goToSheetEditor = () => {
     props.handleChangeMode(modes.SHEET_EDITOR, props.spriteId)
   }
+  const activateColor = (cellId: number) => {
+    updateActiveColor(cellId) 
+  }
+  const updatePalette = (color: ColorState, cellId: number) => {
+    SpriteGroupLogic.updatePalette(props.spriteGroup, cellId, color)
+  }
 </script>
 
 <template>
-  <SpriteCanvas :width="props.sprite?.width || 0" :height="props.sprite?.height || 0" :sprite="props.sprite"/>
-  <Palette :colors="props.spriteGroup.palette"/>
-  <ToolBox/>
+  <SpriteCanvas 
+    :width="props.sprite?.width || 0" 
+    :height="props.sprite?.height || 0" 
+    :sprite="props.sprite"
+    :activeColorState="props.spriteGroup.palette[activeColor]"
+    :activeTool="activeTool"
+  />
+  <Palette 
+    :colors="props.spriteGroup.palette" 
+    :handleChoosePaletteCell="activateColor"
+    :activeColor="activeColor"
+    :handleUpdatePalette="updatePalette"
+    />
+  <ToolBox
+    :activeTool="activeTool"
+    :handleChangeTool="updateActiveTool"
+  />
   <button @click="goToSheetEditor">Go to Sheet Editor</button>
 </template>
 

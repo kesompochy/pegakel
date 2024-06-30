@@ -4,8 +4,10 @@
   const { currentMode, currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
   const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId } = useAppSheet()
+  import SpriteGroupLogics from '~/logics/SpriteGroupLogic';
   setMode(modes.SPRITE_EDITOR)
   initSheetForTest()
+  SpriteGroupLogics.initPaletteForTest(currentSheet.value.groups[0])
 
   const handleChangeMode = (mode: typeof modes[keyof typeof modes], spriteId: number) => {
     setMode(mode)
@@ -14,6 +16,7 @@
   const exportSheet = () => {
     console.log(currentSheet)
   }
+  console.log(currentSheet.value.groups[currentSpriteGroupId.value].palette)
 </script>
 
 <template>

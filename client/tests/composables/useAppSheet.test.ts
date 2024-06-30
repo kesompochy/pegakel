@@ -19,6 +19,6 @@ describe("useAppSheet", () => {
     expect(currentSpriteId.value).toBe(0);
   });
   it("shoud return a current sprite group", () => {
-    expect(currentSpriteGroupId.value).toBe(0)
+    expect(currentSpriteGroupId.value).toBe(0);
   });
 });
