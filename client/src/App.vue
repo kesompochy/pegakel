@@ -3,20 +3,33 @@
   import useAppSheet from '~/composables/useAppSheet'
   const { currentMode, currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
-  const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId } = useAppSheet()
-  import SpriteGroupLogics from '~/logics/SpriteGroupLogic';
+  const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet } = useAppSheet()
+  import SpriteGroup from '~/core/SpriteGroup';
+  import Sprite from '~/core/Sprite';
+  import SheetLogic from '~/logics/SheetLogic';
   setMode(modes.SPRITE_EDITOR)
   initSheetForTest()
-  SpriteGroupLogics.initPaletteForTest(currentSheet.value.groups[0])
 
   const handleChangeMode = (mode: typeof modes[keyof typeof modes], spriteId: number) => {
     setMode(mode)
     currentSpriteId.value = spriteId
   }
-  const exportSheet = () => {
-    console.log(currentSheet)
+  const generateExportingString = (): string => {
+    const exportingString = JSON.stringify(currentSheet.value)
+    return exportingString
   }
-  console.log(currentSheet.value.groups[currentSpriteGroupId.value].palette)
+  const exportSheet = () => {
+    const exportingString = generateExportingString()
+    console.log(exportingString)
+  }
+  const importSheet = () => {
+    const importingString = prompt('Enter JSON string')
+    if (importingString) {
+      updateSheet(SheetLogic.importSheetFromJson(importingString))
+      currentSpriteId.value = 0
+      currentSpriteGroupId.value = 0
+    }
+  }
 </script>
 
 <template>
@@ -25,12 +38,13 @@
     <component 
       :is="currentComponent" 
       :sheet="currentSheet" 
-      :sprite="currentSheet.sprites[currentSpriteId]"
+      :sprite="currentSheet.sprites[currentSpriteId] as Sprite"
       :spriteId="currentSpriteId"
       :handleChangeMode="handleChangeMode"
-      :spriteGroup="currentSheet.groups[currentSpriteGroupId]"
+      :spriteGroup="currentSheet.groups[currentSpriteGroupId] as SpriteGroup"
     /> 
     <button @click="exportSheet">Export</button>
+    <button @click="importSheet">Import</button>
   </div>
 </template>
 

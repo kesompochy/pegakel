@@ -9,7 +9,7 @@ const props = defineProps<{
 
 const selectingColor = ref<ColorState>(new ColorState(props.currentColor.r, props.currentColor.g, props.currentColor.b, props.currentColor.a))
 const confirmColor = () => {
-  props.handleConfirmColor(selectingColor.value)
+  props.handleConfirmColor(selectingColor.value as ColorState)
 }
 const updateSelectingColor = (event: Event) => {
   const target = event.target as HTMLInputElement;

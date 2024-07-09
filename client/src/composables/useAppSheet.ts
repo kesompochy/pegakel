@@ -4,6 +4,9 @@ import SheetLogic from "~/logics/SheetLogic";
 
 export default function useAppSheet() {
   const currentSheet = ref<Sheet>(new Sheet(""));
+  const updateSheet = (sheet: Sheet) => {
+    currentSheet.value = sheet;
+  };
   const currentSpriteId = ref<number>(0);
   const currentSpriteGroupId = ref<number>(0);
 
@@ -13,5 +16,5 @@ export default function useAppSheet() {
     currentSheet.value = SheetLogic.generateSheetForTest();
   };
 
-  return { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId };
+  return { currentSheet, updateSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId };
 }

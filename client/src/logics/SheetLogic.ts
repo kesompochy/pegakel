@@ -2,6 +2,8 @@ import Sheet from "~/core/Sheet";
 import Sprite from "~/core/Sprite";
 import ColorState from "~/core/ColorState";
 import spriteLogic from "~/logics/SpriteLogic";
+import SpriteGroupLogic from "~/logics/SpriteGroupLogic";
+
 export default {
   createSheet(name: string) {
     return new Sheet(name);
@@ -20,6 +22,7 @@ export default {
     const sheet = this.createSheet("sheet");
     this.init(sheet);
     this.addSprite(sheet);
+    SpriteGroupLogic.addSprite(sheet.groups[0], 0);
     for (let sprite of sheet.sprites) {
       for (let y = 0; y < sprite.height; y++) {
         for (let x = 0; x < sprite.width; x++) {
@@ -31,7 +34,11 @@ export default {
         }
       }
     }
+    SpriteGroupLogic.initPaletteForTest(sheet.groups[0]);
 
     return sheet;
+  },
+  importSheetFromJson(json: string) {
+    return JSON.parse(json);
   },
 };

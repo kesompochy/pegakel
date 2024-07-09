@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, defineProps, PropType } from 'vue'
+import { onMounted, ref, defineProps, PropType, watch } from 'vue'
 import ColorState from '~/core/ColorState'
 import Sprite from '~/core/Sprite'
 import { resizeCanvas, translateClickPositionToSpritePosition, registerCallbackCanvasPointerDownOrMove, drawPixel } from '~/utils/canvas'
@@ -27,6 +27,14 @@ const redraw = (ctx: CanvasRenderingContext2D) => {
    })
   })
 }
+
+watch(() => props.sprite, () => {
+  if (!canvasRef.value) return
+  const canvas = canvasRef.value
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+  redraw(ctx)
+})
 
 const handleCanvasClick = (event: MouseEvent) => {
   const canvas = canvasRef.value
