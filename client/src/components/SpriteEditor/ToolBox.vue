@@ -9,6 +9,7 @@
 
 <template>
   <div class="toolbox">
+    <span>Toolbox</span>
     <button 
       @click="props.handleChangeTool('draw')"
       :style="{ backgroundColor: props.activeTool === 'draw' ? 'lightblue' : 'white' }"

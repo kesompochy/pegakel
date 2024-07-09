@@ -16,4 +16,3 @@ describe("ColorState", () => {
     expect(colorState.a).toBe(255);
   });
 });
-

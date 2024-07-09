@@ -8,6 +8,7 @@ describe("Palette", () => {
       handleChoosePaletteCell: () => {},
       activeColor: 0,
       activeTool: "draw",
+      handleUpdatePalette: () => {},
     },
   });
   it("is should have a div element", () => {

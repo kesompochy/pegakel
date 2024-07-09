@@ -2,6 +2,7 @@
 import { defineProps, computed, watchEffect, ref, watch } from 'vue';
 import ColorState from '~/core/ColorState'
 import ColorSelector from './ColorSelector.vue'
+import colorStateLogic from '~/logics/ColorState'
 
 const props = defineProps<{
   colors: ColorState[];
@@ -9,10 +10,7 @@ const props = defineProps<{
   activeColor: number;
   handleUpdatePalette: (color: ColorState, cellId: number) => void;
 }>();
-const localColors = ref(props.colors)
-watch(() => props.colors, (newColors: ColorState[]) => {
-  localColors.value = newColors
-}, { immediate: true, deep: true })
+
 const colors = computed(() => {
   const colors = new Array(16).fill(null).map((_, index) => props.colors[index])
   return colors
@@ -25,7 +23,7 @@ const generateCellStyle = (color: ColorState, index: number) => {
   }
   console.log(`Cell ${index} style: ${JSON.stringify(style)}, color: ${JSON.stringify(color)}}`)
   return {
-    backgroundColor: color ? `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})` : 'transparent',
+    backgroundColor: color ? colorStateLogic.getHex(color) : 'transparent',
     border: props.activeColor === index ? '2px solid black' : '1px solid black' 
   }
 }
@@ -34,7 +32,7 @@ const generateCellStyle = (color: ColorState, index: number) => {
 <template>
   <div class="palette container">
     <div
-      v-for="(color, index) in localColors"
+      v-for="(color, index) in colors"
       class="color-cell"
       :style="generateCellStyle(color as ColorState, index)"
       @click="props.handleChoosePaletteCell(index)"
