@@ -76,12 +76,21 @@ onMounted(() => {
 </script>
 
 <template>
-  <canvas ref="canvasRef"/>
+  <div class="canvas-container">
+    <canvas ref="canvasRef"/>
+  </div>
 </template>
 
 <style scoped lang="scss">
-canvas{
-  border: 1px solid black;
+div.canvas-container {
+  position: relative;
   width: 400px;
+  height: 400px;
+}
+canvas {
+  border: 1px solid black;
+  width: 100%;
+  height: 100%;
+  background-image: url('~/assets/checkerboard.svg');
 }
 </style>
