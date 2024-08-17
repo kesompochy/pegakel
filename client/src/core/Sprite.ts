@@ -1,6 +1,7 @@
 import ColorState from "./ColorState";
+import ISprite from "@shared/interfaces/Sprite";
 
-export default class Sprite {
+export default class Sprite implements ISprite {
   width: number;
   height: number;
   pixels: ColorState[][];

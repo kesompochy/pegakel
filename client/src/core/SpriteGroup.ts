@@ -1,5 +1,7 @@
 import ColorState from "~/core/ColorState";
-export default class SpriteGroup {
+import ISpriteGroup from "@shared/interfaces/SpriteGroup"
+
+export default class SpriteGroup implements ISpriteGroup {
   sprites: number[];
   name: string;
   palette: ColorState[];

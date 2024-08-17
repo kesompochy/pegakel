@@ -1,4 +1,6 @@
-export default class ColorState {
+import IColorState from "@shared/interfaces/ColorState";
+
+export default class ColorState implements IColorState {
   r: number;
   g: number;
   b: number;

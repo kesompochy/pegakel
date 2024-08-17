@@ -1,7 +1,8 @@
 import Sprite from "./Sprite";
 import SpriteGroup from "./SpriteGroup";
+import ISheet from "@shared/interfaces/Sheet";
 
-export default class Sheet {
+export default class Sheet implements ISheet {
   sprites: Sprite[];
   name: string;
   groups: SpriteGroup[];
