@@ -7,17 +7,20 @@
     "dev": "vite --host",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "test-w": "vitest --watch"
+    "test-w": "vitest --watch",
+    "test": "vitest"
   },
   "dependencies": {
+    "bunson": "0.0.6",
     "vue": "^3.3.8"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^20.11.5",
+    "@types/web": "^0.0.155",
     "@vitejs/plugin-vue": "^4.5.0",
-    "@vue/test-utils": "^2.4.4",
+    "@vue/test-utils": "^2.4.6",
     "concurrently": "^8.2.2",
     "jsdom": "^24.0.0",
     "sass": "^1.69.7",

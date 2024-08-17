@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, defineProps, computed } from 'vue'
 import ColorState from '~/core/ColorState'
+import ColorStateLogics from '~/logics/ColorState'
 
 const props = defineProps<{
   currentColor: ColorState;
@@ -20,12 +21,12 @@ const updateSelectingColor = (event: Event) => {
   selectingColor.value = new ColorState(r, g, b, selectingColor.value.a);
 }
 
-const currentColorHex = computed(()=>props.currentColor.hex);
+const currentColorHex = computed(()=>ColorStateLogics.getHex(props.currentColor));
 </script>
 
 <template>
   <div>
-    <input type="color" :value="selectingColor.hex" @input="updateSelectingColor" />
+    <input type="color" :value="ColorStateLogics.getHex(selectingColor)" @input="updateSelectingColor" />
     <div class="current-color"></div>
     <button @click="confirmColor">Confirm</button>
   </div>

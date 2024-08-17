@@ -2,8 +2,6 @@ import App from "~/App.vue";
 import { mount } from "@vue/test-utils";
 import { modes } from "~/composables/useAppMode";
 import ColorState from "~/core/ColorState";
-import SpriteEditor from "~/components/SpriteEditor/SpriteEditor.vue";
-import Palette from "~/components/SpriteEditor/Palette.vue";
 
 describe("App", () => {
   let wrapper: any;
@@ -31,16 +29,6 @@ describe("App", () => {
       wrapper.vm.updateSheet(JSON.parse(json));
       const importedSheet = wrapper.vm.currentSheet;
       expect(importedSheet).toEqual(originalSheet);
-    });
-    it("should render palette after importing", () => {
-      wrapper.vm.setMode(modes.SPRITE_EDITOR);
-      wrapper.vm.initSheetForTest();
-      wrapper.vm.$nextTick();
-      const json = wrapper.vm.generateExportingString();
-      wrapper.vm.updateSheet(JSON.parse(json));
-      wrapper.vm.$nextTick();
-      const color = wrapper.vm.currentSheet.groups[0].palette[0];
-      const paletteCells = wrapper.findAll("div.color-cell");
     });
   });
 });

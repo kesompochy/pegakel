@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, computed, watchEffect, ref, watch } from 'vue';
+import { defineProps, computed } from 'vue';
 import ColorState from '~/core/ColorState'
 import ColorSelector from './ColorSelector.vue'
 import colorStateLogic from '~/logics/ColorState'
@@ -17,11 +17,6 @@ const colors = computed(() => {
 });
 const currentColor = computed(() => colors.value[props.activeColor] || new ColorState());
 const generateCellStyle = (color: ColorState, index: number) => {
-  const style = {
-    backgroundColor: color ? color.hex : 'transparent',
-    border: props.activeColor === index ? '2px solid black' : '1px solid black' 
-  }
-  console.log(`Cell ${index} style: ${JSON.stringify(style)}, color: ${JSON.stringify(color)}}`)
   return {
     backgroundColor: color ? colorStateLogic.getHex(color) : 'transparent',
     border: props.activeColor === index ? '2px solid black' : '1px solid black' 

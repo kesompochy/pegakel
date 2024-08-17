@@ -1,0 +1,15 @@
+{
+  "name": "server",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "^1.1.6",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "bunson": "0.0.6"
+  }
+}

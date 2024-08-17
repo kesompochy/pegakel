@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { JsonRpcClient } from 'bunson';
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
   const { currentMode, currentComponent, setMode } = useAppMode()
@@ -30,6 +31,15 @@
       currentSpriteGroupId.value = 0
     }
   }
+
+  const save = async () => {
+    const client = new JsonRpcClient('http://localhost:3000', {
+      methods: ['hello'],
+      cors: 'cors'
+    })
+    const result = await client.call('hello', { name: 'world' }, 0)
+    console.log(result)
+  }
 </script>
 
 <template>
@@ -45,6 +55,7 @@
     /> 
     <button @click="exportSheet">Export</button>
     <button @click="importSheet">Import</button>
+    <button @click="save">Save</button>
   </div>
 </template>
 
