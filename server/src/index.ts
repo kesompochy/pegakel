@@ -1,7 +1,11 @@
 import { BunsonServer } from 'bunson';
+import { save } from '~/save';
+import { load } from '~/load';
 
 const methods = {
   hello: (params: {name: string}) => `Hello, ${params.name}!`,
+  save: save,
+  load: load,
 }
 const corsConfig = {
   origin: '*',

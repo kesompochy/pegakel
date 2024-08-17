@@ -10,6 +10,6 @@
   },
   "type": "module",
   "dependencies": {
-    "bunson": "0.0.6"
+    "bunson": "0.0.7"
   }
 }

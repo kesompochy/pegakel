@@ -16,5 +16,10 @@ export default function useAppSheet() {
     currentSheet.value = SheetLogic.generateSheetForTest();
   };
 
-  return { currentSheet, updateSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId };
+  const fileName = ref<string>("");
+  const setFileName = (name: string) => {
+    fileName.value = name;
+  };
+
+  return { currentSheet, updateSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, fileName, setFileName };
 }

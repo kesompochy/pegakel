@@ -2,49 +2,64 @@
   import { JsonRpcClient } from 'bunson';
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
-  const { currentMode, currentComponent, setMode } = useAppMode()
+  import { onMounted } from 'vue'
+  const { currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
-  const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet } = useAppSheet()
+  const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
   import SpriteGroup from '~/core/SpriteGroup';
   import Sprite from '~/core/Sprite';
-  import SheetLogic from '~/logics/SheetLogic';
+  import Sheet from '~/core/Sheet';
   setMode(modes.SPRITE_EDITOR)
   initSheetForTest()
+
+  const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
+  const FILE_NAME = import.meta.env.VITE_FILE_NAME || "default"
+  setFileName(FILE_NAME)
+
+  onMounted(() => {
+    openFile();
+  })
+
+  const jsonRpcClient = new JsonRpcClient(SERVER_URL, {
+    methods: ['save', 'load'],
+    cors: 'cors'
+  })
 
   const handleChangeMode = (mode: typeof modes[keyof typeof modes], spriteId: number) => {
     setMode(mode)
     currentSpriteId.value = spriteId
   }
-  const generateExportingString = (): string => {
-    const exportingString = JSON.stringify(currentSheet.value)
-    return exportingString
-  }
-  const exportSheet = () => {
-    const exportingString = generateExportingString()
-    console.log(exportingString)
-  }
-  const importSheet = () => {
-    const importingString = prompt('Enter JSON string')
-    if (importingString) {
-      updateSheet(SheetLogic.importSheetFromJson(importingString))
-      currentSpriteId.value = 0
-      currentSpriteGroupId.value = 0
+
+  const save = async () => {
+    const response = await jsonRpcClient.call('save', { 
+      sheet: currentSheet.value,
+      saveMode: 'local',
+      saveOptions: {
+        localPath: fileName.value
+      }
+    }, 0)
+    if ('error' in response) {
+      console.error(response.error)
     }
   }
 
-  const save = async () => {
-    const client = new JsonRpcClient('http://localhost:3000', {
-      methods: ['hello'],
-      cors: 'cors'
-    })
-    const result = await client.call('hello', { name: 'world' }, 0)
-    console.log(result)
+  const openFile = async () => {
+    const response = await jsonRpcClient.call('load', {     
+      localPath: fileName.value
+    }, 0)
+    if ('result' in response && response.result) {
+      updateSheet(response.result as Sheet)
+      currentSpriteId.value = 0
+      currentSpriteGroupId.value = 0
+    } else if ('error' in response) {
+      console.error(response.error)
+    }
   }
 </script>
 
 <template>
+  <p class="file-name">{{ fileName }}</p>
   <div>
-    <h1>MODE: {{ currentMode }}</h1>
     <component 
       :is="currentComponent" 
       :sheet="currentSheet" 
@@ -53,11 +68,12 @@
       :handleChangeMode="handleChangeMode"
       :spriteGroup="currentSheet.groups[currentSpriteGroupId] as SpriteGroup"
     /> 
-    <button @click="exportSheet">Export</button>
-    <button @click="importSheet">Import</button>
     <button @click="save">Save</button>
   </div>
 </template>
 
 <style scoped lang="scss">
+.file-name {
+  width: 500px;
+}
 </style>
