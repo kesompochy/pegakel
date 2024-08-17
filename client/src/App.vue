@@ -45,6 +45,7 @@
 
   const openFile = async () => {
     const response = await jsonRpcClient.call('load', {     
+      saveMode: 'local',
       localPath: fileName.value
     }, 0)
     if ('result' in response && response.result) {
