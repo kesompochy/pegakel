@@ -10,7 +10,6 @@
   import Sprite from '~/core/Sprite';
   import Sheet from '~/core/Sheet';
   setMode(modes.SPRITE_EDITOR)
-  initSheetForTest()
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
   const FILE_NAME = import.meta.env.VITE_FILE_NAME || "default"
