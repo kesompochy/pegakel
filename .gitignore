@@ -24,3 +24,6 @@
 *.njsproj
 *.sln
 *.sw?
+
+# development
+test.json
