@@ -37,6 +37,12 @@ const translateClickPositionToSpritePosition = (
 };
 
 const registerCallbackCanvasPointerDownOrMove = (canvas: HTMLCanvasElement, callback: (event: MouseEvent) => void) => {
+  canvas.onpointerdown = null;
+  canvas.onpointermove = null;
+  canvas.onpointerup = null;
+  canvas.onpointerleave = null;
+  canvas.onpointerenter = null;
+  
   canvas.onpointerdown = (e: MouseEvent) => {
     callback(e);
     canvas.onpointermove = (e: MouseEvent) => {

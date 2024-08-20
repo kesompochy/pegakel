@@ -33,6 +33,11 @@ watch(() => props.sprite, () => {
   const canvas = canvasRef.value
   const ctx = canvas.getContext('2d')
   if (!ctx) return
+
+  if (!props.sprite) return
+  const sprite = props.sprite
+  registerCallbackCanvasPointerDownOrMove(canvas, handleCanvasClick)
+  resizeCanvas(canvas, sprite.width, sprite.height)
   redraw(ctx)
 })
 
