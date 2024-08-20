@@ -4,11 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
-    "build": "vue-tsc && vite build",
-    "preview": "vite preview",
-    "test-w": "vitest --watch",
-    "test": "vitest"
+    "dev": "bunx --bun vite --host",
+    "build": "bunx vue-tsc && bunx --bun vite build",
+    "preview": "bunx --bun vite preview",
+    "test-w": "bunx vitest --watch"
   },
   "dependencies": {
     "bunson": "0.0.6",
