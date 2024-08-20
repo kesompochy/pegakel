@@ -16,7 +16,7 @@
     spriteId: number,
     spriteGroup: SpriteGroup,
   }>()
-  const { activeColor, updateActiveColor, activeTool, updateActiveTool } = useSpriteEditor()
+  const { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode } = useSpriteEditor()
 
   const goToSheetEditor = () => {
     props.handleChangeMode(modes.SHEET_EDITOR, props.spriteId)
@@ -36,6 +36,8 @@
     :sprite="props.sprite"
     :activeColorState="props.spriteGroup.palette[activeColor]"
     :activeTool="activeTool"
+    :manipulationMode="manipulationMode"
+    :updateManipulationMode="updateManipulationMode"
   />
   <Palette 
     :colors="props.spriteGroup.palette" 

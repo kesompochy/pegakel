@@ -19,4 +19,13 @@ describe("useSprite", () => {
     updateActiveTool("erase");
     expect(activeTool.value).toBe("erase");
   });
+  it("should return a manipulation mode", () => {
+    const { manipulationMode } = useSpriteEditor();
+    expect(manipulationMode.value).toBe("touch");
+  });
+  it("should update the manipulation mode", () => {
+    const { manipulationMode, updateManipulationMode } = useSpriteEditor();
+    updateManipulationMode("key");
+    expect(manipulationMode.value).toBe("key");
+  });
 });

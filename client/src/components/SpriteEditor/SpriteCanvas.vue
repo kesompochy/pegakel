@@ -6,14 +6,33 @@ import { resizeCanvas, translateClickPositionToSpritePosition, registerCallbackC
 import spriteLogic from '~/logics/SpriteLogic'
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 import type Tool from '~/core/Tool'
+import type { ManipulationMode } from '~/composables/SpriteEditor/useSpriteEditor'
+
+const manipulatingCell = ref<{x: number, y: number}>({x: 0, y: 0})
 
 const props = defineProps({
-  sprite: Sprite,
-  activeColorState: ColorState,
-  activeTool: String as PropType<Tool>
+  sprite: {
+    type: Sprite,
+    required: true,
+  },
+  activeColorState: {
+    type: ColorState,
+    required: true,
+  },
+  activeTool: String as PropType<Tool>,
+  manipulationMode: String as PropType<ManipulationMode>,
+  updateManipulationMode: {
+    type: Function as PropType<(mode: ManipulationMode) => void>,
+    required: true,
+  }
 })
 
-const redraw = (ctx: CanvasRenderingContext2D) => {
+const redraw = () => {
+  if (!canvasRef.value) return
+  const canvas = canvasRef.value
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+
   if (!props.sprite) return
   const sprite = props.sprite
   if (!ctx) return
@@ -26,6 +45,12 @@ const redraw = (ctx: CanvasRenderingContext2D) => {
       drawPixel(ctx, x, y, pixelSizeWidth, pixelSizeHeight, colorString)
    })
   })
+  if ( props.manipulationMode === 'key' ) {
+    const {x, y} = manipulatingCell.value
+    ctx.strokeStyle = 'black'
+    ctx.lineWidth = 2
+    ctx.strokeRect(x * pixelSizeWidth, y * pixelSizeHeight, pixelSizeWidth, pixelSizeHeight)
+  }
 }
 
 watch(() => props.sprite, () => {
@@ -38,8 +63,15 @@ watch(() => props.sprite, () => {
   const sprite = props.sprite
   registerCallbackCanvasPointerDownOrMove(canvas, handleCanvasClick)
   resizeCanvas(canvas, sprite.width, sprite.height)
-  redraw(ctx)
+  redraw()
 })
+
+watch(() => manipulatingCell, () => {
+  redraw()
+}, {deep: true});
+watch(() => props.manipulationMode, () => {
+  redraw()
+});
 
 const handleCanvasClick = (event: MouseEvent) => {
   const canvas = canvasRef.value
@@ -61,8 +93,10 @@ const handleCanvasClick = (event: MouseEvent) => {
   }
   color = color || new ColorState(0, 0, 0, 1)
   spriteLogic.updateSprite(props.sprite, {x: x, y: y, color: new ColorState(color.r, color.g, color.b, color.a)})
+
+  props.updateManipulationMode('touch')
   
-  redraw(ctx)
+  redraw()
 }
 
 onMounted(() => {
@@ -73,9 +107,37 @@ onMounted(() => {
 
   const ctx = canvasRef.value?.getContext('2d')
   if(ctx){
-    redraw(ctx)
+    redraw()
     const canvas = ctx.canvas
     registerCallbackCanvasPointerDownOrMove(canvas, handleCanvasClick)
+  }
+})
+
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    props.updateManipulationMode('key')
+    console.log('key')
+  }
+  if (event.key === 'h') {
+    manipulatingCell.value = {x: manipulatingCell.value.x - 1, y: manipulatingCell.value.y}
+  }
+  if (event.key === 'j') {
+    manipulatingCell.value = {x: manipulatingCell.value.x, y: manipulatingCell.value.y + 1}
+  }
+  if (event.key === 'k') {
+    manipulatingCell.value = {x: manipulatingCell.value.x, y: manipulatingCell.value.y - 1}
+  }
+  if (event.key === 'l') {
+    manipulatingCell.value = {x: manipulatingCell.value.x + 1, y: manipulatingCell.value.y}
+  }
+  if (event.key === 'a') {
+    const color = props.activeColorState
+    spriteLogic.updateSprite(props.sprite, {x: manipulatingCell.value.x, y: manipulatingCell.value.y, color: new ColorState(color.r, color.g, color.b, color.a)})
+    redraw()
+  }
+  if (event.key === 'x') {
+    spriteLogic.updateSprite(props.sprite, {x: manipulatingCell.value.x, y: manipulatingCell.value.y, color: new ColorState(0, 0, 0, 0)})
+    redraw()
   }
 })
 </script>
