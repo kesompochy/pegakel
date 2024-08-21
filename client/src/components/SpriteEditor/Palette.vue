@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, computed } from 'vue';
+import { onMounted, defineProps, computed, ref } from 'vue';
 import ColorState from '~/core/ColorState'
 import ColorSelector from './ColorSelector.vue'
 import colorStateLogic from '~/logics/ColorState'
@@ -9,19 +9,59 @@ const props = defineProps<{
   handleChoosePaletteCell: (cellId: number) => void;
   activeColor: number;
   handleUpdatePalette: (color: ColorState, cellId: number) => void;
+  focused: boolean;
 }>();
 
+const focusingCell = ref(0)
+
 const colors = computed(() => {
-  const colors = new Array(16).fill(null).map((_, index) => props.colors[index])
+  const colors = new Array(props.colors.length).fill(null).map((_, index) => props.colors[index])
   return colors
 });
 const currentColor = computed(() => colors.value[props.activeColor] || new ColorState());
 const generateCellStyle = (color: ColorState, index: number) => {
   return {
     backgroundColor: color ? colorStateLogic.getHex(color) : 'transparent',
-    border: props.activeColor === index ? '2px solid black' : '1px solid black' 
+    border: props.activeColor === index ? '2px solid black' : focusingCell.value === index ? '2px solid green' : '1px solid black' 
   }
 }
+
+const keyActionMap: Record<string, string> = {
+  "h": "moveLeft",
+  "j": "moveDown",
+  "k": "moveUp",
+  "l": "moveRight",
+  "a": "selectColor",
+  "c": "changeColor",
+}
+const manipulatorActions: Record<string, ()=>void> = {
+  "moveLeft": () => {
+    focusingCell.value = (focusingCell.value - 1 + props.colors.length) % props.colors.length
+  },
+  "moveRight": () => {
+    focusingCell.value = (focusingCell.value + 1) % props.colors.length
+  },
+  "moveUp": () => {
+    focusingCell.value = (focusingCell.value - 4 + props.colors.length) % props.colors.length
+  },
+  "moveDown": () => {
+    focusingCell.value = (focusingCell.value + 4) % props.colors.length
+  },
+  "selectColor": () => {
+    props.handleChoosePaletteCell(focusingCell.value) 
+  },
+  "changeColor": () => {
+  },
+}
+
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (props.focused && event.key in keyActionMap) {
+    manipulatorActions[keyActionMap[event.key]]()
+  }
+}
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+})
 </script>
 
 <template>

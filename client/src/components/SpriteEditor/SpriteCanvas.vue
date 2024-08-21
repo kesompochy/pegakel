@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref, defineProps, PropType, watch } from 'vue'
+import { onMounted, onUnmounted, ref, defineProps, PropType, watch } from 'vue'
 import ColorState from '~/core/ColorState'
 import Sprite from '~/core/Sprite'
 import { resizeCanvas, translateClickPositionToSpritePosition, registerCallbackCanvasPointerDownOrMove, drawPixel } from '~/utils/canvas'
-import spriteLogic from '~/logics/SpriteLogic'
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 import type Tool from '~/core/Tool'
 import type { ManipulationMode } from '~/composables/SpriteEditor/useSpriteEditor'
 
-const manipulatingCell = ref<{x: number, y: number}>({x: 0, y: 0})
+const manipulatingCell = ref({x: 0, y: 0})
 
 const props = defineProps({
-  sprite: {
-    type: Sprite,
-    required: true,
-  },
+  sprite: Sprite,
   activeColorState: {
     type: ColorState,
     required: true,
@@ -24,7 +20,57 @@ const props = defineProps({
   updateManipulationMode: {
     type: Function as PropType<(mode: ManipulationMode) => void>,
     required: true,
+  },
+  updateSprite: {
+    type: Function as PropType<(x: number, y: number, color: ColorState) => void>,
+    required: true,
+  },
+  focused: {
+    type: Boolean,
+    required: true,
   }
+})
+
+type EditorAction = 'moveUp' | 'moveDown' | 'moveLeft' | 'moveRight' | 'draw' | 'erase'
+const keyActionMap: Record<string, EditorAction> = {
+  'k': 'moveUp',
+  'j': 'moveDown',
+  'h': 'moveLeft',
+  'l': 'moveRight',
+  'x': 'erase',
+  'a': 'draw'
+}
+const editorActions: Record<EditorAction, ()=>void> = {
+  'moveUp': () => {
+    manipulatingCell.value = {x: manipulatingCell.value.x, y: manipulatingCell.value.y - 1}
+  },
+  'moveDown': () => {
+    manipulatingCell.value = {x: manipulatingCell.value.x, y: manipulatingCell.value.y + 1}
+  },
+  'moveLeft': () => {
+    manipulatingCell.value = {x: manipulatingCell.value.x - 1, y: manipulatingCell.value.y}
+  },
+  'moveRight': () => {
+    manipulatingCell.value = {x: manipulatingCell.value.x + 1, y: manipulatingCell.value.y}
+  },
+  'draw': () => {
+    props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, props.activeColorState)
+    redraw()
+  },
+  'erase': () => {
+    props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, new ColorState(0, 0, 0, 0))
+    redraw()
+  },
+}
+const handleKeyDown = (event: KeyboardEvent) => {
+  if ( props.focused && keyActionMap[event.key] ) editorActions[keyActionMap[event.key]]()
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown)
+})
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
 })
 
 const redraw = () => {
@@ -45,7 +91,7 @@ const redraw = () => {
       drawPixel(ctx, x, y, pixelSizeWidth, pixelSizeHeight, colorString)
    })
   })
-  if ( props.manipulationMode === 'key' ) {
+  if ( props.manipulationMode === 'key' && props.focused ) {
     const {x, y} = manipulatingCell.value
     ctx.strokeStyle = 'black'
     ctx.lineWidth = 2
@@ -72,6 +118,9 @@ watch(() => manipulatingCell, () => {
 watch(() => props.manipulationMode, () => {
   redraw()
 });
+watch(() => props.focused, () => {
+  redraw()
+});
 
 const handleCanvasClick = (event: MouseEvent) => {
   const canvas = canvasRef.value
@@ -92,7 +141,7 @@ const handleCanvasClick = (event: MouseEvent) => {
     color = new ColorState(0, 0, 0, 0)
   }
   color = color || new ColorState(0, 0, 0, 1)
-  spriteLogic.updateSprite(props.sprite, {x: x, y: y, color: new ColorState(color.r, color.g, color.b, color.a)})
+  props.updateSprite(x, y, color)
 
   props.updateManipulationMode('touch')
   
@@ -113,33 +162,6 @@ onMounted(() => {
   }
 })
 
-window.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    props.updateManipulationMode('key')
-    console.log('key')
-  }
-  if (event.key === 'h') {
-    manipulatingCell.value = {x: manipulatingCell.value.x - 1, y: manipulatingCell.value.y}
-  }
-  if (event.key === 'j') {
-    manipulatingCell.value = {x: manipulatingCell.value.x, y: manipulatingCell.value.y + 1}
-  }
-  if (event.key === 'k') {
-    manipulatingCell.value = {x: manipulatingCell.value.x, y: manipulatingCell.value.y - 1}
-  }
-  if (event.key === 'l') {
-    manipulatingCell.value = {x: manipulatingCell.value.x + 1, y: manipulatingCell.value.y}
-  }
-  if (event.key === 'a') {
-    const color = props.activeColorState
-    spriteLogic.updateSprite(props.sprite, {x: manipulatingCell.value.x, y: manipulatingCell.value.y, color: new ColorState(color.r, color.g, color.b, color.a)})
-    redraw()
-  }
-  if (event.key === 'x') {
-    spriteLogic.updateSprite(props.sprite, {x: manipulatingCell.value.x, y: manipulatingCell.value.y, color: new ColorState(0, 0, 0, 0)})
-    redraw()
-  }
-})
 </script>
 
 <template>

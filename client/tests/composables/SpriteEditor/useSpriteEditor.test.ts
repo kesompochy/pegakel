@@ -21,11 +21,11 @@ describe("useSprite", () => {
   });
   it("should return a manipulation mode", () => {
     const { manipulationMode } = useSpriteEditor();
-    expect(manipulationMode.value).toBe("touch");
+    expect(manipulationMode.value).toBe("key");
   });
   it("should update the manipulation mode", () => {
     const { manipulationMode, updateManipulationMode } = useSpriteEditor();
-    updateManipulationMode("key");
-    expect(manipulationMode.value).toBe("key");
+    updateManipulationMode("touch");
+    expect(manipulationMode.value).toBe("touch");
   });
 });

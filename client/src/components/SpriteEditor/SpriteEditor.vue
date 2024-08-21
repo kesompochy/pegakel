@@ -8,15 +8,29 @@
   import useSpriteEditor from '~/composables/SpriteEditor/useSpriteEditor'
   import SpriteGroupLogic from '~/logics/SpriteGroupLogic'
   import ColorState from '~/core/ColorState'
+  import { PropType, ref } from 'vue'
 
-  import { defineProps } from 'vue'
-  const props = defineProps<{
+  import { defineProps, onMounted, onUnmounted } from 'vue'
+  const props = defineProps({
     sprite: Sprite,
-    handleChangeMode: Function,
-    spriteId: number,
-    spriteGroup: SpriteGroup,
-  }>()
-  const { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode } = useSpriteEditor()
+    handleChangeMode: {
+      type: Function,
+      required: true
+    },
+    spriteId: Number,
+    spriteGroup: {
+      type: SpriteGroup,
+      required: true
+    },
+    updateSprite: {
+      type: Function as PropType<(x: number, y: number, color: ColorState) => void>,
+      required: true
+    },
+  });
+  const { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode, canvasManipulatingCell, } = useSpriteEditor()
+
+  const ComponentName = ['canvas', 'palette', 'toolbox'] as const
+  const focusingComponent = ref<number>(0)
 
   const goToSheetEditor = () => {
     props.handleChangeMode(modes.SHEET_EDITOR, props.spriteId)
@@ -27,6 +41,28 @@
   const updatePalette = (color: ColorState, cellId: number) => {
     SpriteGroupLogic.updatePalette(props.spriteGroup, cellId, color)
   }
+
+  const keyActionMap: Record<string, string> = {
+    "n": "changeMode",
+  }
+  const manipulatorActions: Record<string, ()=>void> = {
+    "changeMode": () => {
+      focusingComponent.value = (focusingComponent.value + 1) % ComponentName.length 
+    }
+  }
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key in keyActionMap) {
+      manipulatorActions[keyActionMap[event.key]]()
+    }
+  }
+  onMounted(() => {
+    window.addEventListener('keydown', handleKeyDown)
+  })
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeyDown)
+  })
+
+
 </script>
 
 <template>
@@ -38,12 +74,16 @@
     :activeTool="activeTool"
     :manipulationMode="manipulationMode"
     :updateManipulationMode="updateManipulationMode"
+    :manipulatingCell="canvasManipulatingCell"
+    :updateSprite="props.updateSprite"
+    :focused="focusingComponent === 0"
   />
   <Palette 
     :colors="props.spriteGroup.palette" 
     :handleChoosePaletteCell="activateColor"
     :activeColor="activeColor"
     :handleUpdatePalette="updatePalette"
+    :focused="focusingComponent === 1"
     />
   <ToolBox
     :activeTool="activeTool"

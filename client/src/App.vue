@@ -9,6 +9,8 @@
   import SpriteGroup from '~/core/SpriteGroup';
   import Sprite from '~/core/Sprite';
   import Sheet from '~/core/Sheet';
+  import SpriteLogic from '~/logics/SpriteLogic';
+  import ColorState from '~/core/ColorState';
   setMode(modes.SPRITE_EDITOR)
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
@@ -55,6 +57,9 @@
       console.error(response.error)
     }
   }
+  const updateSprite = (x: number, y: number, color: ColorState) => {
+    SpriteLogic.updateSprite(currentSheet.value.sprites[currentSpriteId.value], { x, y, color } )
+  }
 </script>
 
 <template>
@@ -67,6 +72,7 @@
       :spriteId="currentSpriteId"
       :handleChangeMode="handleChangeMode"
       :spriteGroup="currentSheet.groups[currentSpriteGroupId] as SpriteGroup"
+      :updateSprite="updateSprite"
     /> 
     <button @click="save">Save</button>
   </div>

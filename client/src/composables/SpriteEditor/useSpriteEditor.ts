@@ -17,12 +17,17 @@ const useSpriteEditor = () => {
     activeTool.value = tool;
   };
 
-  const manipulationMode = ref<ManipulationMode>(ManipulationMode.TOUCH);
+  const manipulationMode = ref<ManipulationMode>(ManipulationMode.KEY);
   const updateManipulationMode = (mode: ManipulationMode) => {
     manipulationMode.value = mode;
   };
 
-  return { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode };
+  const canvasManipulatingCell = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+  const updateCanvasManipulatingCell = (cell: {x: number, y: number}) => {
+    canvasManipulatingCell.value = cell;
+  };
+
+  return { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode, canvasManipulatingCell, updateCanvasManipulatingCell };
 };
 
 export default useSpriteEditor;
