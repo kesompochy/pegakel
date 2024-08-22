@@ -13,7 +13,6 @@ const props = defineProps({
   sprite: Sprite,
   activeColorState: {
     type: ColorState,
-    required: true,
   },
   activeTool: String as PropType<Tool>,
   manipulationMode: String as PropType<ManipulationMode>,
@@ -54,6 +53,7 @@ const editorActions: Record<EditorAction, ()=>void> = {
     manipulatingCell.value = {x: manipulatingCell.value.x + 1, y: manipulatingCell.value.y}
   },
   'draw': () => {
+    if (!props.activeColorState) return
     props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, props.activeColorState)
     redraw()
   },
