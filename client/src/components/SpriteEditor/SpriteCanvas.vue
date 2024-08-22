@@ -30,16 +30,16 @@ const keyActionMap: Record<string, EditorAction> = {
 }
 const editorActions: Record<EditorAction, ()=>void> = {
   'moveUp': () => {
-    manipulatingCell.value = {x: manipulatingCell.value.x, y: manipulatingCell.value.y - 1}
+    manipulatingCell.value = {x: manipulatingCell.value.x, y: Math.max(manipulatingCell.value.y - 1, 0)}
   },
   'moveDown': () => {
-    manipulatingCell.value = {x: manipulatingCell.value.x, y: manipulatingCell.value.y + 1}
+    manipulatingCell.value = {x: manipulatingCell.value.x, y: Math.min(manipulatingCell.value.y + 1, (props.sprite?.height ?? 100000) - 1)}
   },
   'moveLeft': () => {
-    manipulatingCell.value = {x: manipulatingCell.value.x - 1, y: manipulatingCell.value.y}
+    manipulatingCell.value = {x: Math.max(manipulatingCell.value.x - 1, 0), y: manipulatingCell.value.y}
   },
   'moveRight': () => {
-    manipulatingCell.value = {x: manipulatingCell.value.x + 1, y: manipulatingCell.value.y}
+    manipulatingCell.value = {x: Math.min(manipulatingCell.value.x + 1, (props.sprite?.width ?? 10000) - 1), y: manipulatingCell.value.y}
   },
   'draw': () => {
     if (!props.activeColorState) return

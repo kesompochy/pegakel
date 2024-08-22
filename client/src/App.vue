@@ -2,7 +2,7 @@
   import { JsonRpcClient } from 'bunson';
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
-  import { onMounted } from 'vue'
+  import { onMounted, onUnmounted } from 'vue'
   const { currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
   const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
@@ -60,6 +60,32 @@
   const updateSprite = (x: number, y: number, color: ColorState) => {
     SpriteLogic.updateSprite(currentSheet.value.sprites[currentSpriteId.value], { x, y, color } )
   }
+
+  type ManipulationAction = "goToSheetEditor"
+  const keyActionMap: Record<string, ManipulationAction> = {
+    "Escape": "goToSheetEditor",
+  }
+  const manipulationActions: Record<ManipulationAction, () => void> = {
+    "goToSheetEditor": () => {
+      setMode(modes.SHEET_EDITOR)
+    }
+  }
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key in keyActionMap) {
+      manipulationActions[keyActionMap[e.key]]()
+    }
+  }
+
+  onMounted(() => {
+    window.addEventListener('keydown', (e) => {
+      handleKeyDown(e)
+    });
+  })
+  onUnmounted(() => {
+    window.removeEventListener('keydown', (e) => {
+      handleKeyDown(e)
+    });
+  })
 </script>
 
 <template>

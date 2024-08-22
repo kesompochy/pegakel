@@ -5,7 +5,7 @@
   import { modes } from '~/composables/consts'
   import sheetLogics from '~/logics/SheetLogic'
 
-  import { defineProps } from 'vue'
+  import { defineProps, onMounted, onUnmounted } from 'vue'
   const props = defineProps<{ sheet: Sheet, handleChangeMode: Function }>()
 
   const { focusedSprite, updateFocusedSprite } = useSheet()
@@ -19,6 +19,37 @@
   const addSprite = () => {
     sheetLogics.addSprite(props.sheet)
   }
+
+
+  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite"
+  const keyActionMap: Record<string, ManipulationAction> = {
+    "i": "goToSpriteEditor",
+    "n": "proceedFocusedSprite"
+  }
+  const manipulationActions: Record<ManipulationAction, () => void> = {
+    "goToSpriteEditor": () => {
+      changeModeToSpriteEditor()
+    },
+    "proceedFocusedSprite": () => {
+      proceedFocusedSprite()
+    }
+  }
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key in keyActionMap) {
+      manipulationActions[keyActionMap[e.key]]()
+    }
+  }
+
+  onMounted(() => {
+    window.addEventListener('keydown', (e) => {
+      handleKeyDown(e)
+    });
+  })
+  onUnmounted(() => {
+    window.removeEventListener('keydown', (e) => {
+      handleKeyDown(e)
+    });
+  })
 </script>
 <script lang="ts">
   export default {

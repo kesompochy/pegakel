@@ -11,6 +11,7 @@ describe("SpriteCanvas", () => {
     expect(wrapper.find("canvas").exists()).toBe(true);
   });
   it("should manipulate with key action", () => {
+    wrapper.vm.manipulatingCell = { x: 1, y: 1 };
     const cellX = wrapper.vm.manipulatingCell.x;
     const cellY = wrapper.vm.manipulatingCell.y;
     wrapper.vm.editorActions["moveUp"]();
