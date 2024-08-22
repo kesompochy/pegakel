@@ -27,10 +27,12 @@
 </script>
 
 <template>
-  <SheetComponent :sheet="props.sheet" :focusedSprite="focusedSprite"/>
-  <button @click="proceedFocusedSprite()">Next</button>
-  <button @click="changeModeToSpriteEditor()">Edit</button>
-  <button @click="addSprite()">Add</button>
+  <div>
+    <SheetComponent :sheet="props.sheet" :focusedSprite="focusedSprite"/>
+    <button @click="proceedFocusedSprite()">Next</button>
+    <button @click="changeModeToSpriteEditor()">Edit</button>
+    <button @click="addSprite()">Add</button>
+  </div>
 </template>
 
 <style scoped lang="scss">

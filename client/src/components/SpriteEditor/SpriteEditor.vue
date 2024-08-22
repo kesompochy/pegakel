@@ -66,30 +66,32 @@
 </script>
 
 <template>
-  <SpriteCanvas 
-    :width="props.sprite?.width || 0" 
-    :height="props.sprite?.height || 0" 
-    :sprite="props.sprite"
-    :activeColorState="props.spriteGroup.palette[activeColor]"
-    :activeTool="activeTool"
-    :manipulationMode="manipulationMode"
-    :updateManipulationMode="updateManipulationMode"
-    :manipulatingCell="canvasManipulatingCell"
-    :updateSprite="props.updateSprite"
-    :focused="focusingComponent === 0"
-  />
-  <Palette 
-    :colors="props.spriteGroup.palette" 
-    :handleChoosePaletteCell="activateColor"
-    :activeColor="activeColor"
-    :handleUpdatePalette="updatePalette"
-    :focused="focusingComponent === 1"
+  <div>
+    <SpriteCanvas 
+      :width="props.sprite?.width || 0" 
+      :height="props.sprite?.height || 0" 
+      :sprite="props.sprite"
+      :activeColorState="props.spriteGroup.palette[activeColor]"
+      :activeTool="activeTool"
+      :manipulationMode="manipulationMode"
+      :updateManipulationMode="updateManipulationMode"
+      :manipulatingCell="canvasManipulatingCell"
+      :updateSprite="props.updateSprite"
+      :focused="focusingComponent === 0"
     />
-  <ToolBox
-    :activeTool="activeTool"
-    :handleChangeTool="updateActiveTool"
-  />
-  <button @click="goToSheetEditor">Go to Sheet Editor</button>
+    <Palette 
+      :colors="props.spriteGroup.palette" 
+      :handleChoosePaletteCell="activateColor"
+      :activeColor="activeColor"
+      :handleUpdatePalette="updatePalette"
+      :focused="focusingComponent === 1"
+      />
+    <ToolBox
+      :activeTool="activeTool"
+      :handleChangeTool="updateActiveTool"
+    />
+    <button @click="goToSheetEditor">Go to Sheet Editor</button>
+  </div>
 </template>
 
 <style lang="scss">

@@ -63,8 +63,8 @@
 </script>
 
 <template>
-  <p class="file-name">{{ fileName }}</p>
   <div>
+  <p class="file-name">{{ fileName }}</p>
     <component 
       :is="currentComponent" 
       :sheet="currentSheet" 
