@@ -15,7 +15,7 @@ const props = defineProps<{
 const focusingCell = ref(0)
 
 const colors = computed(() => {
-  const colors = new Array(props.colors.length).fill(null).map((_, index) => props.colors[index])
+  const colors = new Array(Math.max(props.colors.length, 16)).fill(null).map((_, index) => props.colors[index])
   return colors
 });
 const currentColor = computed(() => colors.value[props.activeColor] || new ColorState());
