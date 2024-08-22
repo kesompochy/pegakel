@@ -8,28 +8,19 @@
   import useSpriteEditor from '~/composables/SpriteEditor/useSpriteEditor'
   import SpriteGroupLogic from '~/logics/SpriteGroupLogic'
   import ColorState from '~/core/ColorState'
-  import { PropType, ref } from 'vue'
+  import { ref } from 'vue'
 
   import { defineProps, onMounted, onUnmounted } from 'vue'
-  const props = defineProps({
-    sprite: Object as PropType<Sprite>,
-    handleChangeMode: {
-      type: Function,
-      required: true
-    },
-    spriteId: Number,
-    spriteGroup: {
-      type: Object as PropType<SpriteGroup>,
-      required: true
-    },
-    updateSprite: {
-      type: Function as PropType<(x: number, y: number, color: ColorState) => void>,
-      required: true
-    },
-  });
+  const props = defineProps<{
+    sprite: Sprite | undefined,
+    handleChangeMode: (mode: string, spriteId: number) => void,
+    spriteId: number,
+    spriteGroup: SpriteGroup, 
+    updateSprite: (x: number, y: number, color: ColorState) => void,
+  }>();
   const { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode, canvasManipulatingCell, } = useSpriteEditor()
 
-  const ComponentName = ['canvas', 'palette', 'toolbox'] as const
+  const ComponentName = ['canvas', 'palette'] as const
   const focusingComponent = ref<number>(0)
 
   const goToSheetEditor = () => {

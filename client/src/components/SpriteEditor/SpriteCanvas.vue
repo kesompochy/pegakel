@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, defineProps, PropType, watch } from 'vue'
+import { onMounted, onUnmounted, ref, defineProps, watch } from 'vue'
 import ColorState from '~/core/ColorState'
 import Sprite from '~/core/Sprite'
 import { resizeCanvas, translateClickPositionToSpritePosition, registerCallbackCanvasPointerDownOrMove, drawPixel } from '~/utils/canvas'
@@ -9,26 +9,15 @@ import type { ManipulationMode } from '~/composables/SpriteEditor/useSpriteEdito
 
 const manipulatingCell = ref({x: 0, y: 0})
 
-const props = defineProps({
-  sprite: Object as PropType<Sprite>,
-  activeColorState: {
-    type: Object as PropType<ColorState>,
-  },
-  activeTool: String as PropType<Tool>,
-  manipulationMode: String as PropType<ManipulationMode>,
-  updateManipulationMode: {
-    type: Function as PropType<(mode: ManipulationMode) => void>,
-    required: true,
-  },
-  updateSprite: {
-    type: Function as PropType<(x: number, y: number, color: ColorState) => void>,
-    required: true,
-  },
-  focused: {
-    type: Boolean,
-    required: true,
-  }
-})
+const props = defineProps<{
+  sprite: Sprite | undefined, 
+  activeColorState: ColorState | undefined, 
+  activeTool: Tool | undefined,
+  manipulationMode: ManipulationMode | undefined,
+  updateManipulationMode: (mode: ManipulationMode) => void, 
+  updateSprite: (x: number, y: number, color: ColorState) => void, 
+  focused: boolean, 
+}>()
 
 type EditorAction = 'moveUp' | 'moveDown' | 'moveLeft' | 'moveRight' | 'draw' | 'erase'
 const keyActionMap: Record<string, EditorAction> = {
