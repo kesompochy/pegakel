@@ -10,9 +10,9 @@ import type { ManipulationMode } from '~/composables/SpriteEditor/useSpriteEdito
 const manipulatingCell = ref({x: 0, y: 0})
 
 const props = defineProps({
-  sprite: Sprite,
+  sprite: Object as PropType<Sprite>,
   activeColorState: {
-    type: ColorState,
+    type: Object as PropType<ColorState>,
   },
   activeTool: String as PropType<Tool>,
   manipulationMode: String as PropType<ManipulationMode>,

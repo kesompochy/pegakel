@@ -12,14 +12,14 @@
 
   import { defineProps, onMounted, onUnmounted } from 'vue'
   const props = defineProps({
-    sprite: Sprite,
+    sprite: Object as PropType<Sprite>,
     handleChangeMode: {
       type: Function,
       required: true
     },
     spriteId: Number,
     spriteGroup: {
-      type: SpriteGroup,
+      type: Object as PropType<SpriteGroup>,
       required: true
     },
     updateSprite: {
