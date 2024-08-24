@@ -3,12 +3,12 @@ import { shallowMount } from "@vue/test-utils";
 
 describe("Palette", () => {
   let wrapper = shallowMount(Palette, {
-    props: {
+    propsData: {
       colors: [],
       handleChoosePaletteCell: () => {},
       activeColor: 0,
-      activeTool: "draw",
       handleUpdatePalette: () => {},
+      focused: true,
     },
   });
   it("is should have a div element", () => {

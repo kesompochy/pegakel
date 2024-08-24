@@ -13,11 +13,12 @@ describe("SpriteEditor", () => {
     addEventListenerSpy = vi.spyOn(window, "addEventListener");
     removeEventListenerSpy = vi.spyOn(window, "removeEventListener");
     wrapper = mount(SpriteEditor, {
-      props: {
+      propsData: {
         handleChangeMode: () => {},
         spriteGroup: new SpriteGroup(),
         sprite: new Sprite(16, 16),
         spriteId: 0,
+        updateSprite: () => {},
       },
     });
   });

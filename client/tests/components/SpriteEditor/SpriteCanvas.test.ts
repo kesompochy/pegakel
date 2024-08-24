@@ -1,13 +1,23 @@
 import SpriteCanvas from "~/components/SpriteEditor/SpriteCanvas.vue";
-import { shallowMount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
+import Sprite from "~/core/Sprite";
 
 describe("SpriteCanvas", () => {
   let wrapper: any;
   beforeEach(() => {
-    wrapper = shallowMount(SpriteCanvas);
+    wrapper = mount(SpriteCanvas, {
+      propsData: {
+        updateManipulationMode: () => {},
+        updateSprite: () => {},
+        focused: true, 
+        sprite: new Sprite(16, 16),
+        activeColorState: { r: 0, g: 0, b: 0, a: 1 },
+        activeTool: "draw",
+        manipulationMode: "key",
+      }
+    });
   });
   it("should have a canvas", () => {
-    const wrapper = shallowMount(SpriteCanvas);
     expect(wrapper.find("canvas").exists()).toBe(true);
   });
   it("should manipulate with key action", () => {

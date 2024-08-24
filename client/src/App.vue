@@ -18,7 +18,11 @@
   setFileName(FILE_NAME)
 
   onMounted(() => {
-    openFile();
+    if (import.meta.env.MODE === 'test') {
+      initSheetForTest()
+    } else {
+      openFile();
+    }
   })
 
   const jsonRpcClient = new JsonRpcClient(SERVER_URL, {
