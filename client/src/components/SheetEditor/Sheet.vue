@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import Sheet from '~/core/Sheet'
 
 const props = defineProps<{ sheet: Sheet, focusedSprite: number }>()

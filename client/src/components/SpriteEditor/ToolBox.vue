@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { defineProps } from 'vue';
   import type Tool from '~/core/Tool';
   const props = defineProps<{
     activeTool: Tool; 

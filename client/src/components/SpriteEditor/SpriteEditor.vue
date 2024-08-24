@@ -10,7 +10,7 @@
   import ColorState from '~/core/ColorState'
   import { ref } from 'vue'
 
-  import { defineProps, onMounted, onUnmounted } from 'vue'
+  import { onMounted, onUnmounted } from 'vue'
   const props = defineProps<{
     sprite: Sprite | undefined,
     handleChangeMode: (mode: string, spriteId: number) => void,

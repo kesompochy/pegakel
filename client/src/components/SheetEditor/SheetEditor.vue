@@ -5,7 +5,7 @@
   import { modes } from '~/composables/consts'
   import sheetLogics from '~/logics/SheetLogic'
 
-  import { defineProps, onMounted, onUnmounted } from 'vue'
+  import { onMounted, onUnmounted } from 'vue'
   const props = defineProps<{ sheet: Sheet, handleChangeMode: Function }>()
 
   const { focusedSprite, updateFocusedSprite } = useSheet()

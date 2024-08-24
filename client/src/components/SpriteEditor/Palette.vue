@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, defineProps, computed, ref } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import ColorState from '~/core/ColorState'
 import ColorSelector from './ColorSelector.vue'
 import colorStateLogic from '~/logics/ColorState'
