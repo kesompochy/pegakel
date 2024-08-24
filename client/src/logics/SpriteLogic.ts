@@ -11,4 +11,8 @@ export default {
     if (!sprite.pixels[pixelData.y] || !sprite.pixels[pixelData.y][pixelData.x]) return;
     sprite.pixels[pixelData.y][pixelData.x] = pixelData.color;
   },
+  changeClip(sprite: Sprite, clip: { x: number, y: number }) {
+    sprite.clipX = clip.x;
+    sprite.clipY = clip.y;
+  }
 }

@@ -18,4 +18,10 @@ describe('SpriteLogic', () => {
     expect(sprite.pixels[5][5]).toStrictEqual(new ColorState(0, 0, 0, 0));
     expect(sprite.pixels[7][7]).toStrictEqual(new ColorState(0, 0, 0, 0));
   })
+  it("should change clip x or y", () => {
+    const sprite = SpriteLogic.createSprite(10, 10);
+    SpriteLogic.changeClip(sprite, { x: 5, y: 7 });
+    expect(sprite.clipX).toBe(5);
+    expect(sprite.clipY).toBe(7);
+  });
 });

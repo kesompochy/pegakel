@@ -14,4 +14,9 @@ describe("Sprite", () => {
     expect(sprite.pixels[20]).toBeUndefined();
     expect(sprite.pixels[10][20]).toBeUndefined();
   });
+  it("should have clip x and y", () => {
+    const sprite = new Sprite(10, 20);
+    expect(sprite.clipX).toBe(0);
+    expect(sprite.clipY).toBe(0);
+  });
 });

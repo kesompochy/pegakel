@@ -13,4 +13,8 @@ describe("SpriteGroup", () => {
     const spriteGroup = new SpriteGroup("test");
     expect(spriteGroup.palette).toEqual([]);
   });
+  it("should have a clip size", () => {
+    const spriteGroup = new SpriteGroup("test");
+    expect(spriteGroup.clipSize).toEqual({ width: 0, height: 0 });
+  });
 });

@@ -20,4 +20,7 @@ export default {
       );
     }
   },
+  changeClipSize(spriteGroup: SpriteGroup, size: { width: number, height: number }) {
+    spriteGroup.clipSize = size;
+  }
 };

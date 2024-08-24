@@ -5,6 +5,8 @@ export default class Sprite implements ISprite {
   width: number;
   height: number;
   pixels: ColorState[][];
+  clipX: number = 0;
+  clipY: number = 0;
   constructor(width: number, height: number) {
     this.width = width;
     this.height = height;
