@@ -64,6 +64,9 @@
   const updateSprite = (x: number, y: number, color: ColorState) => {
     SpriteLogic.updateSprite(currentSheet.value.sprites[currentSpriteId.value], { x, y, color } )
   }
+  const updateSpriteSize = (left: number, top: number, bottom: number, right: number) => {
+    SpriteLogic.updateSpriteSize(currentSheet.value.sprites[currentSpriteId.value], left, top, bottom, right)
+  }
 
   type ManipulationAction = "goToSheetEditor"
   const keyActionMap: Record<string, ManipulationAction> = {
@@ -103,6 +106,7 @@
       :handleChangeMode="handleChangeMode"
       :spriteGroup="currentSheet.groups[currentSpriteGroupId] as SpriteGroup"
       :updateSprite="updateSprite"
+      :updateSpriteSize="updateSpriteSize"
     /> 
     <button @click="save">Save</button>
   </div>

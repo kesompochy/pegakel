@@ -99,7 +99,7 @@ watch(() => props.sprite, () => {
   registerCallbackCanvasPointerDownOrMove(canvas, handleCanvasClick)
   resizeCanvas(canvas, sprite.width, sprite.height)
   redraw()
-})
+}, {deep: true})
 
 watch(() => manipulatingCell, () => {
   redraw()

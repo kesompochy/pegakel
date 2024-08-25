@@ -8,20 +8,28 @@
   import useSpriteEditor from '~/composables/SpriteEditor/useSpriteEditor'
   import SpriteGroupLogic from '~/logics/SpriteGroupLogic'
   import ColorState from '~/core/ColorState'
-  import { ref } from 'vue'
 
-  import { onMounted, onUnmounted } from 'vue'
+  import { nextTick, onMounted, onUnmounted, ref } from 'vue'
   const props = defineProps<{
     sprite: Sprite | undefined,
     handleChangeMode: (mode: string, spriteId: number) => void,
     spriteId: number,
     spriteGroup: SpriteGroup, 
     updateSprite: (x: number, y: number, color: ColorState) => void,
+    updateSpriteSize: (left: number, top: number, bottom: number, right: number) => void,
   }>();
   const { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode, canvasManipulatingCell, } = useSpriteEditor()
 
-  const ComponentName = ['canvas', 'palette'] as const
-  const focusingComponent = ref<number>(0)
+  type focusableComponent = 'canvas' | 'palette' | 'resize'
+  const focusingComponent = ref<focusableComponent>('canvas')
+  const canvasResizeDeltaTop = ref(0)
+  const canvasResizeDeltaLeft = ref(0)
+  const canvasResizeDeltaRight = ref(0)
+  const canvasResizeDeltaBottom = ref(0)
+  const inputElementTop = ref<HTMLInputElement | null>(null)
+  const inputElementLeft = ref<HTMLInputElement | null>(null)
+  const inputElementRight = ref<HTMLInputElement | null>(null)
+  const inputElementBottom = ref<HTMLInputElement | null>(null)
 
   const goToSheetEditor = () => {
     props.handleChangeMode(modes.SHEET_EDITOR, props.spriteId)
@@ -34,12 +42,58 @@
   }
 
   const keyActionMap: Record<string, string> = {
-    "n": "changeMode",
+    "n": "switchFucsingComponent",
+    "s": "changeModeToResize",
+    "Enter": "confirm",
+    "h": "moveLeft",
+    "j": "moveDown",
+    "k": "moveUp",
+    "l": "moveRight",
   }
   const manipulatorActions: Record<string, ()=>void> = {
-    "changeMode": () => {
-      focusingComponent.value = (focusingComponent.value + 1) % ComponentName.length 
-    }
+    "switchFucsingComponent": () => {
+      focusingComponent.value = focusingComponent.value === 'canvas' ? 'palette' : 'canvas'
+    },
+    "changeModeToResize": async () => {
+      focusingComponent.value = 'resize'
+      await nextTick() // wait for the input element to be rendered
+      inputElementTop.value?.focus()
+    },
+    "confirm": () => {
+      if (focusingComponent.value === 'resize') {
+        props.updateSpriteSize(
+          canvasResizeDeltaLeft.value,
+          canvasResizeDeltaTop.value,
+          canvasResizeDeltaBottom.value,
+          canvasResizeDeltaRight.value,
+        )
+        focusingComponent.value = 'canvas'
+        canvasResizeDeltaTop.value = 0
+        canvasResizeDeltaLeft.value = 0
+        canvasResizeDeltaRight.value = 0
+        canvasResizeDeltaBottom.value = 0
+      }
+    },
+    "moveLeft": () => {
+      if (focusingComponent.value === 'resize') {
+        inputElementLeft.value?.focus()
+      }
+    },
+    "moveDown": () => {
+      if (focusingComponent.value === 'resize') {
+        inputElementBottom.value?.focus()
+      }
+    },
+    "moveUp": () => {
+      if (focusingComponent.value === 'resize') {
+        inputElementTop.value?.focus()
+      }
+    },
+    "moveRight": () => {
+      if (focusingComponent.value === 'resize') {
+        inputElementRight.value?.focus()
+      }
+    },
   }
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key in keyActionMap) {
@@ -52,30 +106,36 @@
   onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown)
   })
-
-
+  
 </script>
 
 <template>
   <div>
-    <SpriteCanvas 
-      :width="props.sprite?.width || 0" 
-      :height="props.sprite?.height || 0" 
-      :sprite="props.sprite"
-      :activeColorState="props.spriteGroup.palette[activeColor]"
-      :activeTool="activeTool"
-      :manipulationMode="manipulationMode"
-      :updateManipulationMode="updateManipulationMode"
-      :manipulatingCell="canvasManipulatingCell"
-      :updateSprite="props.updateSprite"
-      :focused="focusingComponent === 0"
-    />
+    <div class="canvas-container">
+      <input type="number" v-model="canvasResizeDeltaTop"  class="top"  v-show="focusingComponent === 'resize'" ref="inputElementTop">
+      <input type="number" v-model="canvasResizeDeltaLeft" class="left" v-show="focusingComponent === 'resize'" ref="inputElementLeft">
+      <SpriteCanvas 
+        :width="props.sprite?.width || 0" 
+        :height="props.sprite?.height || 0" 
+        :sprite="props.sprite"
+        :activeColorState="props.spriteGroup.palette[activeColor]"
+        :activeTool="activeTool"
+        :manipulationMode="manipulationMode"
+        :updateManipulationMode="updateManipulationMode"
+        :manipulatingCell="canvasManipulatingCell"
+        :updateSprite="props.updateSprite"
+        :focused="focusingComponent === 'canvas'"
+        class="center"
+      />
+      <input type="number" v-model="canvasResizeDeltaRight"  class="right"  v-show="focusingComponent === 'resize'" ref="inputElementRight">
+      <input type="number" v-model="canvasResizeDeltaBottom" class="bottom" v-show="focusingComponent === 'resize'" ref="inputElementBottom">
+    </div>
     <Palette 
       :colors="props.spriteGroup.palette" 
       :handleChoosePaletteCell="activateColor"
       :activeColor="activeColor"
       :handleUpdatePalette="updatePalette"
-      :focused="focusingComponent === 1"
+      :focused="focusingComponent === 'palette'"
       />
     <ToolBox
       :activeTool="activeTool"
@@ -88,5 +148,32 @@
 <style lang="scss">
 canvas{
   border: 1px solid black;
+}
+
+.canvas-container {
+  display: grid;
+  grid-template-areas:
+    ".    top     ."
+    "left canvas  right"
+    ".     bottom ."
+  ;
+  .top {
+    grid-area: top;
+  }
+  .left {
+    grid-area: left;
+  }
+  .right {
+    grid-area: right;
+  }
+  .bottom {
+    grid-area: bottom;
+  }
+  .center {
+    grid-area: canvas;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 </style>
