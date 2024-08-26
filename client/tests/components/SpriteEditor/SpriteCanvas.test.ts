@@ -14,6 +14,7 @@ describe("SpriteCanvas", () => {
         activeColorState: { r: 0, g: 0, b: 0, a: 1 },
         activeTool: "draw",
         manipulationMode: "key",
+        clipSize: undefined,
       }
     });
   });

@@ -17,6 +17,7 @@ const props = defineProps<{
   updateManipulationMode: (mode: ManipulationMode) => void, 
   updateSprite: (x: number, y: number, color: ColorState) => void, 
   focused: boolean, 
+  clipSize: {width: number, height: number} | undefined
 }>()
 
 type EditorAction = 'moveUp' | 'moveDown' | 'moveLeft' | 'moveRight' | 'draw' | 'erase'
