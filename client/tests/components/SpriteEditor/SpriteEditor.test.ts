@@ -20,6 +20,7 @@ describe("SpriteEditor", () => {
         spriteId: 0,
         updateSprite: () => {},
         updateSpriteSize: () => {},
+        updateClipSize: () => {},
       },
     });
   });

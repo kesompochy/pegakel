@@ -63,5 +63,13 @@ describe('SpriteLogic', () => {
       expect(sprite.pixels[0][7]).toStrictEqual(new ColorState(0, 0, 0, 0));
       expect(sprite.pixels[7][0]).toStrictEqual(new ColorState(0, 0, 0, 0));
     });
+    it("should update sprite clip coordinates when sprite size is updated", () => {
+      SpriteLogic.updateSpriteSize(sprite, 1, 2, 0, 0);
+      expect(sprite.clipX).toBe(1);
+      expect(sprite.clipY).toBe(2);
+      SpriteLogic.updateSpriteSize(sprite, -1, -1, 0, 0);
+      expect(sprite.clipX).toBe(0);
+      expect(sprite.clipY).toBe(1); 
+    });
   });
 });

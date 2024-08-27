@@ -11,6 +11,7 @@
   import Sheet from '~/core/Sheet';
   import SpriteLogic from '~/logics/SpriteLogic';
   import ColorState from '~/core/ColorState';
+  import SpriteGroupLogic from '~/logics/SpriteGroupLogic';
   setMode(modes.SPRITE_EDITOR)
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
@@ -83,6 +84,10 @@
     }
   }
 
+  const updateClipSize = (width: number, height: number) => {
+    SpriteGroupLogic.changeClipSize(currentSheet.value.groups[currentSpriteGroupId.value], {width, height})
+  }
+
   onMounted(() => {
     window.addEventListener('keydown', (e) => {
       handleKeyDown(e)
@@ -107,6 +112,7 @@
       :spriteGroup="currentSheet.groups[currentSpriteGroupId] as SpriteGroup"
       :updateSprite="updateSprite"
       :updateSpriteSize="updateSpriteSize"
+      :updateClipSize="updateClipSize"
     /> 
     <button @click="save">Save</button>
   </div>

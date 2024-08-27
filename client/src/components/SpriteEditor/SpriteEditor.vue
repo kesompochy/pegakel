@@ -8,8 +8,9 @@
   import useSpriteEditor from '~/composables/SpriteEditor/useSpriteEditor'
   import SpriteGroupLogic from '~/logics/SpriteGroupLogic'
   import ColorState from '~/core/ColorState'
+  import SpriteLogic from '~/logics/SpriteLogic'
 
-  import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+  import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
   const props = defineProps<{
     sprite: Sprite | undefined,
     handleChangeMode: (mode: string, spriteId: number) => void,
@@ -17,10 +18,11 @@
     spriteGroup: SpriteGroup, 
     updateSprite: (x: number, y: number, color: ColorState) => void,
     updateSpriteSize: (left: number, top: number, bottom: number, right: number) => void,
+    updateClipSize: (width: number, height: number) => void,
   }>();
   const { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode, canvasManipulatingCell, } = useSpriteEditor()
 
-  type focusableComponent = 'canvas' | 'palette' | 'resize'
+  type focusableComponent = 'canvas' | 'palette' | 'resize' | 'clip'
   const focusingComponent = ref<focusableComponent>('canvas')
   const canvasResizeDeltaTop = ref(0)
   const canvasResizeDeltaLeft = ref(0)
@@ -30,6 +32,25 @@
   const inputElementLeft = ref<HTMLInputElement | null>(null)
   const inputElementRight = ref<HTMLInputElement | null>(null)
   const inputElementBottom = ref<HTMLInputElement | null>(null)
+  const clipSizeWidth = ref<number>(props.spriteGroup.clipSize?.width || 0)
+  const clipSizeHeight = ref<number>(props.spriteGroup.clipSize?.height || 0)
+  const clipSizeInputWidthElement = ref<HTMLInputElement | null>(null)
+
+  const setSpriteGroupClipSize = () => {
+    if (!props.spriteGroup.clipSize && props.sprite) {
+      SpriteGroupLogic.changeClipSize(props.spriteGroup, {width: props.sprite.width, height: props.sprite.height})
+    }
+  }
+  watch(props.spriteGroup, () => {
+    setSpriteGroupClipSize()
+  }, {deep: true})
+  watch(() => props.sprite, () => {
+    setSpriteGroupClipSize()
+  }, {deep: true})
+  watch(() => props.spriteGroup.clipSize, () => {
+    clipSizeWidth.value = props.spriteGroup.clipSize?.width || 0
+    clipSizeHeight.value = props.spriteGroup.clipSize?.height || 0
+  }, {deep: true})
 
   const goToSheetEditor = () => {
     props.handleChangeMode(modes.SHEET_EDITOR, props.spriteId)
@@ -44,6 +65,7 @@
   const keyActionMap: Record<string, string> = {
     "n": "switchFucsingComponent",
     "s": "changeModeToResize",
+    "c": "changeModeToClip",
     "Enter": "confirm",
     "h": "moveLeft",
     "j": "moveDown",
@@ -59,6 +81,11 @@
       await nextTick() // wait for the input element to be rendered
       inputElementTop.value?.focus()
     },
+    "changeModeToClip": async () => {
+      focusingComponent.value = 'clip'
+      await nextTick() // wait for the input element to be rendered
+      clipSizeInputWidthElement.value?.focus()
+    },
     "confirm": () => {
       if (focusingComponent.value === 'resize') {
         props.updateSpriteSize(
@@ -73,25 +100,41 @@
         canvasResizeDeltaRight.value = 0
         canvasResizeDeltaBottom.value = 0
       }
+      if (focusingComponent.value === 'clip') {
+        SpriteGroupLogic.changeClipSize(props.spriteGroup, {width: clipSizeWidth.value, height: clipSizeHeight.value})
+        focusingComponent.value = 'canvas'
+      }
     },
     "moveLeft": () => {
       if (focusingComponent.value === 'resize') {
         inputElementLeft.value?.focus()
+      } else if (focusingComponent.value === 'clip') {
+        if (!props.sprite) return
+        SpriteLogic.changeClip(props.sprite, {x: props.sprite.clipX - 1, y: props.sprite.clipY})
       }
     },
     "moveDown": () => {
       if (focusingComponent.value === 'resize') {
         inputElementBottom.value?.focus()
+      } else if (focusingComponent.value === 'clip') {
+        if (!props.sprite) return
+        SpriteLogic.changeClip(props.sprite, {x: props.sprite.clipX, y: props.sprite.clipY + 1})
       }
     },
     "moveUp": () => {
       if (focusingComponent.value === 'resize') {
         inputElementTop.value?.focus()
+      } else if (focusingComponent.value === 'clip') {
+        if (!props.sprite) return
+        SpriteLogic.changeClip(props.sprite, {x: props.sprite.clipX, y: props.sprite.clipY - 1})
       }
     },
     "moveRight": () => {
       if (focusingComponent.value === 'resize') {
         inputElementRight.value?.focus()
+      } else if (focusingComponent.value === 'clip') {
+        if (!props.sprite) return
+        SpriteLogic.changeClip(props.sprite, {x: props.sprite.clipX + 1, y: props.sprite.clipY})
       }
     },
   }
@@ -111,6 +154,8 @@
 
 <template>
   <div>
+    <input type="number" :disabled="focusingComponent!=='clip'" v-model="clipSizeWidth" ref="clipSizeInputWidthElement">
+    <input type="number" :disabled="focusingComponent!=='clip'" v-model="clipSizeHeight">
     <div class="canvas-container">
       <input type="number" v-model="canvasResizeDeltaTop"  class="top"  v-show="focusingComponent === 'resize'" ref="inputElementTop">
       <input type="number" v-model="canvasResizeDeltaLeft" class="left" v-show="focusingComponent === 'resize'" ref="inputElementLeft">
@@ -125,6 +170,7 @@
         :manipulatingCell="canvasManipulatingCell"
         :updateSprite="props.updateSprite"
         :focused="focusingComponent === 'canvas'"
+        :clipSize="props.spriteGroup.clipSize"
         class="center"
       />
       <input type="number" v-model="canvasResizeDeltaRight"  class="right"  v-show="focusingComponent === 'resize'" ref="inputElementRight">

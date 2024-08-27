@@ -42,5 +42,6 @@ export default {
     }
     sprite.width = newWidth;
     sprite.height = newHeight;
+    this.changeClip(sprite, { x: sprite.clipX + left, y: sprite.clipY + top });
   }
 }
