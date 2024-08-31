@@ -57,7 +57,6 @@ const setupCanvases = () => {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    console.log(props.clipSize?.width, props.clipSize?.height)
     CanvasUtils.resizeCanvas(canvas, props.clipSize?.width || 0, props.clipSize?.height || 0);
     redraw(ctx, sprite);
   });
@@ -76,13 +75,19 @@ watch(() => props.clipSize, () => {
   setupCanvases();
 }, { deep: true });
 
+const generateCanvasStyle = (index: number) => {
+  return {
+    border: (index === (drawingSpriteNumber.value | 0)) ? '2px solid red' : '2px solid black'
+  }
+}
+
 </script>
 
 <template>
   <div>
     <div class="container">
       <canvas class="preview-animation" ref="animationCanvas" />
-      <canvas class="sprite-preview-canvas" v-for="(sprite, index) in props.sprites" :id="`previewCanvas${index}`" />
+      <canvas class="sprite-preview-canvas" v-for="(sprite, index) in props.sprites" :id="`previewCanvas${index}`" :style="generateCanvasStyle(index)"/>
     </div>
   </div>
 </template>
