@@ -43,5 +43,16 @@ export default {
     sprite.width = newWidth;
     sprite.height = newHeight;
     this.changeClip(sprite, { x: sprite.clipX + left, y: sprite.clipY + top });
+  },
+  generateClippedSprite(sprite: Sprite, clipWidth: number, clipHeight: number): Sprite {
+    const clipX = sprite.clipX;
+    const clipY = sprite.clipY;
+    const newSprite = this.createSprite(clipWidth, clipHeight);
+    for (let y = 0; y < clipHeight; y++) {
+      for (let x = 0; x < clipWidth; x++) {
+        newSprite.pixels[y][x] = sprite.pixels[y + clipY]?.[x + clipX] || new ColorState(0, 0, 0, 0);
+      }
+    }
+    return newSprite;
   }
 }

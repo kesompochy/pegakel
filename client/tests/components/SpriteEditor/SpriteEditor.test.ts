@@ -21,6 +21,7 @@ describe("SpriteEditor", () => {
         updateSprite: () => {},
         updateSpriteSize: () => {},
         updateClipSize: () => {},
+        groupSprites: [],
       },
     });
   });

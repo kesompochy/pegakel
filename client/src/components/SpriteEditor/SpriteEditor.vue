@@ -11,6 +11,7 @@
   import SpriteLogic from '~/logics/SpriteLogic'
 
   import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+  
   const props = defineProps<{
     sprite: Sprite | undefined,
     handleChangeMode: (mode: string, spriteId: number) => void,
@@ -19,6 +20,7 @@
     updateSprite: (x: number, y: number, color: ColorState) => void,
     updateSpriteSize: (left: number, top: number, bottom: number, right: number) => void,
     updateClipSize: (width: number, height: number) => void,
+    groupSprites: Sprite[],
   }>();
   const { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode, canvasManipulatingCell, } = useSpriteEditor()
 
@@ -222,4 +224,5 @@ canvas{
     align-items: center;
   }
 }
+
 </style>

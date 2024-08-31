@@ -1,13 +1,17 @@
 import { mount } from "@vue/test-utils";
-import Preview from "~/components/SpriteEditor/Preview.vue"
+import Preview from "~/components/Preview.vue"
 
 describe("Preview", () => {
   let wrapper: any;
   beforeEach(() => {
-    wrapper = mount(Preview);
+    wrapper = mount(Preview, {
+      propsData: {
+        sprites: [],
+        clipSize: undefined
+      }
+    });
   });
   afterEach(() => {
-    wrapper.unmount();
   });
   it("should render correctly", () => {
     expect(wrapper.find("canvas").exists()).toBe(true);

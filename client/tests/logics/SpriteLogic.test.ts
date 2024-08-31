@@ -72,4 +72,14 @@ describe('SpriteLogic', () => {
       expect(sprite.clipY).toBe(1); 
     });
   });
+  it("should generate clipped sprite", () => {
+    const sprite = SpriteLogic.createSprite(10, 10);
+    SpriteLogic.updateSprite(sprite, { x: 0, y: 0, color: new ColorState(100, 0, 0, 1) });
+    sprite.clipX = 1;
+    sprite.clipY = 1;
+    const clippedSprite = SpriteLogic.generateClippedSprite(sprite, 5, 5);
+    expect(clippedSprite.width).toBe(5);
+    expect(clippedSprite.height).toBe(5);
+    expect(clippedSprite.pixels[0][0]).toStrictEqual(new ColorState(0, 0, 0, 0));
+  });
 });

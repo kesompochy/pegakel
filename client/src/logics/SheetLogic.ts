@@ -1,7 +1,7 @@
 import Sheet from "~/core/Sheet";
 import Sprite from "~/core/Sprite";
 import ColorState from "~/core/ColorState";
-import spriteLogic from "~/logics/SpriteLogic";
+import SpriteLogic from "~/logics/SpriteLogic";
 import SpriteGroupLogic from "~/logics/SpriteGroupLogic";
 
 export default {
@@ -26,7 +26,7 @@ export default {
     for (let sprite of sheet.sprites) {
       for (let y = 0; y < sprite.height; y++) {
         for (let x = 0; x < sprite.width; x++) {
-          spriteLogic.updateSprite(sprite, {
+          SpriteLogic.updateSprite(sprite, {
             x,
             y,
             color: new ColorState((Math.random() * 255) | 0, (Math.random() * 255) | 0, (Math.random() * 255) | 0, 1),
@@ -41,4 +41,11 @@ export default {
   importSheetFromJson(json: string) {
     return JSON.parse(json);
   },
+  getClippedSpritesInGroup(sheet: Sheet, groupId: number) {
+    const group = sheet.groups[groupId];
+    const clipSize = group.clipSize;
+    if (!clipSize) return [];
+    return group.sprites.map((spriteId) => SpriteLogic.generateClippedSprite(sheet.sprites[spriteId], clipSize.width, clipSize.height));
+    //return sheet.groups[groupId].sprites.map((spriteId) => sheet.sprites[spriteId]);
+  }
 };

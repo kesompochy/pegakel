@@ -2,7 +2,7 @@
   import { JsonRpcClient } from 'bunson';
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
-  import { onMounted, onUnmounted } from 'vue'
+  import { onMounted, onUnmounted, computed } from 'vue'
   const { currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
   const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
@@ -12,6 +12,9 @@
   import SpriteLogic from '~/logics/SpriteLogic';
   import ColorState from '~/core/ColorState';
   import SpriteGroupLogic from '~/logics/SpriteGroupLogic';
+  import Preview from './components/Preview.vue';
+  import SheetLogic from '~/logics/SheetLogic';
+
   setMode(modes.SPRITE_EDITOR)
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
@@ -98,28 +101,45 @@
       handleKeyDown(e)
     });
   })
+
+  const clippedSpritesForPreview = computed(() => {
+    return SheetLogic.getClippedSpritesInGroup(currentSheet.value, currentSpriteGroupId.value) as Sprite[]
+  })
 </script>
 
 <template>
   <div>
-  <p class="file-name">{{ fileName }}</p>
-    <component 
-      :is="currentComponent" 
-      :sheet="currentSheet" 
-      :sprite="currentSheet.sprites[currentSpriteId] as Sprite"
-      :spriteId="currentSpriteId"
-      :handleChangeMode="handleChangeMode"
-      :spriteGroup="currentSheet.groups[currentSpriteGroupId] as SpriteGroup"
-      :updateSprite="updateSprite"
-      :updateSpriteSize="updateSpriteSize"
-      :updateClipSize="updateClipSize"
-    /> 
+    <p class="file-name">{{ fileName }}</p>
     <button @click="save">Save</button>
+    <div class="app-container">
+      <component 
+        :is="currentComponent" 
+        :sheet="currentSheet" 
+        :sprite="currentSheet.sprites[currentSpriteId] as Sprite"
+        :spriteId="currentSpriteId"
+        :handleChangeMode="handleChangeMode"
+        :spriteGroup="currentSheet.groups[currentSpriteGroupId] as SpriteGroup"
+        :updateSprite="updateSprite"
+        :updateSpriteSize="updateSpriteSize"
+        :updateClipSize="updateClipSize"
+        :groupSprites="[]"
+      /> 
+      <Preview
+          :sprites="clippedSpritesForPreview"
+          :clipSize="{ width: currentSheet.groups[currentSpriteGroupId].clipSize?.width || 0, height: currentSheet.groups[currentSpriteGroupId].clipSize?.height || 0 }"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.file-name {
-  width: 500px;
+.app-container{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  .file-name {
+    width: 500px;
+  }
 }
+
 </style>
