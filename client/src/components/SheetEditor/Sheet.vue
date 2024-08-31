@@ -5,7 +5,7 @@ import Sheet from '~/core/Sheet'
 const props = defineProps<{ sheet: Sheet, focusedSprite: number }>()
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
-onMounted(() => {
+const redrawCanvasSheet = () => {
   const canvas = canvasRef.value
   if (!canvas) {
     return
@@ -16,34 +16,18 @@ onMounted(() => {
     return
   }
 
-  drawSheet(ctx, props.sheet)
+  drawSheet(ctx, props.sheet) 
+}
+
+onMounted(() => {
+  redrawCanvasSheet()
 })
 
 watch(() => props.sheet, () => {
-  const canvas = canvasRef.value
-  if (!canvas) {
-    return
-  }
-
-  const ctx = canvas.getContext('2d')
-  if (!ctx) {
-    return
-  }
-
-  drawSheet(ctx, props.sheet)
-})
+  redrawCanvasSheet()
+}, { deep: true })
 watch(() => props.focusedSprite, () => {
-  const canvas = canvasRef.value
-  if (!canvas) {
-    return
-  }
-
-  const ctx = canvas.getContext('2d')
-  if (!ctx) {
-    return
-  }
-
-  drawSheet(ctx, props.sheet)
+  redrawCanvasSheet()
 })
 
 const drawSheet = (ctx: CanvasRenderingContext2D, sheet: Sheet) => {
