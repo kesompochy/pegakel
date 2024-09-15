@@ -1,10 +1,17 @@
 import SpriteCanvas from '~/components/SpriteCanvas.vue';
 import { mount } from '@vue/test-utils';
+import Sprite from '~/core/Sprite';
 
 describe('SpriteCanvas', () => {
   let wrapper: any;
   beforeEach(() => {
-    wrapper = mount(SpriteCanvas);
+    const props = {
+      width: 100,
+      sprite: new Sprite(10, 10)
+    }
+    wrapper = mount(SpriteCanvas, {
+      props
+    });
   });
   afterEach(() => {
     wrapper.unmount();
