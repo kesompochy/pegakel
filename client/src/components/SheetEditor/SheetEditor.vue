@@ -73,6 +73,7 @@
     <button @click="proceedFocusedSprite()">Next</button>
     <button @click="changeModeToSpriteEditor()">Edit</button>
     <button @click="addSprite()">Add</button>
+    <button @click="deleteSpriteFromGroup(props.currentSpriteGroupId, focusedSpriteInGroup)">Delete</button>
   </div>
 </template>
 

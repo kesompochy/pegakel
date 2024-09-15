@@ -97,7 +97,6 @@
     <div 
       class="overlay-style"
       :style="{ 
-        width: `${props.width}px`,
         border: props.border || 'none',
       }"
     />
@@ -108,6 +107,7 @@
 .container {
   position: relative;
   width: fit-content;
+  height: fit-content;
   margin: 5px;
 }
 canvas {
@@ -117,7 +117,7 @@ canvas {
 }
 .overlay-style {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0; 
   pointer-events: none;
   box-sizing: border-box;
 }

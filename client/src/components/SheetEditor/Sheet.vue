@@ -2,10 +2,17 @@
 import Sheet from '~/core/Sheet'
 
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, computed } from 'vue'
 
 const props = defineProps<{ sheet: Sheet, currentSpriteGroupId?: number, focusedSpriteInGroup: number }>()
 const pixelWidth = ref<number>(2)
+
+const spritesBelongToNoGroup = computed(() => {
+  const noGroupSprites = props.sheet.sprites.filter((sprite, index) => {
+    return !props.sheet.groups.some(group => group.sprites.includes(index))
+  }) 
+  return noGroupSprites.map(sprite => props.sheet.sprites.indexOf(sprite))
+})
 </script>
 
 <template>
@@ -25,6 +32,12 @@ const pixelWidth = ref<number>(2)
           :width="pixelWidth * props.sheet.sprites[spriteIndex].width" 
           :border="focusedSpriteInGroup === index ? '2px solid red' : (group.sprites[focusedSpriteInGroup] === spriteIndex ? '1px solid red' : 'none')"
         />
+      </div>
+      <div class="group no-group">
+        <SpriteCanvas 
+          v-for="(spriteIndex, index) in spritesBelongToNoGroup"
+          :sprite="props.sheet.sprites[spriteIndex]" 
+          :width="pixelWidth * props.sheet.sprites[spriteIndex].width" />
       </div>
     </div>
   </div>

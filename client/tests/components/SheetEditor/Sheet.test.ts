@@ -8,7 +8,7 @@ describe("Sheet", () => {
     wrapper = mount(Sheet, {
       propsData: {
         sheet: new SheetObject("test"),
-        focusedSprite: 0,
+        focusedSpriteInGroup: 0,
       }
     });
   });
