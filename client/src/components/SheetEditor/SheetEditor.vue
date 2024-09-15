@@ -6,32 +6,33 @@
   import SpriteGroupLogics from '~/logics/SpriteGroupLogic'
 
   import { onMounted, onUnmounted, ref } from 'vue'
-  const props = defineProps<{ sheet: Sheet, handleChangeMode: Function, currentSpriteGroupId?: number}>()
+  const props = defineProps<{ sheet: Sheet, handleChangeMode: Function, currentSpriteGroupId: number}>()
 
   const focusedSpriteInGroup = ref<number>(0)
   
   const proceedFocusedSprite = () => {
-    focusedSpriteInGroup.value = (focusedSpriteInGroup.value + 1) % props.sheet.groups[props.currentSpriteGroupId || 0].sprites.length
+    focusedSpriteInGroup.value = (focusedSpriteInGroup.value + 1) % props.sheet.groups[props.currentSpriteGroupId].sprites.length
   }
   const changeModeToSpriteEditor = () => {
     const sheet = props.sheet
-    const group = sheet.groups[props.currentSpriteGroupId || 0]
+    const group = sheet.groups[props.currentSpriteGroupId]
     const spriteIndex = group.sprites[focusedSpriteInGroup.value]
     props.handleChangeMode(modes.SPRITE_EDITOR, spriteIndex)
   }
   const addSprite = () => {
-    if (!props.currentSpriteGroupId) {
-      return
-    }
     sheetLogics.addSprite(props.sheet)
     SpriteGroupLogics.addSprite(props.sheet.groups[props.currentSpriteGroupId], props.sheet.sprites.length - 1)
   }
+  const deleteSpriteFromGroup = (groupIndex: number, spriteIndex: number) => {
+    SpriteGroupLogics.deleteSprite(props.sheet.groups[groupIndex], spriteIndex)
+  }
 
 
-  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite"
+  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite" | "deleteFocusedSprite"
   const keyActionMap: Record<string, ManipulationAction> = {
     "i": "goToSpriteEditor",
-    "n": "proceedFocusedSprite"
+    "n": "proceedFocusedSprite",
+    "d": "deleteFocusedSprite",
   }
   const manipulationActions: Record<ManipulationAction, () => void> = {
     "goToSpriteEditor": () => {
@@ -39,7 +40,10 @@
     },
     "proceedFocusedSprite": () => {
       proceedFocusedSprite()
-    }
+    },
+    "deleteFocusedSprite": () => {
+      deleteSpriteFromGroup(props.currentSpriteGroupId, focusedSpriteInGroup.value)
+    },
   }
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key in keyActionMap) {

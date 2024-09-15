@@ -46,6 +46,8 @@ export default {
     const clipSize = group.clipSize;
     if (!clipSize) return [];
     return group.sprites.map((spriteId) => SpriteLogic.generateClippedSprite(sheet.sprites[spriteId], clipSize.width, clipSize.height));
-    //return sheet.groups[groupId].sprites.map((spriteId) => sheet.sprites[spriteId]);
+  },
+  deleteSprite(sheet: Sheet, index: number) {
+    sheet.sprites.splice(index, 1);
   }
 };

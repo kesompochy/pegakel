@@ -22,5 +22,8 @@ export default {
   },
   changeClipSize(spriteGroup: SpriteGroup, size: { width: number, height: number }) {
     spriteGroup.clipSize = size;
-  }
+  },
+  deleteSprite(spriteGroup: SpriteGroup, index: number) {
+    spriteGroup.sprites.splice(index, 1);
+  },
 };

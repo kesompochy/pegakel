@@ -21,7 +21,6 @@ const pixelWidth = ref<number>(2)
       >
         <SpriteCanvas 
           v-for="(spriteIndex, index) in group.sprites" 
-          :key="index" 
           :sprite="props.sheet.sprites[spriteIndex]" 
           :width="pixelWidth * props.sheet.sprites[spriteIndex].width" 
           :border="focusedSpriteInGroup === index ? '2px solid red' : (group.sprites[focusedSpriteInGroup] === spriteIndex ? '1px solid red' : 'none')"
