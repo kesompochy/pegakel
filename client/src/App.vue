@@ -131,7 +131,6 @@
       </div> 
       <Preview
           :sprites="clippedSpritesForPreview"
-          :clipSize="{ width: currentSheet.groups[currentSpriteGroupId].clipSize?.width || 0, height: currentSheet.groups[currentSpriteGroupId].clipSize?.height || 0 }"
       />
     </div>
   </div>

@@ -7,7 +7,6 @@ describe("Preview", () => {
     wrapper = mount(Preview, {
       propsData: {
         sprites: [],
-        clipSize: undefined
       }
     });
   });
