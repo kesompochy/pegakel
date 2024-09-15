@@ -13,9 +13,11 @@ const props = defineProps<{
 }>();
 
 const focusingCell = ref(0)
+const col = ref(16)
+const row = ref(4)
 
 const colors = computed(() => {
-  const colors = new Array(Math.max(props.colors.length, 16)).fill(null).map((_, index) => props.colors[index])
+  const colors = new Array(Math.max(props.colors.length, 64)).fill(null).map((_, index) => props.colors[index])
   return colors
 });
 const currentColor = computed(() => colors.value[props.activeColor] || new ColorState());
@@ -42,10 +44,10 @@ const manipulatorActions: Record<string, ()=>void> = {
     focusingCell.value = (focusingCell.value + 1) % props.colors.length
   },
   "moveUp": () => {
-    focusingCell.value = (focusingCell.value - 4 + props.colors.length) % props.colors.length
+    focusingCell.value = (focusingCell.value - col.value + props.colors.length) % props.colors.length
   },
   "moveDown": () => {
-    focusingCell.value = (focusingCell.value + 4) % props.colors.length
+    focusingCell.value = (focusingCell.value + col.value) % props.colors.length
   },
   "selectColor": () => {
     props.handleChoosePaletteCell(focusingCell.value) 
@@ -83,13 +85,14 @@ onMounted(() => {
 .container{
   border: 1px solid black;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: v-bind("'repeat(' + col + ', 1fr)'");
+  grid-template-rows: v-bind("'repeat(' + row + ', 1fr)'");
   width: 500px;
-  height: 100px;
+  height: 120px;
 }
 .color-cell{
-  width: 100%;
-  height: 100%;
+  margin: 2px;
+  width: 20px;
+  height: 20px;
 }
 </style>
