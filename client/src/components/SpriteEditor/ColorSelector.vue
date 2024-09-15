@@ -18,7 +18,7 @@ const updateSelectingColor = (event: Event) => {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
-  selectingColor.value = new ColorState(r, g, b, selectingColor.value.a);
+  selectingColor.value = new ColorState(r, g, b, 1);
 }
 
 const currentColorHex = computed(()=>ColorStateLogics.getHex(props.currentColor));
