@@ -8,6 +8,7 @@ import type Tool from '~/core/Tool'
 import type { ManipulationMode } from '~/composables/SpriteEditor/useSpriteEditor'
 
 const manipulatingCell = ref({x: 0, y: 0})
+const pushingDrawingKey = ref(false)
 
 const props = defineProps<{
   sprite: Sprite | undefined, 
@@ -32,19 +33,24 @@ const keyActionMap: Record<string, EditorAction> = {
 const editorActions: Record<EditorAction, ()=>void> = {
   'moveUp': () => {
     manipulatingCell.value = {x: manipulatingCell.value.x, y: Math.max(manipulatingCell.value.y - 1, 0)}
+    if (pushingDrawingKey.value) editorActions['draw']()
   },
   'moveDown': () => {
     manipulatingCell.value = {x: manipulatingCell.value.x, y: Math.min(manipulatingCell.value.y + 1, (props.sprite?.height ?? 100000) - 1)}
+    if (pushingDrawingKey.value) editorActions['draw']()
   },
   'moveLeft': () => {
     manipulatingCell.value = {x: Math.max(manipulatingCell.value.x - 1, 0), y: manipulatingCell.value.y}
+    if (pushingDrawingKey.value) editorActions['draw']()
   },
   'moveRight': () => {
     manipulatingCell.value = {x: Math.min(manipulatingCell.value.x + 1, (props.sprite?.width ?? 10000) - 1), y: manipulatingCell.value.y}
+    if (pushingDrawingKey.value) editorActions['draw']()
   },
   'draw': () => {
     if (!props.activeColorState) return
     props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, props.activeColorState)
+    pushingDrawingKey.value = true
     redraw()
   },
   'erase': () => {
@@ -55,9 +61,13 @@ const editorActions: Record<EditorAction, ()=>void> = {
 const handleKeyDown = (event: KeyboardEvent) => {
   if ( props.focused && keyActionMap[event.key] ) editorActions[keyActionMap[event.key]]()
 }
+const handleKeyUp = (event: KeyboardEvent) => {
+  if (keyActionMap[event.key] === 'draw') pushingDrawingKey.value = false
+}
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
+  window.addEventListener('keyup', handleKeyUp)
 })
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown)
