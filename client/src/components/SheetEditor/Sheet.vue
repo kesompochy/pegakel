@@ -2,8 +2,10 @@
 import Sheet from '~/core/Sheet'
 
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
+import { ref, defineProps } from 'vue'
 
-const props = defineProps<{ sheet: Sheet, focusedSprite: number, currentSpriteGroupId?: number }>()
+const props = defineProps<{ sheet: Sheet, currentSpriteGroupId?: number, focusedSpriteInGroup: number }>()
+const pixelWidth = ref<number>(2)
 </script>
 
 <template>
@@ -21,8 +23,8 @@ const props = defineProps<{ sheet: Sheet, focusedSprite: number, currentSpriteGr
           v-for="(spriteIndex, index) in group.sprites" 
           :key="index" 
           :sprite="props.sheet.sprites[spriteIndex]" 
-          :width="30" 
-          :border="focusedSprite === spriteIndex ? '2px solid red' : 'none'"
+          :width="pixelWidth * props.sheet.sprites[spriteIndex].width" 
+          :border="focusedSpriteInGroup === index ? '2px solid red' : (group.sprites[focusedSpriteInGroup] === spriteIndex ? '1px solid red' : 'none')"
         />
       </div>
     </div>

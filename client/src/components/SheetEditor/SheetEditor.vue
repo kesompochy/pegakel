@@ -1,23 +1,30 @@
 <script setup lang="ts">
   import SheetComponent from './Sheet.vue'
   import Sheet from '~/core/Sheet'
-  import useSheet from '~/composables/SheetEditor/useSheet'
   import { modes } from '~/composables/consts'
   import sheetLogics from '~/logics/SheetLogic'
+  import SpriteGroupLogics from '~/logics/SpriteGroupLogic'
 
-  import { onMounted, onUnmounted } from 'vue'
+  import { onMounted, onUnmounted, ref } from 'vue'
   const props = defineProps<{ sheet: Sheet, handleChangeMode: Function, currentSpriteGroupId?: number}>()
 
-  const { focusedSprite, updateFocusedSprite } = useSheet()
+  const focusedSpriteInGroup = ref<number>(0)
   
   const proceedFocusedSprite = () => {
-    updateFocusedSprite((focusedSprite.value + 1) % props.sheet.sprites.length)
+    focusedSpriteInGroup.value = (focusedSpriteInGroup.value + 1) % props.sheet.groups[props.currentSpriteGroupId || 0].sprites.length
   }
   const changeModeToSpriteEditor = () => {
-    props.handleChangeMode(modes.SPRITE_EDITOR, focusedSprite.value)
+    const sheet = props.sheet
+    const group = sheet.groups[props.currentSpriteGroupId || 0]
+    const spriteIndex = group.sprites[focusedSpriteInGroup.value]
+    props.handleChangeMode(modes.SPRITE_EDITOR, spriteIndex)
   }
   const addSprite = () => {
+    if (!props.currentSpriteGroupId) {
+      return
+    }
     sheetLogics.addSprite(props.sheet)
+    SpriteGroupLogics.addSprite(props.sheet.groups[props.currentSpriteGroupId], props.sheet.sprites.length - 1)
   }
 
 
@@ -54,7 +61,11 @@
 
 <template>
   <div class="container">
-    <SheetComponent :sheet="props.sheet" :focusedSprite="focusedSprite" :currentSpriteGroupId="props.currentSpriteGroupId"/>
+    <SheetComponent 
+      :sheet="props.sheet" 
+      :currentSpriteGroupId="props.currentSpriteGroupId"
+      :focusedSpriteInGroup="focusedSpriteInGroup"
+    />
     <button @click="proceedFocusedSprite()">Next</button>
     <button @click="changeModeToSpriteEditor()">Edit</button>
     <button @click="addSprite()">Add</button>

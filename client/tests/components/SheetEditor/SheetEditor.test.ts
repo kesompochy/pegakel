@@ -5,7 +5,7 @@ import { mount } from "@vue/test-utils";
 const sheet = sheetLogics.generateSheetForTest();
 const props = {
   sheet: sheet,
-  focusedSprite: 0,
+  focusedSpriteInGroup: 0,
   handleChangeMode: vi.fn(),
 };
 
