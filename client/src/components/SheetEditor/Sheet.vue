@@ -34,4 +34,9 @@ const props = defineProps<{ sheet: Sheet, focusedSprite: number, currentSpriteGr
   display: flex;
   width: fit-content;
 }
+.sheet-container {
+  width: 100%;
+  border: 1px solid black;
+  padding: 10px;
+}
 </style>

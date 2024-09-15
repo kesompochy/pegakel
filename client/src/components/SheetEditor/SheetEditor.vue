@@ -53,7 +53,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="container">
     <SheetComponent :sheet="props.sheet" :focusedSprite="focusedSprite" :currentSpriteGroupId="props.currentSpriteGroupId"/>
     <button @click="proceedFocusedSprite()">Next</button>
     <button @click="changeModeToSpriteEditor()">Edit</button>

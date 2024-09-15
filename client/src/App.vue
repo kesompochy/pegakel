@@ -109,22 +109,26 @@
 
 <template>
   <div>
-    <p class="file-name">{{ fileName }}</p>
-    <button @click="save">Save</button>
     <div class="app-container">
-      <component 
-        :is="currentComponent" 
-        :sheet="currentSheet" 
-        :sprite="currentSheet.sprites[currentSpriteId] as Sprite"
-        :spriteId="currentSpriteId"
-        :handleChangeMode="handleChangeMode"
-        :spriteGroup="currentSheet.groups[currentSpriteGroupId] as SpriteGroup"
-        :updateSprite="updateSprite"
-        :updateSpriteSize="updateSpriteSize"
-        :updateClipSize="updateClipSize"
-        :groupSprites="[]"
-        :currentSpriteGroupId="currentSpriteGroupId"
-      /> 
+      <div class="editor-container">
+        <button @click="openFile">Open</button>
+        <input v-model="fileName" />
+        <p class="file-name">{{ fileName }}</p>
+        <button @click="save">Save</button>
+        <component 
+          :is="currentComponent" 
+          :sheet="currentSheet" 
+          :sprite="currentSheet.sprites[currentSpriteId] as Sprite"
+          :spriteId="currentSpriteId"
+          :handleChangeMode="handleChangeMode"
+          :spriteGroup="currentSheet.groups[currentSpriteGroupId] as SpriteGroup"
+          :updateSprite="updateSprite"
+          :updateSpriteSize="updateSpriteSize"
+          :updateClipSize="updateClipSize"
+          :groupSprites="[]"
+          :currentSpriteGroupId="currentSpriteGroupId"
+        />
+      </div> 
       <Preview
           :sprites="clippedSpritesForPreview"
           :clipSize="{ width: currentSheet.groups[currentSpriteGroupId].clipSize?.width || 0, height: currentSheet.groups[currentSpriteGroupId].clipSize?.height || 0 }"

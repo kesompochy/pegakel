@@ -94,6 +94,7 @@ const generateCanvasStyle = (index: number) => {
 
 <style scoped lang="scss">
 .container {
+  margin: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -91,7 +91,8 @@ const redraw = () => {
   if (props.clipSize) {
     const {width, height} = props.clipSize
     ctx.strokeStyle = 'red'
-    ctx.lineWidth = 2
+    const lineWidth = 2
+    ctx.lineWidth = lineWidth
     ctx.strokeRect(props.sprite.clipX * pixelSizeWidth, props.sprite.clipY * pixelSizeHeight, width * pixelSizeWidth, height * pixelSizeHeight)
   }
 }
@@ -175,6 +176,7 @@ div.canvas-container {
   position: relative;
   width: 400px;
   height: 400px;
+  margin: 5px;
 }
 canvas {
   border: 1px solid black;
