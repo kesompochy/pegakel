@@ -4,7 +4,7 @@ import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
 
 const drawingSpriteNumber = ref<number>(0);
-const fps = ref<number>(1);
+const fps = ref<number>(5);
 const animationRequest = ref<number | null>(null);
 
 const props = defineProps<{
@@ -47,7 +47,7 @@ const generateCanvasBorderStyle = (index: number) => {
 <template>
   <div>
     <div class="container">
-      <SpriteCanvas :sprite="props.sprites[drawingSpriteNumber | 0]" :width="200" border="1px black solid" />
+      <SpriteCanvas :sprite="props.sprites[drawingSpriteNumber | 0]" :width="200" />
       <SpriteCanvas v-for="(sprite, index) in props.sprites" :key="index" :sprite="sprite" :width="100" :border="generateCanvasBorderStyle(index)" />
     </div>
   </div>
