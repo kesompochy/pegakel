@@ -4,7 +4,7 @@ import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
 
 const drawingSpriteNumber = ref<number>(0);
-const fps = ref<number>(5);
+const fps = ref<number>(1);
 const animationRequest = ref<number | null>(null);
 
 const props = defineProps<{

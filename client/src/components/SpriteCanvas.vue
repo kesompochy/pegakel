@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onMounted, ref, watch, defineProps } from 'vue'
+  import { onMounted, onUnmounted, ref, watch, defineProps } from 'vue'
   import Sprite from '~/core/Sprite'
   import * as CanvasUtils from '~/utils/canvas'
 
@@ -31,86 +31,58 @@
     const pixelSizeWidth = ctx.canvas.width / sprite.width
     const pixelSizeHeight = ctx.canvas.height / sprite.height
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+    if (props.beforeDraw) props.beforeDraw(ctx)
     sprite.pixels.map((row, y) => {
       row.map((color, x) => {
         const colorString = `rgba(${color.r},${color.g},${color.b},${color.a})`
         CanvasUtils.drawPixel(ctx, x, y, pixelSizeWidth, pixelSizeHeight, colorString)
      })
     })
-
     if (props.afterDraw) props.afterDraw(ctx)
   }
-
-  watch(() => props.sprite, () => {
+  const handlePropsChange = () => {
     if (!canvasRef.value) return
     const canvas = canvasRef.value
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
 
+    if (!props.sprite) return
+    const sprite = props.sprite
+    CanvasUtils.resizeCanvas(canvas, sprite.width, sprite.height)
+    redraw()
+  }
+  const registerPointerCallback = () => {
+    if (!canvasRef.value) return
+    const canvas = canvasRef.value
     if (!canvas.onpointerdown) {
       if (props.registerCallbackCanvasPointerDownOrMove && props.canvasPointerHandler) {
         props.registerCallbackCanvasPointerDownOrMove(canvas, props.canvasPointerHandler)
       }
     }
+  }
 
-    if (!props.sprite) return
-    const sprite = props.sprite
-    CanvasUtils.resizeCanvas(canvas, sprite.width, sprite.height)
-    redraw()
+  watch(() => props.sprite, () => {
+    handlePropsChange()
+    registerPointerCallback()
   }, {deep: true})
   watch(() => props.propsForAfterDraw, () => {
-    if (!canvasRef.value) return
-    const canvas = canvasRef.value
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    if (!props.sprite) return
-    const sprite = props.sprite
-    CanvasUtils.resizeCanvas(canvas, sprite.width, sprite.height)
-    redraw()
+    handlePropsChange()
   }, {deep: true})
   watch(() => props.propsForBeforeDraw, () => {
-    if (!canvasRef.value) return
-    const canvas = canvasRef.value
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    if (!props.sprite) return
-    const sprite = props.sprite
-    CanvasUtils.resizeCanvas(canvas, sprite.width, sprite.height)
-    redraw()
+    handlePropsChange()
   }, {deep: true})
   watch(() => props.width, () => {
-    if (!canvasRef.value) return
-    const canvas = canvasRef.value
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    if (!props.sprite) return
-    const sprite = props.sprite
-    CanvasUtils.resizeCanvas(canvas, sprite.width, sprite.height)
-    redraw()
-
-    
+    handlePropsChange()
   })
 
   onMounted(() => {
+    handlePropsChange()
+    registerPointerCallback()
+  })
+  onUnmounted(() => {
     if (!canvasRef.value) return
-    if (!props.sprite) return
-    const sprite = props.sprite
-    CanvasUtils.resizeCanvas(canvasRef.value, sprite.width, sprite.height)
-
-    const ctx = canvasRef.value?.getContext('2d')
-    if(ctx){
-      redraw()
-      const canvas = canvasRef.value
-
-      if (!canvas.onpointerdown) {
-        if (props.registerCallbackCanvasPointerDownOrMove && props.canvasPointerHandler) {
-          props.registerCallbackCanvasPointerDownOrMove(canvas, props.canvasPointerHandler)
-        }
-      }
-    }
+    const canvas = canvasRef.value
+    canvas.onpointerdown = null
+    canvas.onpointermove = null
   })
 </script>
 
