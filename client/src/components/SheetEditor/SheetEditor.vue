@@ -6,7 +6,7 @@
   import sheetLogics from '~/logics/SheetLogic'
 
   import { onMounted, onUnmounted } from 'vue'
-  const props = defineProps<{ sheet: Sheet, handleChangeMode: Function }>()
+  const props = defineProps<{ sheet: Sheet, handleChangeMode: Function, currentSpriteGroupId?: number}>()
 
   const { focusedSprite, updateFocusedSprite } = useSheet()
   
@@ -54,7 +54,7 @@
 
 <template>
   <div>
-    <SheetComponent :sheet="props.sheet" :focusedSprite="focusedSprite"/>
+    <SheetComponent :sheet="props.sheet" :focusedSprite="focusedSprite" :currentSpriteGroupId="props.currentSpriteGroupId"/>
     <button @click="proceedFocusedSprite()">Next</button>
     <button @click="changeModeToSpriteEditor()">Edit</button>
     <button @click="addSprite()">Add</button>

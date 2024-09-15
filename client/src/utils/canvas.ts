@@ -1,7 +1,7 @@
-const resizeCanvas = (canvas: HTMLCanvasElement, spriteWidth: number, spriteHeight: number) => {
+const resizeCanvas = (canvas: HTMLCanvasElement, width: number, height: number) => {
   const dpr = window.devicePixelRatio || 1;
   const styleWidth = parseFloat(window.getComputedStyle(canvas).getPropertyValue("width"));
-  const aspectRatio = spriteHeight / spriteWidth;
+  const aspectRatio = height / width;
   const styleHeight = styleWidth * aspectRatio;
   canvas.style.height = styleHeight + "px";
   canvas.width = styleWidth * dpr;

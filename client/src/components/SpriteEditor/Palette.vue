@@ -22,7 +22,7 @@ const currentColor = computed(() => colors.value[props.activeColor] || new Color
 const generateCellStyle = (color: ColorState, index: number) => {
   return {
     backgroundColor: color ? colorStateLogic.getHex(color) : 'transparent',
-    border: props.activeColor === index ? '2px solid black' : focusingCell.value === index ? '2px solid green' : '1px solid black' 
+    border: props.activeColor === index ? '3px solid black' : focusingCell.value === index ? '2px solid black' : '1px solid black' 
   }
 }
 

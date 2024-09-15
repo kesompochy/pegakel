@@ -123,6 +123,7 @@
         :updateSpriteSize="updateSpriteSize"
         :updateClipSize="updateClipSize"
         :groupSprites="[]"
+        :currentSpriteGroupId="currentSpriteGroupId"
       /> 
       <Preview
           :sprites="clippedSpritesForPreview"
