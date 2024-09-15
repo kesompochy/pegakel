@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Sprite from "~/core/Sprite";
-import { onMounted, ref, watch, nextTick } from 'vue';
+import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
 
 const drawingSpriteNumber = ref<number>(0);
@@ -27,6 +27,9 @@ const setupCanvases = () => {
 
 onMounted(() => {
   setupCanvases();
+});
+onUnmounted(() => {
+  if (animationRequest.value) cancelAnimationFrame(animationRequest.value);
 });
 
 watch(() => props.sprites, () => {
