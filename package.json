@@ -3,7 +3,7 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"VITE_FILE_NAME='/home/kesompochy/src/github.com/kesompochy/pegakel/test.json' vite ./client --host\" \"bun --watch ./server/index.ts\""
+    "dev": "concurrently \"VITE_FILE_NAME='/home/kesompochy/src/github.com/kesompochy/pegakel/test' vite ./client --host\" \"bun --watch ./server/index.ts\""
   },
   "devDependencies": {
     "bun-types": "latest",

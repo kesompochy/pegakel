@@ -30,7 +30,7 @@
   })
 
   const jsonRpcClient = new JsonRpcClient(SERVER_URL, {
-    methods: ['save', 'load'],
+    methods: ['save', 'load', 'exportGroup'],
     cors: 'cors'
   })
 
@@ -44,9 +44,27 @@
       sheet: currentSheet.value,
       saveMode: 'local',
       saveOptions: {
-        localPath: fileName.value
+        localPath: `${fileName.value}.json`
       }
     }, 0)
+    if ('error' in response) {
+      console.error(response.error)
+    }
+  }
+  const exportAsGif = async () => {
+    const sprites = SheetLogic.getClippedSpritesInGroup(currentSheet.value, currentSpriteGroupId.value)
+    const response = await jsonRpcClient.call('exportGroup', { 
+      format: 'gif',
+      sprites: sprites,
+      localPath: `${fileName.value}0.gif`,
+      options: {
+        gif: {
+          delay: 100,
+          repeat: true,
+          quality: 10,
+        }
+      }
+    });
     if ('error' in response) {
       console.error(response.error)
     }
@@ -55,7 +73,7 @@
   const openFile = async () => {
     const response = await jsonRpcClient.call('load', {     
       saveMode: 'local',
-      localPath: fileName.value
+      localPath: `${fileName.value}.json`
     }, 0)
     if ('result' in response && response.result) {
       updateSheet(response.result as Sheet)
@@ -115,6 +133,7 @@
         <input v-model="fileName" />
         <p class="file-name">{{ fileName }}</p>
         <button @click="save">Save</button>
+        <button @click="exportAsGif">Export as Gif</button>
         <component 
           :is="currentComponent" 
           :sheet="currentSheet" 

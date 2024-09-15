@@ -10,7 +10,9 @@
   },
   "type": "module",
   "dependencies": {
+    "@types/gifencoder": "^2.0.3",
     "bunson": "0.0.7",
-    "canvas": "^3.0.0-rc2"
+    "canvas": "^3.0.0-rc2",
+    "gifencoder": "^2.0.1"
   }
 }

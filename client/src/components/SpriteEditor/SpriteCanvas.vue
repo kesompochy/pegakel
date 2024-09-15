@@ -49,6 +49,7 @@ const editorActions: Record<EditorAction, ()=>void> = {
   },
   'draw': () => {
     if (!props.activeColorState) return
+    console.log(props.activeColorState)
     props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, props.activeColorState)
     pushingDrawingKey.value = true
   },
