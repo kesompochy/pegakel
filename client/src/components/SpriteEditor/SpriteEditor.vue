@@ -60,9 +60,12 @@
   }
   const activateColor = (cellId: number) => {
     updateActiveColor(cellId) 
+    focusingComponent.value = 'canvas'
   }
   const updatePalette = (color: ColorState, cellId: number) => {
     SpriteGroupLogic.updatePalette(props.spriteGroup, cellId, color)
+    updateActiveColor(cellId)
+    focusingComponent.value = 'canvas'
   }
 
   const keyActionMap: Record<string, string> = {
