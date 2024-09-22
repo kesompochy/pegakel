@@ -33,7 +33,7 @@ describe("SpriteEditor", () => {
     expect(wrapper.find("canvas").exists()).toBe(true);
   });
   it("should render palette", () => {
-    expect(wrapper.find(".palette").exists()).toBe(true);
+    expect(wrapper.find(".palette-container").exists()).toBe(true);
   });
   it("should render the tool box", () => {
     expect(wrapper.find(".toolbox").exists()).toBe(true);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, onUnmounted, computed, ref } from 'vue';
 import ColorState from '~/core/ColorState'
 import ColorSelector from './ColorSelector.vue'
 import colorStateLogic from '~/logics/ColorState'
@@ -66,6 +66,9 @@ const handleKeyDown = (event: KeyboardEvent) => {
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
 })
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown)
+})
 
 const confirmColor = (color: ColorState) => {
   props.handleUpdatePalette(color, focusingCell.value)
@@ -73,8 +76,8 @@ const confirmColor = (color: ColorState) => {
 }
 </script>
 
-<template>
-  <div class="palette container">
+<template class="palette">
+  <div class="palette-container">
     <div
       v-for="(color, index) in colors"
       class="color-cell"
@@ -91,7 +94,7 @@ const confirmColor = (color: ColorState) => {
 </template>
 
 <style scoped lang="scss">
-.container{
+.palette-container{
   border: 1px solid black;
   display: grid;
   grid-template-columns: v-bind("'repeat(' + col + ', 1fr)'");

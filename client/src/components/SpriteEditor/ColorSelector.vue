@@ -69,7 +69,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="color-selector-container">
     <input type="number" ref="colorRefR" @input="updateSelectingColor" :value="inputR">
     <input type="number" ref="colorRefG" @input="updateSelectingColor" :value="inputG">
     <input type="number" ref="colorRefB" @input="updateSelectingColor" :value="inputB">
@@ -79,14 +79,15 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="scss">
-.container {
+.color-selector-container {
   display: flex;
   gap: 8px;
   align-items: center;
+  .preview {
+    width: 10px;
+    height: 10px;
+    border: 1px solid black;
+  }
 }
-.preview {
-  width: 10px;
-  height: 10px;
-  border: 1px solid black;
-}
+
 </style>
