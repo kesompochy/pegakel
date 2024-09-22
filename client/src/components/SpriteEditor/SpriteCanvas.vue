@@ -6,6 +6,7 @@ import { translateClickPositionToSpritePosition, registerCallbackCanvasPointerDo
 import type Tool from '~/core/Tool'
 import type { ManipulationMode } from '~/composables/SpriteEditor/useSpriteEditor'
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
+import { useKeyHandler } from '~/composables/useKeyHandler'
 
 const manipulatingCell = ref({x: 0, y: 0})
 const pushingDrawingKey = ref(false)
@@ -56,21 +57,16 @@ const editorActions: Record<EditorAction, ()=>void> = {
     props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, new ColorState(0, 0, 0, 0))
   },
 }
-const handleKeyDown = (event: KeyboardEvent) => {
-  props.updateManipulationMode('key')
-  if ( props.focused && keyActionMap[event.key] ) editorActions[keyActionMap[event.key]]()
-}
 const handleKeyUp = (event: KeyboardEvent) => {
   if (keyActionMap[event.key] === 'draw') pushingDrawingKey.value = false
 }
-
 onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
   window.addEventListener('keyup', handleKeyUp)
 })
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
+  window.removeEventListener('keyup', handleKeyUp)
 })
+useKeyHandler(keyActionMap, editorActions)
 
 const drawManipulatingCell = (ctx: CanvasRenderingContext2D, pixelSizeWidth: number, pixelSizeHeight: number) => {
   if ( props.manipulationMode === 'key' && props.focused ) {

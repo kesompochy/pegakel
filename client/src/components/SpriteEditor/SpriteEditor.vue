@@ -9,8 +9,9 @@
   import SpriteGroupLogic from '~/logics/SpriteGroupLogic'
   import ColorState from '~/core/ColorState'
   import SpriteLogic from '~/logics/SpriteLogic'
+  import { useKeyHandler } from '~/composables/useKeyHandler'
 
-  import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+  import { nextTick, ref, watch } from 'vue'
   
   const props = defineProps<{
     sprite: Sprite | undefined,
@@ -74,7 +75,7 @@
     "k": "moveUp",
     "l": "moveRight",
   }
-  const manipulatorActions: Record<string, ()=>void> = {
+  const actionProcessMap: Record<string, ()=>void> = {
     "switchFucsingComponent": () => {
       focusingComponent.value = focusingComponent.value === 'canvas' ? 'palette' : 'canvas'
     },
@@ -142,17 +143,7 @@
       }
     },
   }
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key in keyActionMap) {
-      manipulatorActions[keyActionMap[event.key]]()
-    }
-  }
-  onMounted(() => {
-    window.addEventListener('keydown', handleKeyDown)
-  })
-  onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeyDown)
-  })
+  useKeyHandler(keyActionMap, actionProcessMap)
   
 </script>
 

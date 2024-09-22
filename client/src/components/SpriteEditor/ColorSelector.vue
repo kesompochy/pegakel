@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import ColorState from '~/core/ColorState'
+import { useKeyHandler } from '~/composables/useKeyHandler';
 
 const props = defineProps<{
   currentColor: ColorState | undefined;
@@ -51,20 +52,7 @@ const manipulatorActions: Record<string, ()=>void> = {
     }
   },
 }
-
-const handleKeyDown = (event: KeyboardEvent) => {
-  if (props.focused && event.key in keyActionMap) {
-    event.preventDefault()
-    manipulatorActions[keyActionMap[event.key]]()
-  }
-}
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-})
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-})
-
+useKeyHandler(keyActionMap, manipulatorActions)
 
 </script>
 

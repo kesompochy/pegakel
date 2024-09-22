@@ -4,8 +4,9 @@
   import { modes } from '~/composables/consts'
   import sheetLogics from '~/logics/SheetLogic'
   import SpriteGroupLogics from '~/logics/SpriteGroupLogic'
+  import { useKeyHandler } from '~/composables/useKeyHandler'
 
-  import { onMounted, onUnmounted, ref } from 'vue'
+  import { ref } from 'vue'
   const props = defineProps<{ sheet: Sheet, handleChangeMode: Function, currentSpriteGroupId: number}>()
 
   const focusedSpriteInGroup = ref<number>(0)
@@ -45,22 +46,7 @@
       deleteSpriteFromGroup(props.currentSpriteGroupId, focusedSpriteInGroup.value)
     },
   }
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key in keyActionMap) {
-      manipulationActions[keyActionMap[e.key]]()
-    }
-  }
-
-  onMounted(() => {
-    window.addEventListener('keydown', (e) => {
-      handleKeyDown(e)
-    });
-  })
-  onUnmounted(() => {
-    window.removeEventListener('keydown', (e) => {
-      handleKeyDown(e)
-    });
-  })
+  useKeyHandler(keyActionMap, manipulationActions)
 </script>
 
 <template>

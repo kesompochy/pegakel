@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import ColorState from '~/core/ColorState'
 import ColorSelector from './ColorSelector.vue'
 import colorStateLogic from '~/logics/ColorState'
+import { useKeyHandler } from '~/composables/useKeyHandler';
 
 const props = defineProps<{
   colors: ColorState[];
@@ -25,7 +26,7 @@ const colors = computed(() => {
 const generateCellStyle = (color: ColorState, index: number) => {
   return {
     backgroundColor: color ? colorStateLogic.getHex(color) : 'transparent',
-    border: props.activeColor === index ? '3px solid black' : focusingCell.value === index ? '2px solid black' : '1px solid black' 
+    border: props.activeColor === index ? '3px solid black' : props.focused && focusingCell.value === index ? '2px solid black' : '1px solid black' 
   }
 }
 
@@ -39,36 +40,25 @@ const keyActionMap: Record<string, string> = {
 }
 const manipulatorActions: Record<string, ()=>void> = {
   "moveLeft": () => {
-    focusingCell.value = (focusingCell.value - 1 + props.colors.length) % props.colors.length
+    if (props.focused) focusingCell.value = (focusingCell.value - 1 + props.colors.length) % props.colors.length
   },
   "moveRight": () => {
-    focusingCell.value = (focusingCell.value + 1) % props.colors.length
+    if (props.focused) focusingCell.value = (focusingCell.value + 1) % props.colors.length
   },
   "moveUp": () => {
-    focusingCell.value = (focusingCell.value - col.value + props.colors.length) % props.colors.length
+    if (props.focused) focusingCell.value = (focusingCell.value - col.value + props.colors.length) % props.colors.length
   },
   "moveDown": () => {
-    focusingCell.value = (focusingCell.value + col.value) % props.colors.length
+    if (props.focused) focusingCell.value = (focusingCell.value + col.value) % props.colors.length
   },
   "selectColor": () => {
-    props.handleChoosePaletteCell(focusingCell.value) 
+    if (props.focused) props.handleChoosePaletteCell(focusingCell.value) 
   },
   "changeColor": () => {
-    selectingColor.value = true
+    if (props.focused) selectingColor.value = true
   },
 }
-
-const handleKeyDown = (event: KeyboardEvent) => {
-  if (props.focused && event.key in keyActionMap) {
-    manipulatorActions[keyActionMap[event.key]]()
-  }
-}
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-})
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-})
+useKeyHandler(keyActionMap, manipulatorActions)
 
 const confirmColor = (color: ColorState) => {
   props.handleUpdatePalette(color, focusingCell.value)
