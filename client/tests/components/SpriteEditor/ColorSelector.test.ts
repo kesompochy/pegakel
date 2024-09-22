@@ -7,6 +7,7 @@ describe("ColorSelector", () => {
     props: {
       currentColor: new ColorState(),
       handleConfirmColor: () => {},
+      focused: false,
     },
     global: {
       stubs: {},
