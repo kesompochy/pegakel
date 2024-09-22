@@ -84,9 +84,11 @@
       inputElementTop.value?.focus()
     },
     "changeModeToClip": async () => {
-      focusingComponent.value = 'clip'
-      await nextTick() // wait for the input element to be rendered
-      clipSizeInputWidthElement.value?.focus()
+      if (focusingComponent.value === 'canvas') {
+        focusingComponent.value = 'clip'
+        await nextTick() // wait for the input element to be rendered
+        clipSizeInputWidthElement.value?.focus()
+      }
     },
     "confirm": () => {
       if (focusingComponent.value === 'resize') {

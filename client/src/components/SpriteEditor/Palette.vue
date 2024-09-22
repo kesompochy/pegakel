@@ -15,12 +15,13 @@ const props = defineProps<{
 const focusingCell = ref(0)
 const col = ref(16)
 const row = ref(4)
+const selectingColor = ref(false)
 
 const colors = computed(() => {
-  const colors = new Array(Math.max(props.colors.length, 64)).fill(null).map((_, index) => props.colors[index])
+  const colors = new Array(Math.max(props.colors.length, 64)).fill(colorStateLogic.createEmptyColorState()).map((_, index) => props.colors[index])
+  
   return colors
 });
-const currentColor = computed(() => colors.value[props.activeColor] || new ColorState());
 const generateCellStyle = (color: ColorState, index: number) => {
   return {
     backgroundColor: color ? colorStateLogic.getHex(color) : 'transparent',
@@ -53,6 +54,7 @@ const manipulatorActions: Record<string, ()=>void> = {
     props.handleChoosePaletteCell(focusingCell.value) 
   },
   "changeColor": () => {
+    selectingColor.value = true
   },
 }
 
@@ -64,6 +66,11 @@ const handleKeyDown = (event: KeyboardEvent) => {
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
 })
+
+const confirmColor = (color: ColorState) => {
+  props.handleUpdatePalette(color, focusingCell.value)
+  selectingColor.value = false
+}
 </script>
 
 <template>
@@ -76,9 +83,11 @@ onMounted(() => {
     ></div>
   </div>
   <ColorSelector 
-    :currentColor="currentColor" 
-    :handleConfirmColor="color => props.handleUpdatePalette(color, activeColor)"
-    />
+    v-show="selectingColor"
+    :currentColor="props.colors[focusingCell]"
+    :handleConfirmColor="color => confirmColor(color)"
+    :focused="selectingColor"
+  />
 </template>
 
 <style scoped lang="scss">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import ColorState from '~/core/ColorState'
 import Sprite from '~/core/Sprite'
 import { translateClickPositionToSpritePosition, registerCallbackCanvasPointerDownOrMove } from '~/utils/canvas'
@@ -49,7 +49,6 @@ const editorActions: Record<EditorAction, ()=>void> = {
   },
   'draw': () => {
     if (!props.activeColorState) return
-    console.log(props.activeColorState)
     props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, props.activeColorState)
     pushingDrawingKey.value = true
   },

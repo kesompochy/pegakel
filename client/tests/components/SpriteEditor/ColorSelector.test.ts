@@ -13,6 +13,6 @@ describe("ColorSelector", () => {
     },
   });
   it("should render div element", () => {
-    expect(wrapper.find("div").exists()).toBe(true);
+    expect(wrapper.find("input").exists()).toBe(true);
   });
 });

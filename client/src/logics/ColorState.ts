@@ -5,9 +5,14 @@ const toHex = (value: number): string => {
     .toString(16)
     .padStart(2, "0");
 };
+const createEmptyColorState = (): ColorState => {
+  const colorState = new ColorState();
+  return colorState;
+}
 
 export default {
   getHex(colorState: ColorState): string {
     return `#${toHex(colorState.r)}${toHex(colorState.g)}${toHex(colorState.b)}`;
   },
+  createEmptyColorState,
 };

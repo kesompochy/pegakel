@@ -15,7 +15,7 @@ describe('exportGroup', () => {
     await mkdir(path.resolve(__dirname, testDir));
   });
   afterAll(async () => {
-    //await rm(path.resolve(__dirname, testDir), { recursive: true });
+    await rm(path.resolve(__dirname, testDir), { recursive: true });
   });
   it('should export a group of sprites as a gif file', async () => {
     const sprites: ISprite[] = [
