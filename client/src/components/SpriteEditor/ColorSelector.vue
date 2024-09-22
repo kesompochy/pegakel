@@ -26,7 +26,7 @@ const updateSelectingColor = (event: Event) => {
   inputR.value = colorRefR.value?.value ? parseInt(colorRefR.value.value) : 0
   inputG.value = colorRefG.value?.value ? parseInt(colorRefG.value.value) : 0
   inputB.value = colorRefB.value?.value ? parseInt(colorRefB.value.value) : 0
-  inputA.value = colorRefA.value?.value ? parseInt(colorRefA.value.value) : 0
+  inputA.value = colorRefA.value?.value ? parseInt(colorRefA.value.value) : 1
 }
 
 watch(() => props.focused, (focused) => {
@@ -35,7 +35,7 @@ watch(() => props.focused, (focused) => {
       inputR.value = props.currentColor?.r || 0
       inputG.value = props.currentColor?.g || 0
       inputB.value = props.currentColor?.b || 0
-      inputA.value = props.currentColor?.a || 0
+      inputA.value = props.currentColor?.a || 1
    
       colorRefR.value?.focus()
     })
@@ -58,10 +58,10 @@ useKeyHandler(keyActionMap, manipulatorActions)
 
 <template>
   <div class="color-selector-container">
-    <input type="number" ref="colorRefR" @input="updateSelectingColor" :value="inputR">
-    <input type="number" ref="colorRefG" @input="updateSelectingColor" :value="inputG">
-    <input type="number" ref="colorRefB" @input="updateSelectingColor" :value="inputB">
-    <input type="number" ref="colorRefA" @input="updateSelectingColor" :value="inputA">
+    <input step="1"    type="number" ref="colorRefR" @input="updateSelectingColor" :value="inputR">
+    <input step="1"    type="number" ref="colorRefG" @input="updateSelectingColor" :value="inputG">
+    <input step="1"    type="number" ref="colorRefB" @input="updateSelectingColor" :value="inputB">
+    <input step="0.01" type="number" ref="colorRefA" @input="updateSelectingColor" :value="inputA" default="1">
     <div class="preview" :style="{ backgroundColor: `rgba(${inputR}, ${inputG}, ${inputB}, ${inputA})`}"/>
   </div>
 </template>
