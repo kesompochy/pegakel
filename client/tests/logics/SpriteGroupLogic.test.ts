@@ -15,4 +15,9 @@ describe('SpriteGroupLogic', () => {
     SpriteGroupLogic.changeClipSize(spriteGroup, { width: 10, height: 20 });
     expect(spriteGroup.clipSize).toEqual({ width: 10, height: 20 });
   });
+  it("should update its name", () => {
+    const spriteGroup = SpriteGroupLogic.createSpriteGroup('test');
+    SpriteGroupLogic.updateName(spriteGroup, 'new name');
+    expect(spriteGroup.name).toEqual('new name');
+  });
 })

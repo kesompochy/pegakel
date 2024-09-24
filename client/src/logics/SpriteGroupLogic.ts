@@ -26,4 +26,7 @@ export default {
   deleteSprite(spriteGroup: SpriteGroup, index: number) {
     spriteGroup.sprites.splice(index, 1);
   },
+  updateName(spriteGroup: SpriteGroup, name: string) {
+    spriteGroup.name = name;
+  },
 };

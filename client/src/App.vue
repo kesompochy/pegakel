@@ -150,6 +150,8 @@
       </div> 
       <Preview
           :sprites="clippedSpritesForPreview"
+          :name="currentSheet.groups[currentSpriteGroupId].name"
+          :updateGroupName="(name: string) => {SpriteGroupLogic.updateName(currentSheet.groups[currentSpriteGroupId], name)}"
       />
     </div>
   </div>

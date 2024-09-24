@@ -10,6 +10,7 @@ import { useKeyHandler } from '~/composables/useKeyHandler'
 
 const manipulatingCell = ref({x: 0, y: 0})
 const pushingDrawingKey = ref(false)
+const pushingErasingKey = ref(false)
 
 const props = defineProps<{
   sprite: Sprite | undefined, 
@@ -35,18 +36,22 @@ const editorActions: Record<EditorAction, ()=>void> = {
   'moveUp': () => {
     manipulatingCell.value = {x: manipulatingCell.value.x, y: Math.max(manipulatingCell.value.y - 1, 0)}
     if (pushingDrawingKey.value) editorActions['draw']()
+    if (pushingErasingKey.value) editorActions['erase']()
   },
   'moveDown': () => {
     manipulatingCell.value = {x: manipulatingCell.value.x, y: Math.min(manipulatingCell.value.y + 1, (props.sprite?.height ?? 100000) - 1)}
     if (pushingDrawingKey.value) editorActions['draw']()
+    if (pushingErasingKey.value) editorActions['erase']()
   },
   'moveLeft': () => {
     manipulatingCell.value = {x: Math.max(manipulatingCell.value.x - 1, 0), y: manipulatingCell.value.y}
     if (pushingDrawingKey.value) editorActions['draw']()
+    if (pushingErasingKey.value) editorActions['erase']()
   },
   'moveRight': () => {
     manipulatingCell.value = {x: Math.min(manipulatingCell.value.x + 1, (props.sprite?.width ?? 10000) - 1), y: manipulatingCell.value.y}
     if (pushingDrawingKey.value) editorActions['draw']()
+    if (pushingErasingKey.value) editorActions['erase']()
   },
   'draw': () => {
     if (!props.activeColorState) return
@@ -55,10 +60,12 @@ const editorActions: Record<EditorAction, ()=>void> = {
   },
   'erase': () => {
     props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, new ColorState(0, 0, 0, 0))
+    pushingErasingKey.value = true
   },
 }
 const handleKeyUp = (event: KeyboardEvent) => {
   if (keyActionMap[event.key] === 'draw') pushingDrawingKey.value = false
+  if (keyActionMap[event.key] === 'erase') pushingErasingKey.value = false
 }
 onMounted(() => {
   window.addEventListener('keyup', handleKeyUp)

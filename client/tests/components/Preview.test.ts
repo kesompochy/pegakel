@@ -7,6 +7,8 @@ describe("Preview", () => {
     wrapper = mount(Preview, {
       propsData: {
         sprites: [],
+        name: "test",
+        updateGroupName: () => {},
       }
     });
   });
