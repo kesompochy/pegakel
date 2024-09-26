@@ -7,7 +7,12 @@
   import { useKeyHandler } from '~/composables/useKeyHandler'
 
   import { ref } from 'vue'
-  const props = defineProps<{ sheet: Sheet, handleChangeMode: Function, currentSpriteGroupId: number}>()
+  const props = defineProps<{ 
+    sheet: Sheet, 
+    handleChangeMode: Function, 
+    currentSpriteGroupId: number,
+    updateCurrentSpriteGroupId: (groupId: number) => void,
+  }>()
 
   const focusedSpriteInGroup = ref<number>(0)
   
@@ -29,11 +34,14 @@
   }
 
 
-  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite" | "deleteFocusedSprite"
+  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite" | "deleteFocusedSprite" | "addSprite" | "proceedFocusedGroup" | "addSpriteGroup"
   const keyActionMap: Record<string, ManipulationAction> = {
     "i": "goToSpriteEditor",
     "n": "proceedFocusedSprite",
     "d": "deleteFocusedSprite",
+    "a": "addSprite",
+    "N": "proceedFocusedGroup",
+    "A": "addSpriteGroup",
   }
   const manipulationActions: Record<ManipulationAction, () => void> = {
     "goToSpriteEditor": () => {
@@ -44,6 +52,16 @@
     },
     "deleteFocusedSprite": () => {
       deleteSpriteFromGroup(props.currentSpriteGroupId, focusedSpriteInGroup.value)
+    },
+    "addSprite": () => {
+      addSprite()
+    },
+    "proceedFocusedGroup": () => {
+      props.updateCurrentSpriteGroupId((props.currentSpriteGroupId + 1) % props.sheet.groups.length) 
+    },
+    "addSpriteGroup": () => {
+      console.log('addSpriteGroup')
+      sheetLogics.addSpriteGroup(props.sheet)
     },
   }
   useKeyHandler(keyActionMap, manipulationActions)

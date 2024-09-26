@@ -4,7 +4,11 @@ import Sheet from '~/core/Sheet'
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
 import { ref, defineProps, computed } from 'vue'
 
-const props = defineProps<{ sheet: Sheet, currentSpriteGroupId?: number, focusedSpriteInGroup: number }>()
+const props = defineProps<{ 
+  sheet: Sheet, 
+  currentSpriteGroupId?: number,
+  focusedSpriteInGroup: number, 
+}>()
 const pixelWidth = ref<number>(2)
 
 const spritesBelongToNoGroup = computed(() => {

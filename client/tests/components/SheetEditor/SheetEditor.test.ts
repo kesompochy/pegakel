@@ -8,6 +8,7 @@ const props = {
   focusedSpriteInGroup: 0,
   handleChangeMode: vi.fn(),
   currentSpriteGroupId: 0,
+  updateCurrentSpriteGroupId: vi.fn(),
 };
 
 describe("SheetEditor", () => {

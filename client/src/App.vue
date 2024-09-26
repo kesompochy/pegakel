@@ -5,7 +5,7 @@
   import { onMounted, onUnmounted, computed } from 'vue'
   const { currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
-  const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
+  const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateCurrentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
   import SpriteGroup from '~/core/SpriteGroup';
   import Sprite from '~/core/Sprite';
   import Sheet from '~/core/Sheet';
@@ -14,7 +14,6 @@
   import SpriteGroupLogic from '~/logics/SpriteGroupLogic';
   import Preview from './components/Preview.vue';
   import SheetLogic from '~/logics/SheetLogic';
-
   setMode(modes.SPRITE_EDITOR)
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
@@ -146,6 +145,7 @@
           :updateClipSize="updateClipSize"
           :groupSprites="[]"
           :currentSpriteGroupId="currentSpriteGroupId"
+          :updateCurrentSpriteGroupId="updateCurrentSpriteGroupId"
         />
       </div> 
       <Preview

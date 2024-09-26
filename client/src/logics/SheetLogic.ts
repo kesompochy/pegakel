@@ -49,5 +49,8 @@ export default {
   },
   deleteSprite(sheet: Sheet, index: number) {
     sheet.sprites.splice(index, 1);
-  }
+  },
+  addSpriteGroup(sheet: Sheet) {
+    sheet.groups.push(SpriteGroupLogic.createSpriteGroup("a"));
+  },
 };
