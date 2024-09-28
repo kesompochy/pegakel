@@ -22,6 +22,8 @@
     updateSpriteSize: (left: number, top: number, bottom: number, right: number) => void,
     updateClipSize: (width: number, height: number) => void,
     groupSprites: Sprite[],
+    palette: ColorState[],
+    updatePalette: (color: ColorState, cellId: number) => void,
   }>();
   const { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode, canvasManipulatingCell, } = useSpriteEditor()
 
@@ -63,7 +65,7 @@
     focusingComponent.value = 'canvas'
   }
   const updatePalette = (color: ColorState, cellId: number) => {
-    SpriteGroupLogic.updatePalette(props.spriteGroup, cellId, color)
+    props.updatePalette(color, cellId)
     updateActiveColor(cellId)
     focusingComponent.value = 'canvas'
   }
@@ -161,7 +163,7 @@
         :width="props.sprite?.width || 0" 
         :height="props.sprite?.height || 0" 
         :sprite="props.sprite"
-        :activeColorState="props.spriteGroup.palette[activeColor]"
+        :activeColorState="props.palette[activeColor]"
         :activeTool="activeTool"
         :manipulationMode="manipulationMode"
         :updateManipulationMode="updateManipulationMode"
@@ -175,7 +177,7 @@
       <input type="number" v-model="canvasResizeDeltaBottom" class="bottom" v-show="focusingComponent === 'resize'" ref="inputElementBottom">
     </div>
     <Palette 
-      :colors="props.spriteGroup.palette" 
+      :colors="props.palette" 
       :handleChoosePaletteCell="activateColor"
       :activeColor="activeColor"
       :handleUpdatePalette="updatePalette"

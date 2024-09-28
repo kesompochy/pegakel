@@ -7,6 +7,7 @@
     sprite?: Sprite, 
     width: number,
     border?: string,
+    overlay?: string,
     beforeDraw?: (ctx: CanvasRenderingContext2D) => void,
     afterDraw?: (ctx: CanvasRenderingContext2D) => void,
     onMounted?: (canvas: HTMLCanvasElement) => void,
@@ -98,6 +99,7 @@
       class="overlay-style"
       :style="{ 
         border: props.border || 'none',
+        backgroundColor: props.overlay || 'none',
       }"
     />
   </div>

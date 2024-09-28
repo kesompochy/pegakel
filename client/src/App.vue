@@ -5,7 +5,7 @@
   import { onMounted, onUnmounted, computed } from 'vue'
   const { currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
-  const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateCurrentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
+  const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
   import SpriteGroup from '~/core/SpriteGroup';
   import Sprite from '~/core/Sprite';
   import Sheet from '~/core/Sheet';
@@ -146,6 +146,8 @@
           :groupSprites="[]"
           :currentSpriteGroupId="currentSpriteGroupId"
           :updateCurrentSpriteGroupId="(id: number) => {currentSpriteGroupId = id}"
+          :palette="currentSheet.palette"
+           :updatePalette="(color, cellId) => {SheetLogic.updatePalette(currentSheet, color, cellId)}"
         />
       </div> 
       <Preview

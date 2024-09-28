@@ -53,4 +53,11 @@ export default {
   addSpriteGroup(sheet: Sheet) {
     sheet.groups.push(SpriteGroupLogic.createSpriteGroup("a"));
   },
+  updatePalette(sheet: Sheet, color: ColorState, cellId: number) {
+    console.log("updatePalette", cellId, color);
+    if (!sheet.palette) {
+      sheet.palette = [];
+    }
+    sheet.palette[cellId] = color;
+  },
 };

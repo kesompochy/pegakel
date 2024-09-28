@@ -15,26 +15,24 @@
   }>()
 
   const focusedSpriteInGroup = ref<number>(0)
+  const focusedSpriteIdInSheet = ref<number>(0)
   
   const proceedFocusedSprite = () => {
     focusedSpriteInGroup.value = (focusedSpriteInGroup.value + 1) % props.sheet.groups[props.currentSpriteGroupId].sprites.length
   }
   const changeModeToSpriteEditor = () => {
-    const sheet = props.sheet
-    const group = sheet.groups[props.currentSpriteGroupId]
-    const spriteIndex = group.sprites[focusedSpriteInGroup.value]
+    const spriteIndex = focusedSpriteIdInSheet.value
     props.handleChangeMode(modes.SPRITE_EDITOR, spriteIndex)
   }
   const addSprite = () => {
     sheetLogics.addSprite(props.sheet)
-    SpriteGroupLogics.addSprite(props.sheet.groups[props.currentSpriteGroupId], props.sheet.sprites.length - 1)
   }
   const deleteSpriteFromGroup = (groupIndex: number, spriteIndex: number) => {
     SpriteGroupLogics.deleteSprite(props.sheet.groups[groupIndex], spriteIndex)
   }
 
 
-  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite" | "deleteFocusedSprite" | "addSprite" | "proceedFocusedGroup" | "addSpriteGroup"
+  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite" | "deleteFocusedSprite" | "addSprite" | "proceedFocusedGroup" | "addSpriteGroup" | "moveLeft" | "moveDown" | "moveUp" | "moveRight" | "pickSpriteToGroup"
   const keyActionMap: Record<string, ManipulationAction> = {
     "i": "goToSpriteEditor",
     "n": "proceedFocusedSprite",
@@ -42,6 +40,11 @@
     "a": "addSprite",
     "N": "proceedFocusedGroup",
     "A": "addSpriteGroup",
+    "h": "moveLeft",
+    "j": "moveDown",
+    "k": "moveUp",
+    "l": "moveRight",
+    "p": "pickSpriteToGroup",
   }
   const manipulationActions: Record<ManipulationAction, () => void> = {
     "goToSpriteEditor": () => {
@@ -61,7 +64,20 @@
     },
     "addSpriteGroup": () => {
       sheetLogics.addSpriteGroup(props.sheet)
-      SpriteGroupLogics.addSprite(props.sheet.groups[props.sheet.groups.length - 1], props.sheet.groups[props.currentSpriteGroupId].sprites[focusedSpriteInGroup.value])
+      SpriteGroupLogics.addSprite(props.sheet.groups[props.sheet.groups.length - 1], focusedSpriteIdInSheet.value)
+    },
+    "moveLeft": () => {
+      focusedSpriteIdInSheet.value = Math.max(0, focusedSpriteIdInSheet.value - 1)
+    },
+    "moveDown": () => {
+    },
+    "moveUp": () => {
+    },
+    "moveRight": () => {
+      focusedSpriteIdInSheet.value = Math.min(props.sheet.sprites.length - 1, focusedSpriteIdInSheet.value + 1)
+    },
+    "pickSpriteToGroup": () => {
+      SpriteGroupLogics.addSprite(props.sheet.groups[props.currentSpriteGroupId], focusedSpriteIdInSheet.value)
     },
   }
   useKeyHandler(keyActionMap, manipulationActions)
@@ -73,6 +89,7 @@
       :sheet="props.sheet" 
       :currentSpriteGroupId="props.currentSpriteGroupId"
       :focusedSpriteInGroup="focusedSpriteInGroup"
+      :focusedSpriteIdInSheet="focusedSpriteIdInSheet"
     />
     <button @click="proceedFocusedSprite()">Next</button>
     <button @click="changeModeToSpriteEditor()">Edit</button>
