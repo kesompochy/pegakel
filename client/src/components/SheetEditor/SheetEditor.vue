@@ -32,7 +32,7 @@
   }
 
 
-  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite" | "deleteFocusedSprite" | "addSprite" | "proceedFocusedGroup" | "addSpriteGroup" | "moveLeft" | "moveDown" | "moveUp" | "moveRight" | "pickSpriteToGroup"
+  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite" | "deleteFocusedSprite" | "addSprite" | "proceedFocusedGroup" | "addSpriteGroup" | "moveLeft" | "moveDown" | "moveUp" | "moveRight" | "pickSpriteToGroup" | "deleteSprite"
   const keyActionMap: Record<string, ManipulationAction> = {
     "i": "goToSpriteEditor",
     "n": "proceedFocusedSprite",
@@ -45,6 +45,7 @@
     "k": "moveUp",
     "l": "moveRight",
     "p": "pickSpriteToGroup",
+    "x": "deleteSprite",
   }
   const manipulationActions: Record<ManipulationAction, () => void> = {
     "goToSpriteEditor": () => {
@@ -78,6 +79,9 @@
     },
     "pickSpriteToGroup": () => {
       SpriteGroupLogics.addSprite(props.sheet.groups[props.currentSpriteGroupId], focusedSpriteIdInSheet.value)
+    },
+    "deleteSprite": () => {
+      sheetLogics.deleteSprite(props.sheet, focusedSpriteIdInSheet.value)
     },
   }
   useKeyHandler(keyActionMap, manipulationActions)

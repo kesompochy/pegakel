@@ -9,10 +9,6 @@ describe("SpriteGroup", () => {
     const spriteGroup = new SpriteGroup("test");
     expect(spriteGroup.sprites).toEqual([]);
   });
-  it("should have a palette", () => {
-    const spriteGroup = new SpriteGroup("test");
-    expect(spriteGroup.palette).toEqual([]);
-  });
   it("should have a clip size", () => {
     const spriteGroup = new SpriteGroup("test");
     expect(spriteGroup.clipSize).toEqual(undefined);

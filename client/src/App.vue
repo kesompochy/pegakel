@@ -2,7 +2,7 @@
   import { JsonRpcClient } from 'bunson';
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
-  import { onMounted, onUnmounted, computed } from 'vue'
+  import { watch, onMounted, onUnmounted, computed } from 'vue'
   const { currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
   const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
@@ -121,6 +121,10 @@
 
   const clippedSpritesForPreview = computed(() => {
     return SheetLogic.getClippedSpritesInGroup(currentSheet.value, currentSpriteGroupId.value) as Sprite[]
+  })
+
+  watch(() => currentSpriteGroupId.value, () => {
+    console.log(currentSpriteGroupId.value, clippedSpritesForPreview.value)
   })
 </script>
 

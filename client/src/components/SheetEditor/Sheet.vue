@@ -68,7 +68,7 @@ const generateSpriteStyleOverlay = (spriteIndexInSheet: number) => {
         <SpriteCanvas 
           v-for="(spriteIndex, index) in group.sprites" 
           :sprite="props.sheet.sprites[spriteIndex]" 
-          :width="pixelWidth * props.sheet.sprites[spriteIndex].width" 
+          :width="pixelWidth * props.sheet.sprites[spriteIndex]?.width" 
           :border="generateSpriteStyleBorder(groupIndex, index, spriteIndex)"
           :overlay="generateSpriteStyleOverlay(spriteIndex)"
         />

@@ -34,7 +34,6 @@ export default {
         }
       }
     }
-    SpriteGroupLogic.initPaletteForTest(sheet.groups[0]);
 
     return sheet;
   },
@@ -43,13 +42,36 @@ export default {
   },
   getClippedSpritesInGroup(sheet: Sheet, groupId: number) {
     const group = sheet.groups[groupId];
+
+    if (group.sprites.length === 0) {
+      return [];
+    }
+    if (!group.clipSize) {
+      const width = group.sprites.reduce((max, spriteId) => {
+        const sprite = sheet.sprites[spriteId];
+        return Math.max(max, sprite.width);
+      }, 0);
+      const height = group.sprites.reduce((max, spriteId) => {
+        const sprite = sheet.sprites[spriteId];
+        return Math.max(max, sprite.height);
+      }, 0);
+
+
+      group.clipSize = { width: width, height: height };
+    }
     const clipSize = group.clipSize;
-    if (!clipSize) return [];
     return group.sprites.map((spriteId) => SpriteLogic.generateClippedSprite(sheet.sprites[spriteId], clipSize.width, clipSize.height));
   },
-  deleteSprite(sheet: Sheet, index: number) {
-    sheet.sprites.splice(index, 1);
-  },
+  deleteSprite(sheet: Sheet, spriteIndex: number) {
+    sheet.groups.forEach((group, index) => {
+      group.sprites = group.sprites.filter((spriteId) => spriteId !== spriteIndex);
+      if (group.sprites.length === 0) {
+        sheet.groups.splice(index, 1);
+      }
+    })
+ 
+    sheet.sprites.splice(spriteIndex, 1);
+ },
   addSpriteGroup(sheet: Sheet) {
     sheet.groups.push(SpriteGroupLogic.createSpriteGroup("a"));
   },

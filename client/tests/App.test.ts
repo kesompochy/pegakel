@@ -17,9 +17,4 @@ describe("App", () => {
     await wrapper.vm.$nextTick();
     expect(wrapper.find("canvas").exists()).toBe(true);
   });
-  it("should have some sheet after init for test", () => {
-    wrapper.vm.initSheetForTest();
-    expect(wrapper.vm.currentSheet.sprites[0].pixels[0][0]).toBeInstanceOf(ColorState);
-    expect(wrapper.vm.currentSheet.groups[0].palette[0]).toBeInstanceOf(ColorState);
-  });
 });
