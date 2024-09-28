@@ -10,6 +10,7 @@
   import ColorState from '~/core/ColorState'
   import SpriteLogic from '~/logics/SpriteLogic'
   import { useKeyHandler } from '~/composables/useKeyHandler'
+  import KeyMapConfig from '~/configs/actionKeyMap.json'
 
   import { nextTick, ref, watch } from 'vue'
   
@@ -70,17 +71,7 @@
     focusingComponent.value = 'canvas'
   }
 
-  const keyActionMap: Record<string, string> = {
-    "n": "switchFucsingComponent",
-    "s": "changeModeToResize",
-    "c": "changeModeToClip",
-    "Enter": "confirm",
-    "h": "moveLeft",
-    "j": "moveDown",
-    "k": "moveUp",
-    "l": "moveRight",
-  }
-  const actionProcessMap: Record<string, ()=>void> = {
+  const actionProcessMap: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
     "switchFucsingComponent": () => {
       focusingComponent.value = focusingComponent.value === 'canvas' ? 'palette' : 'canvas'
     },
@@ -148,7 +139,7 @@
       }
     },
   }
-  useKeyHandler(keyActionMap, actionProcessMap)
+  useKeyHandler(actionProcessMap)
   
 </script>
 

@@ -7,6 +7,7 @@ import type Tool from '~/core/Tool'
 import type { ManipulationMode } from '~/composables/SpriteEditor/useSpriteEditor'
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
 import { useKeyHandler } from '~/composables/useKeyHandler'
+import KeyMapConfig from '~/configs/actionKeyMap.json'
 
 const manipulatingCell = ref({x: 0, y: 0})
 const pushingDrawingKey = ref(false)
@@ -23,35 +24,26 @@ const props = defineProps<{
   clipSize: {width: number, height: number} | undefined
 }>()
 
-type EditorAction = 'moveUp' | 'moveDown' | 'moveLeft' | 'moveRight' | 'draw' | 'erase'
-const keyActionMap: Record<string, EditorAction> = {
-  'k': 'moveUp',
-  'j': 'moveDown',
-  'h': 'moveLeft',
-  'l': 'moveRight',
-  'x': 'erase',
-  'a': 'draw'
-}
-const editorActions: Record<EditorAction, ()=>void> = {
+const editorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
   'moveUp': () => {
     manipulatingCell.value = {x: manipulatingCell.value.x, y: Math.max(manipulatingCell.value.y - 1, 0)}
-    if (pushingDrawingKey.value) editorActions['draw']()
-    if (pushingErasingKey.value) editorActions['erase']()
+    if (pushingDrawingKey.value) (editorActions['draw'] as ()=>void)()
+    if (pushingErasingKey.value) (editorActions['erase'] as ()=>void)()
   },
   'moveDown': () => {
     manipulatingCell.value = {x: manipulatingCell.value.x, y: Math.min(manipulatingCell.value.y + 1, (props.sprite?.height ?? 100000) - 1)}
-    if (pushingDrawingKey.value) editorActions['draw']()
-    if (pushingErasingKey.value) editorActions['erase']()
+    if (pushingDrawingKey.value) (editorActions['draw'] as ()=>void)()
+    if (pushingErasingKey.value) (editorActions['erase'] as ()=>void)()
   },
   'moveLeft': () => {
     manipulatingCell.value = {x: Math.max(manipulatingCell.value.x - 1, 0), y: manipulatingCell.value.y}
-    if (pushingDrawingKey.value) editorActions['draw']()
-    if (pushingErasingKey.value) editorActions['erase']()
+    if (pushingDrawingKey.value) (editorActions['draw'] as ()=>void)()
+    if (pushingErasingKey.value) (editorActions['erase'] as ()=>void)()
   },
   'moveRight': () => {
     manipulatingCell.value = {x: Math.min(manipulatingCell.value.x + 1, (props.sprite?.width ?? 10000) - 1), y: manipulatingCell.value.y}
-    if (pushingDrawingKey.value) editorActions['draw']()
-    if (pushingErasingKey.value) editorActions['erase']()
+    if (pushingDrawingKey.value) (editorActions['draw'] as ()=>void)()
+    if (pushingErasingKey.value) (editorActions['erase'] as ()=>void)()
   },
   'draw': () => {
     if (!props.activeColorState) return
@@ -64,8 +56,8 @@ const editorActions: Record<EditorAction, ()=>void> = {
   },
 }
 const handleKeyUp = (event: KeyboardEvent) => {
-  if (keyActionMap[event.key] === 'draw') pushingDrawingKey.value = false
-  if (keyActionMap[event.key] === 'erase') pushingErasingKey.value = false
+  if (KeyMapConfig['draw'] === event.key) pushingDrawingKey.value = false
+  if (KeyMapConfig['erase'] === event.key) pushingErasingKey.value = false
 }
 onMounted(() => {
   window.addEventListener('keyup', handleKeyUp)
@@ -73,7 +65,7 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keyup', handleKeyUp)
 })
-useKeyHandler(keyActionMap, editorActions)
+useKeyHandler(editorActions)
 
 const drawManipulatingCell = (ctx: CanvasRenderingContext2D, pixelSizeWidth: number, pixelSizeHeight: number) => {
   if ( props.manipulationMode === 'key' && props.focused ) {

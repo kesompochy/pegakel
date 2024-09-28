@@ -2,6 +2,7 @@
 import { ref, watch, nextTick } from 'vue'
 import ColorState from '~/core/ColorState'
 import { useKeyHandler } from '~/composables/useKeyHandler';
+import KeyMapConfig from '~/configs/actionKeyMap.json';
 
 const props = defineProps<{
   currentColor: ColorState | undefined;
@@ -42,17 +43,14 @@ watch(() => props.focused, (focused) => {
   }
 })
 
-const keyActionMap: Record<string, string> = {
-  "Enter": "confirmColor",
-}
-const manipulatorActions: Record<string, ()=>void> = {
+const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
   "confirmColor": () => {
     if (props.focused) {
       confirmColor()
     }
   },
 }
-useKeyHandler(keyActionMap, manipulatorActions)
+useKeyHandler(manipulatorActions)
 
 </script>
 

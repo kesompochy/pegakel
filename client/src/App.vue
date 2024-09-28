@@ -92,20 +92,16 @@
   }
 
   type ManipulationAction = "goToSheetEditor"
-  const keyActionMap: Record<string, ManipulationAction> = {
-    "Escape": "goToSheetEditor",
-  }
   const manipulationActions: Record<ManipulationAction, () => void> = {
     "goToSheetEditor": () => {
       setMode(modes.SHEET_EDITOR)
     }
   }
+  useKeyHandler(manipulationActions)
 
   const updateClipSize = (width: number, height: number) => {
     SpriteGroupLogic.changeClipSize(currentSheet.value.groups[currentSpriteGroupId.value], {width, height})
   }
-
-  useKeyHandler(keyActionMap, manipulationActions)
 
   const clippedSpritesForPreview = computed(() => {
     return SheetLogic.getClippedSpritesInGroup(currentSheet.value, currentSpriteGroupId.value) as Sprite[]

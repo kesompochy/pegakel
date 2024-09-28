@@ -5,6 +5,7 @@
   import sheetLogics from '~/logics/SheetLogic'
   import SpriteGroupLogics from '~/logics/SpriteGroupLogic'
   import { useKeyHandler } from '~/composables/useKeyHandler'
+  import KeyMapConfig from '~/configs/actionKeyMap.json'
 
   import { ref } from 'vue'
   const props = defineProps<{ 
@@ -31,24 +32,7 @@
     SpriteGroupLogics.deleteSprite(props.sheet.groups[groupIndex], spriteIndex)
   }
 
-
-  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite" | "deleteFocusedSprite" | "addSprite" | "proceedFocusedGroup" | "addSpriteGroup" | "moveLeft" | "moveDown" | "moveUp" | "moveRight" | "pickSpriteToGroup" | "deleteSprite" | "swapSprites"
-  const keyActionMap: Record<string, ManipulationAction> = {
-    "i": "goToSpriteEditor",
-    "n": "proceedFocusedSprite",
-    "d": "deleteFocusedSprite",
-    "a": "addSprite",
-    "N": "proceedFocusedGroup",
-    "A": "addSpriteGroup",
-    "h": "moveLeft",
-    "j": "moveDown",
-    "k": "moveUp",
-    "l": "moveRight",
-    "p": "pickSpriteToGroup",
-    "x": "deleteSprite",
-    "S": "swapSprites",
-  }
-  const manipulationActions: Record<ManipulationAction, () => void> = {
+  const manipulationActions: Partial<Record<keyof typeof KeyMapConfig, () => void>> = {
     "goToSpriteEditor": () => {
       changeModeToSpriteEditor()
     },
@@ -97,7 +81,7 @@
       SpriteGroupLogics.swapSprites(group, spriteIndex, nextSpriteIndex)
     },
   }
-  useKeyHandler(keyActionMap, manipulationActions)
+  useKeyHandler(manipulationActions)
 </script>
 
 <template>

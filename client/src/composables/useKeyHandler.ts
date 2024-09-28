@@ -1,7 +1,28 @@
 import { onMounted, onUnmounted } from 'vue';
+import KeyMapConfig from '~/configs/actionKeyMap.json';
 
-export const useKeyHandler = (keyActionMap: Record<string, ()=>void> | Record<string, string>, actionProcessMap?: Record<string, ()=>void>) => {
+export const useKeyHandler = (actionFunctionMap: Partial<Record<keyof typeof KeyMapConfig, ()=>void>>) => {
+  const keyFunctionMap = Object.fromEntries(
+    Object.entries(actionFunctionMap).map(([action, func]) => [
+      KeyMapConfig[action as keyof typeof KeyMapConfig],
+      func
+    ])
+  );
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key in keyFunctionMap) {
+      keyFunctionMap[event.key]();
+    }
+  };
+  onMounted(() => {
+    window.addEventListener('keydown', handleKeyDown);
+  });
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeyDown);
+  });
+}
 
+
+/*
   let keyProcessMap: Record<string, () => void> = {};
 
   if (actionProcessMap) {
@@ -31,4 +52,4 @@ export const useKeyHandler = (keyActionMap: Record<string, ()=>void> | Record<st
   onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown)
   })
-}
+}*/

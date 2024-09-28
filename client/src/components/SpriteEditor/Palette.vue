@@ -4,6 +4,7 @@ import ColorState from '~/core/ColorState'
 import ColorSelector from './ColorSelector.vue'
 import colorStateLogic from '~/logics/ColorState'
 import { useKeyHandler } from '~/composables/useKeyHandler';
+import KeyMapConfig from '~/configs/actionKeyMap.json';
 
 const props = defineProps<{
   colors: ColorState[];
@@ -30,15 +31,7 @@ const generateCellStyle = (color: ColorState, index: number) => {
   }
 }
 
-const keyActionMap: Record<string, string> = {
-  "h": "moveLeft",
-  "j": "moveDown",
-  "k": "moveUp",
-  "l": "moveRight",
-  "a": "selectColor",
-  "c": "changeColor",
-}
-const manipulatorActions: Record<string, ()=>void> = {
+const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
   "moveLeft": () => {
     if (props.focused) focusingCell.value = (focusingCell.value - 1 + props.colors.length) % props.colors.length
   },
@@ -58,7 +51,7 @@ const manipulatorActions: Record<string, ()=>void> = {
     if (props.focused) selectingColor.value = true
   },
 }
-useKeyHandler(keyActionMap, manipulatorActions)
+useKeyHandler(manipulatorActions)
 
 const confirmColor = (color: ColorState) => {
   props.handleUpdatePalette(color, focusingCell.value)
