@@ -60,8 +60,8 @@
       props.updateCurrentSpriteGroupId((props.currentSpriteGroupId + 1) % props.sheet.groups.length) 
     },
     "addSpriteGroup": () => {
-      console.log('addSpriteGroup')
       sheetLogics.addSpriteGroup(props.sheet)
+      SpriteGroupLogics.addSprite(props.sheet.groups[props.sheet.groups.length - 1], props.sheet.groups[props.currentSpriteGroupId].sprites[focusedSpriteInGroup.value])
     },
   }
   useKeyHandler(keyActionMap, manipulationActions)

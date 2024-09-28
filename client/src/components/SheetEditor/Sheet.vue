@@ -17,24 +17,37 @@ const spritesBelongToNoGroup = computed(() => {
   }) 
   return noGroupSprites.map(sprite => props.sheet.sprites.indexOf(sprite))
 })
+const generateSpriteStyleBorder = (groupIndex: number, spriteIndexInGroup: number, spriteIndexInSheet: number) => {
+  let border = 'none'
+
+  if (props.currentSpriteGroupId === undefined || props.currentSpriteGroupId === null) {
+    return border
+  }
+  if (props.currentSpriteGroupId === groupIndex && props.focusedSpriteInGroup === spriteIndexInGroup) {
+    border = '2px solid red'
+  } else if (spriteIndexInSheet === props.sheet.groups[props.currentSpriteGroupId].sprites[props.focusedSpriteInGroup]) {
+    border = '1px solid red'
+  }
+
+  return border
+}
 </script>
 
 <template>
   <div class="sheet-container">
-    <span>This is the sheet</span>
     <div class="sheet">
       <div class="group" 
         :key="groupIndex" 
         v-for="(group, groupIndex) in props.sheet.groups"
         :style="{
-          border: props.currentSpriteGroupId === groupIndex ? '2px solid blue' : 'none'
+          border: props.currentSpriteGroupId === groupIndex ? '2px solid blue' : '1px solid blue'
         }"
       >
         <SpriteCanvas 
           v-for="(spriteIndex, index) in group.sprites" 
           :sprite="props.sheet.sprites[spriteIndex]" 
           :width="pixelWidth * props.sheet.sprites[spriteIndex].width" 
-          :border="focusedSpriteInGroup === index ? '2px solid red' : (group.sprites[focusedSpriteInGroup] === spriteIndex ? '1px solid red' : 'none')"
+          :border="generateSpriteStyleBorder(groupIndex, index, spriteIndex)"
         />
       </div>
       <div class="group no-group">

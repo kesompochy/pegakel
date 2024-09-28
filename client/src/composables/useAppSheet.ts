@@ -11,6 +11,7 @@ export default function useAppSheet() {
   const currentSpriteGroupId = ref<number>(0);
   const updateCurrentSpriteGroupId = (id: number) => {
     currentSpriteId.value = id;
+    console.log("currentSpriteId", currentSpriteId.value);
   }
 
   currentSheet.value = SheetLogic.createSheet("sheet");

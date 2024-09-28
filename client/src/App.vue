@@ -145,7 +145,7 @@
           :updateClipSize="updateClipSize"
           :groupSprites="[]"
           :currentSpriteGroupId="currentSpriteGroupId"
-          :updateCurrentSpriteGroupId="updateCurrentSpriteGroupId"
+          :updateCurrentSpriteGroupId="(id: number) => {currentSpriteGroupId = id}"
         />
       </div> 
       <Preview
