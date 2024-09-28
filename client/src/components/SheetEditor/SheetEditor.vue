@@ -31,6 +31,24 @@
   const deleteSpriteFromGroup = (groupIndex: number, spriteIndex: number) => {
     SpriteGroupLogics.deleteSprite(props.sheet.groups[groupIndex], spriteIndex)
   }
+  const deleteSprite = () => {
+    sheetLogics.deleteSprite(props.sheet, focusedSpriteIdInSheet.value)
+  }
+  const pickSpriteToGroup = () => {
+    SpriteGroupLogics.addSprite(props.sheet.groups[props.currentSpriteGroupId], focusedSpriteIdInSheet.value)
+  }
+  const swapSprites = () => {
+    const group = props.sheet.groups[props.currentSpriteGroupId]
+    if (group.sprites.length < 2) {
+      return
+    }
+    const spriteIndex = focusedSpriteInGroup.value
+    const nextSpriteIndex = spriteIndex + 1
+    if (nextSpriteIndex >= group.sprites.length) {
+      return
+    }
+    SpriteGroupLogics.swapSprites(group, spriteIndex, nextSpriteIndex)
+  }
 
   const manipulationActions: Partial<Record<keyof typeof KeyMapConfig, () => void>> = {
     "goToSpriteEditor": () => {
@@ -63,22 +81,13 @@
       focusedSpriteIdInSheet.value = Math.min(props.sheet.sprites.length - 1, focusedSpriteIdInSheet.value + 1)
     },
     "pickSpriteToGroup": () => {
-      SpriteGroupLogics.addSprite(props.sheet.groups[props.currentSpriteGroupId], focusedSpriteIdInSheet.value)
+      pickSpriteToGroup()
     },
     "deleteSprite": () => {
-      sheetLogics.deleteSprite(props.sheet, focusedSpriteIdInSheet.value)
+      deleteSprite()
     },
     "swapSprites": () => {
-      const group = props.sheet.groups[props.currentSpriteGroupId]
-      if (group.sprites.length < 2) {
-        return
-      }
-      const spriteIndex = focusedSpriteInGroup.value
-      const nextSpriteIndex = spriteIndex + 1
-      if (nextSpriteIndex >= group.sprites.length) {
-        return
-      }
-      SpriteGroupLogics.swapSprites(group, spriteIndex, nextSpriteIndex)
+      swapSprites()
     },
   }
   useKeyHandler(manipulationActions)
@@ -91,11 +100,16 @@
       :currentSpriteGroupId="props.currentSpriteGroupId"
       :focusedSpriteInGroup="focusedSpriteInGroup"
       :focusedSpriteIdInSheet="focusedSpriteIdInSheet"
+      :updateCurrentSpriteGroupId="props.updateCurrentSpriteGroupId"
+      :updateFocusedSpriteIdInSheet="(index: number) => { focusedSpriteIdInSheet = index }"
+      :updateFocusedSpriteInGroup="(index: number) => { focusedSpriteInGroup = index }"
     />
-    <button @click="proceedFocusedSprite()">Next</button>
     <button @click="changeModeToSpriteEditor()">Edit</button>
     <button @click="addSprite()">Add</button>
-    <button @click="deleteSpriteFromGroup(props.currentSpriteGroupId, focusedSpriteInGroup)">Delete</button>
+    <button @click="deleteSprite()">Delete</button>
+    <button @click="deleteSpriteFromGroup(props.currentSpriteGroupId, focusedSpriteInGroup)">Remove Sprite from Group</button>
+    <button @click="pickSpriteToGroup()">Pick Sprite to Group</button>
+    <button @click="swapSprites()">Swap Sprites</button>
   </div>
 </template>
 

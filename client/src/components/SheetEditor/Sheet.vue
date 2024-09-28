@@ -9,6 +9,9 @@ const props = defineProps<{
   currentSpriteGroupId?: number,
   focusedSpriteInGroup: number, 
   focusedSpriteIdInSheet: number,
+  updateCurrentSpriteGroupId: (groupId: number) => void,
+  updateFocusedSpriteIdInSheet: (spriteId: number) => void,
+  updateFocusedSpriteInGroup: (index: number) => void,
 }>()
 const pixelWidth = ref<number>(2)
 
@@ -45,6 +48,20 @@ const generateSpriteStyleOverlay = (spriteIndexInSheet: number) => {
   return overlay
 }
 
+
+const handleGroupClick = (groupIndex: number) => {
+  props.updateCurrentSpriteGroupId(groupIndex)
+}
+
+const handleSpriteClick = (spriteIndex: number) => {
+  props.updateFocusedSpriteIdInSheet(spriteIndex)
+}
+
+const handleClickSpriteInGroup = (groupIndex: number, spriteIndexInGroup: number) => {
+  props.updateCurrentSpriteGroupId(groupIndex)
+  props.updateFocusedSpriteInGroup(spriteIndexInGroup)
+}
+
 </script>
 
 <template>
@@ -56,6 +73,7 @@ const generateSpriteStyleOverlay = (spriteIndexInSheet: number) => {
           :sprite="sprite" 
           :width="pixelWidth * sprite.width" 
           :border="generateSpriteStyleBorderInSheet(index)"
+          @click="() => { handleSpriteClick(index) }"
         />
       </div>
       <div class="group" 
@@ -64,6 +82,7 @@ const generateSpriteStyleOverlay = (spriteIndexInSheet: number) => {
         :style="{
           border: props.currentSpriteGroupId === groupIndex ? '2px solid blue' : '1px solid blue'
         }"
+        @click="() => { handleGroupClick(groupIndex) }"
       >
         <SpriteCanvas 
           v-for="(spriteIndex, index) in group.sprites" 
@@ -71,6 +90,7 @@ const generateSpriteStyleOverlay = (spriteIndexInSheet: number) => {
           :width="pixelWidth * props.sheet.sprites[spriteIndex]?.width" 
           :border="generateSpriteStyleBorder(groupIndex, index, spriteIndex)"
           :overlay="generateSpriteStyleOverlay(spriteIndex)"
+          @click="() => { handleClickSpriteInGroup(groupIndex, index) }"
         />
       </div>
     </div>

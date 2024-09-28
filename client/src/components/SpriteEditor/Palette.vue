@@ -30,6 +30,9 @@ const generateCellStyle = (color: ColorState, index: number) => {
     border: props.activeColor === index ? '3px solid black' : props.focused && focusingCell.value === index ? '2px solid black' : '1px solid black' 
   }
 }
+const changeColor = () => {
+  if (props.focused) selectingColor.value = true
+}
 
 const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
   "moveLeft": () => {
@@ -48,7 +51,7 @@ const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> =
     if (props.focused) props.handleChoosePaletteCell(focusingCell.value) 
   },
   "changeColor": () => {
-    if (props.focused) selectingColor.value = true
+    changeColor()
   },
 }
 useKeyHandler(manipulatorActions)
@@ -68,6 +71,7 @@ const confirmColor = (color: ColorState) => {
       @click="props.handleChoosePaletteCell(index)"
     ></div>
   </div>
+
   <ColorSelector 
     v-show="selectingColor"
     :currentColor="props.colors[focusingCell]"
