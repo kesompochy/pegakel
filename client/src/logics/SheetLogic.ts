@@ -73,7 +73,8 @@ export default {
     sheet.sprites.splice(spriteIndex, 1);
  },
   addSpriteGroup(sheet: Sheet) {
-    sheet.groups.push(SpriteGroupLogic.createSpriteGroup("a"));
+    const defaultName = `group-${sheet.groups.length}`;
+    sheet.groups.push(SpriteGroupLogic.createSpriteGroup(defaultName));
   },
   updatePalette(sheet: Sheet, color: ColorState, cellId: number) {
     if (!sheet.palette) {
