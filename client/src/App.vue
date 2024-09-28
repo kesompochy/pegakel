@@ -16,6 +16,7 @@
   import Preview from './components/Preview.vue';
   import Help from './components/Help.vue';
   import SheetLogic from '~/logics/SheetLogic';
+  import KeyMapConfig from '~/configs/actionKeyMap.json'
   setMode(modes.SPRITE_EDITOR)
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
@@ -139,7 +140,7 @@
           :name="currentSheet.groups[currentSpriteGroupId].name"
           :updateGroupName="(name: string) => {SpriteGroupLogic.updateName(currentSheet.groups[currentSpriteGroupId], name)}"
       />
-      <Help :keyActionMap="{a: 'a'}"/>
+      <Help :keyActionMap="KeyMapConfig"/>
     </div>
   </div>
 </template>

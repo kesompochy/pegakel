@@ -1,25 +1,94 @@
 {
-  "goToSheetEditor": "Escape",
-  "moveLeft": "h",
-  "moveRight": "l",
-  "moveUp": "k",
-  "moveDown": "j",
-  "confirmColor": "Enter",
-  "selectColor": "a",
-  "changeColor": "c",
-  "draw": "a",
-  "erase": "x",
-  "switchFucsingComponent": "n",
-  "changeModeToResize": "s",
-  "changeModeToClip": "c",
-  "confirm": "Enter",
-  "goToSpriteEditor": "i",
-  "proceedFocusedSprite": "n",
-  "deleteFocusedSprite": "d",
-  "addSprite": "a",
-  "proceedFocusedGroup": "N",
-  "addSpriteGroup": "A",
-  "pickSpriteToGroup": "p",
-  "deleteSprite": "x",
-  "swapSprites": "S"
+  "goToSheetEditor": {
+    "key": "Escape",
+    "description": "Go to sheet editor"
+  },
+  "moveLeft": {
+    "key": "h",
+    "description": "Move cursor left"
+  },
+  "moveRight": {
+    "key": "l",
+    "description": "Move cursor right"
+  },
+  "moveUp": {
+    "key": "k",
+    "description": "Move cursor up"
+  },
+  "moveDown": {
+    "key": "j",
+    "description": "Move cursor down"
+  },
+  "confirmColor": {
+    "key": "Enter",
+    "description": "Confirm selected color"
+  },
+  "selectColor": {
+    "key": "a",
+    "description": "Select a color"
+  },
+  "changeColor": {
+    "key": "c",
+    "description": "Change current color"
+  },
+  "draw": {
+    "key": "a",
+    "description": "Start drawing"
+  },
+  "erase": {
+    "key": "x",
+    "description": "Erase pixel"
+  },
+  "switchFucsingComponent": {
+    "key": "n",
+    "description": "Switch to next component"
+  },
+  "changeModeToResize": {
+    "key": "s",
+    "description": "Change mode to resize"
+  },
+  "changeModeToClip": {
+    "key": "c",
+    "description": "Change mode to clip"
+  },
+  "confirm": {
+    "key": "Enter",
+    "description": "Confirm action"
+  },
+  "goToSpriteEditor": {
+    "key": "i",
+    "description": "Go to sprite editor"
+  },
+  "proceedFocusedSprite": {
+    "key": "n",
+    "description": "Proceed to next focused sprite"
+  },
+  "deleteFocusedSprite": {
+    "key": "d",
+    "description": "Delete focused sprite"
+  },
+  "addSprite": {
+    "key": "a",
+    "description": "Add new sprite"
+  },
+  "proceedFocusedGroup": {
+    "key": "N",
+    "description": "Proceed to next focused group"
+  },
+  "addSpriteGroup": {
+    "key": "A",
+    "description": "Add new sprite group"
+  },
+  "pickSpriteToGroup": {
+    "key": "p",
+    "description": "Pick sprite to add to group"
+  },
+  "deleteSprite": {
+    "key": "x",
+    "description": "Delete sprite"
+  },
+  "swapSprites": {
+    "key": "S",
+    "description": "Swap selected sprites"
+  }
 }
