@@ -2,10 +2,11 @@
   import { JsonRpcClient } from 'bunson';
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
-  import { watch, onMounted, onUnmounted, computed } from 'vue'
+  import { onMounted, onUnmounted, computed } from 'vue'
   const { currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
   const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
+  import { useKeyHandler } from '~/composables/useKeyHandler'
   import SpriteGroup from '~/core/SpriteGroup';
   import Sprite from '~/core/Sprite';
   import Sheet from '~/core/Sheet';
@@ -13,6 +14,7 @@
   import ColorState from '~/core/ColorState';
   import SpriteGroupLogic from '~/logics/SpriteGroupLogic';
   import Preview from './components/Preview.vue';
+  import Help from './components/Help.vue';
   import SheetLogic from '~/logics/SheetLogic';
   setMode(modes.SPRITE_EDITOR)
 
@@ -98,26 +100,12 @@
       setMode(modes.SHEET_EDITOR)
     }
   }
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key in keyActionMap) {
-      manipulationActions[keyActionMap[e.key]]()
-    }
-  }
 
   const updateClipSize = (width: number, height: number) => {
     SpriteGroupLogic.changeClipSize(currentSheet.value.groups[currentSpriteGroupId.value], {width, height})
   }
 
-  onMounted(() => {
-    window.addEventListener('keydown', (e) => {
-      handleKeyDown(e)
-    });
-  })
-  onUnmounted(() => {
-    window.removeEventListener('keydown', (e) => {
-      handleKeyDown(e)
-    });
-  })
+  useKeyHandler(keyActionMap, manipulationActions)
 
   const clippedSpritesForPreview = computed(() => {
     return SheetLogic.getClippedSpritesInGroup(currentSheet.value, currentSpriteGroupId.value) as Sprite[]
@@ -155,6 +143,7 @@
           :name="currentSheet.groups[currentSpriteGroupId].name"
           :updateGroupName="(name: string) => {SpriteGroupLogic.updateName(currentSheet.groups[currentSpriteGroupId], name)}"
       />
+      <Help :keyActionMap="{a: 'a'}"/>
     </div>
   </div>
 </template>
