@@ -122,10 +122,6 @@
   const clippedSpritesForPreview = computed(() => {
     return SheetLogic.getClippedSpritesInGroup(currentSheet.value, currentSpriteGroupId.value) as Sprite[]
   })
-
-  watch(() => currentSpriteGroupId.value, () => {
-    console.log(currentSpriteGroupId.value, clippedSpritesForPreview.value)
-  })
 </script>
 
 <template>

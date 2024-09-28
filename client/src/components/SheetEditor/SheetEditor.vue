@@ -32,7 +32,7 @@
   }
 
 
-  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite" | "deleteFocusedSprite" | "addSprite" | "proceedFocusedGroup" | "addSpriteGroup" | "moveLeft" | "moveDown" | "moveUp" | "moveRight" | "pickSpriteToGroup" | "deleteSprite"
+  type ManipulationAction = "goToSpriteEditor" | "proceedFocusedSprite" | "deleteFocusedSprite" | "addSprite" | "proceedFocusedGroup" | "addSpriteGroup" | "moveLeft" | "moveDown" | "moveUp" | "moveRight" | "pickSpriteToGroup" | "deleteSprite" | "swapSprites"
   const keyActionMap: Record<string, ManipulationAction> = {
     "i": "goToSpriteEditor",
     "n": "proceedFocusedSprite",
@@ -46,6 +46,7 @@
     "l": "moveRight",
     "p": "pickSpriteToGroup",
     "x": "deleteSprite",
+    "S": "swapSprites",
   }
   const manipulationActions: Record<ManipulationAction, () => void> = {
     "goToSpriteEditor": () => {
@@ -82,6 +83,18 @@
     },
     "deleteSprite": () => {
       sheetLogics.deleteSprite(props.sheet, focusedSpriteIdInSheet.value)
+    },
+    "swapSprites": () => {
+      const group = props.sheet.groups[props.currentSpriteGroupId]
+      if (group.sprites.length < 2) {
+        return
+      }
+      const spriteIndex = focusedSpriteInGroup.value
+      const nextSpriteIndex = spriteIndex + 1
+      if (nextSpriteIndex >= group.sprites.length) {
+        return
+      }
+      SpriteGroupLogics.swapSprites(group, spriteIndex, nextSpriteIndex)
     },
   }
   useKeyHandler(keyActionMap, manipulationActions)

@@ -1,5 +1,4 @@
 import SpriteGroup from "~/core/SpriteGroup";
-import ColorState from "~/core/ColorState";
 
 export default {
   createSpriteGroup(name: string) {
@@ -17,4 +16,7 @@ export default {
   updateName(spriteGroup: SpriteGroup, name: string) {
     spriteGroup.name = name;
   },
+  swapSprites(spriteGroup: SpriteGroup, index1: number, index2: number) {
+    [spriteGroup.sprites[index1], spriteGroup.sprites[index2]] = [spriteGroup.sprites[index2], spriteGroup.sprites[index1]];
+  }
 };
