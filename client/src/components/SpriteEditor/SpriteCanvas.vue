@@ -62,9 +62,15 @@ const handleKeyUp = (event: KeyboardEvent) => {
 }
 onMounted(() => {
   window.addEventListener('keyup', handleKeyUp)
+  window.addEventListener('keydown', () => {
+    props.updateManipulationMode('key')
+  });
 })
 onUnmounted(() => {
   window.removeEventListener('keyup', handleKeyUp)
+  window.removeEventListener('keydown', () => {
+    props.updateManipulationMode('key')
+  });
 })
 useKeyHandler(editorActions)
 
