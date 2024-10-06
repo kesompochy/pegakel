@@ -9,6 +9,10 @@ describe("Sheet", () => {
       propsData: {
         sheet: new SheetObject("test"),
         focusedSpriteInGroup: 0,
+        focusedSpriteIdInSheet: 0,
+        updateCurrentSpriteGroupId: () => {},
+        updateFocusedSpriteIdInSheet: () => {},
+        updateFocusedSpriteInGroup: () => {},
       }
     });
   });

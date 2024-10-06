@@ -13,7 +13,7 @@ describe("useKeyHandler", () => {
   it("should add event listener when mounted", () => {
     const addEventListenerSpy = vi.spyOn(window, "addEventListener");
     useKeyHandler({
-      "n": () => {},
+      "moveLeft": () => {},
     });
     expect(onMounted).toHaveBeenCalled();
     expect(addEventListenerSpy).toHaveBeenCalledWith("keydown", expect.any(Function));
@@ -21,7 +21,7 @@ describe("useKeyHandler", () => {
   it("should remove event listener when unmounted", () => {
     const removeEventListenerSpy = vi.spyOn(window, "removeEventListener");
     useKeyHandler({
-      "n": () => {},
+      "moveUp": () => {},
     });
     expect(onUnmounted).toHaveBeenCalled();
     const unmountedFn = (onUnmounted as Mock).mock.calls[0][0];

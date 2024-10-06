@@ -2,7 +2,7 @@
 import Sheet from '~/core/Sheet'
 
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
-import { ref, defineProps, computed } from 'vue'
+import { ref, defineProps } from 'vue'
 
 const props = defineProps<{ 
   sheet: Sheet, 
