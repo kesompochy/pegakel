@@ -33,7 +33,7 @@
   })
 
   const jsonRpcClient = new JsonRpcClient(SERVER_URL, {
-    methods: ['save', 'load', 'exportGroup'],
+    methods: ['save', 'load', 'exportGroup', 'exportSheet'],
     cors: 'cors'
   })
 
@@ -91,6 +91,17 @@
     SheetLogic.addSprite(sheet)
     updateSheet(sheet)
   }
+  const exportSheet = async () => {
+    const response = await jsonRpcClient.call('exportSheet', { 
+      sheet: currentSheet.value,
+      localPath: `${fileName.value}`
+    });
+    if ('error' in response) {
+      console.error(response.error)
+    }
+  }
+
+
   const updateSprite = (x: number, y: number, color: ColorState) => {
     SpriteLogic.updateSprite(currentSheet.value.sprites[currentSpriteId.value], { x, y, color } )
   }
@@ -130,6 +141,7 @@
       <div class="editor-container">
         <button @click="newSheet">New</button>
         <button @click="openFile">Open</button>
+        <button @click="exportSheet">Export</button>
         <input v-model="fileName" />
         <p class="file-name">{{ fileName }}</p>
         <button @click="save">Save</button>
