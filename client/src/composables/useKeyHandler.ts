@@ -1,9 +1,11 @@
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, reactive } from 'vue';
 import KeyMapConfig from '~/configs/actionKeyMap.json';
 
 interface KeyFunctionMap {
   [key: string]: () => void;
 }
+
+export const registeredActions = reactive<Set<keyof typeof KeyMapConfig>>(new Set());
 
 export const useKeyHandler = (actionFunctionMap: Partial<Record<keyof typeof KeyMapConfig, ()=>void>>) => {
   const keyFunctionMap: KeyFunctionMap  = Object.fromEntries(
@@ -19,8 +21,14 @@ export const useKeyHandler = (actionFunctionMap: Partial<Record<keyof typeof Key
   };
   onMounted(() => {
     window.addEventListener('keydown', handleKeyDown);
+    Object.keys(actionFunctionMap).forEach((action) => {
+      registeredActions.add(action as keyof typeof KeyMapConfig);
+    });
   });
   onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown);
+    Object.keys(actionFunctionMap).forEach((action) => {
+      registeredActions.delete(action as keyof typeof KeyMapConfig);
+    });
   });
 }

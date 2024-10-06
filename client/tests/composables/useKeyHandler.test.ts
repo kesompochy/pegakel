@@ -2,6 +2,7 @@ vi.mock("vue", () => {
   return {
     onMounted: vi.fn((fn) => fn()),
     onUnmounted: vi.fn((fn) => fn()),
+    reactive: vi.fn((obj) => obj),
   }
 });
 

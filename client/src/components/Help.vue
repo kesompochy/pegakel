@@ -1,10 +1,12 @@
 <script setup lang="ts">
   import { defineProps } from 'vue'
   import KeyMapConfig from '~/configs/actionKeyMap.json'
+  import { registeredActions } from '~/composables/useKeyHandler';
 
   const props = defineProps<{ 
     keyActionMap: typeof KeyMapConfig,
   }>()
+
 </script>
 
 <template>
@@ -12,8 +14,8 @@
     <div class="help">
       <h1>Help</h1>
       <div class="help-content">
-        <div class="help-item" v-for="(value, action) in props.keyActionMap" :key="action">
-          <span class="key">{{ value.key }}</span><span class="action">{{ value.description }}</span>
+        <div class="help-item" v-for="(value, action) in registeredActions" :key="action">
+          <span class="key">{{ props.keyActionMap[value].key }}</span><span class="action">{{ props.keyActionMap[value].description }}</span>
         </div>
       </div>
     </div>
