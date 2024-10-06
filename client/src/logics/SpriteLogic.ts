@@ -54,5 +54,16 @@ export default {
       }
     }
     return newSprite;
+  },
+  cloneSprite(sprite: Sprite): Sprite {
+    const newSprite = this.createSprite(sprite.width, sprite.height);
+    for (let y = 0; y < sprite.height; y++) {
+      for (let x = 0; x < sprite.width; x++) {
+        newSprite.pixels[y][x] = sprite.pixels[y][x];
+      }
+    }
+    newSprite.clipX = sprite.clipX;
+    newSprite.clipY = sprite.clipY;
+    return newSprite;
   }
 }

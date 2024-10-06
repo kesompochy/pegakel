@@ -27,4 +27,11 @@ describe("SheetLogic", () => {
     SpriteGroupLogic.changeClipSize(sheet.groups[0], { width: 8, height: 8 });
     expect(SheetLogic.getClippedSpritesInGroup(sheet, 0).length).toBe(2);
   });
+  it("should clone a sprite from a sprite", () => {
+    const sheet = SheetLogic.createSheet("sheet");
+    SheetLogic.init(sheet);
+    SheetLogic.cloneSprite(sheet, 0);
+    expect(sheet.sprites.length).toBe(2);
+    expect(sheet.sprites[1]).toStrictEqual(sheet.sprites[0]);
+  });
 });

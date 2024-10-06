@@ -89,6 +89,9 @@
     "swapSprites": () => {
       swapSprites()
     },
+    "cloneSprite": () => {
+      sheetLogics.cloneSprite(props.sheet, focusedSpriteIdInSheet.value)
+    },
   }
   useKeyHandler(manipulationActions)
 </script>

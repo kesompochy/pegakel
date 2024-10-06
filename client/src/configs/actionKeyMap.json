@@ -90,5 +90,9 @@
   "swapSprites": {
     "key": "S",
     "description": "Swap selected sprites"
+  },
+  "cloneSprite": {
+    "key": "c",
+    "description": "Clone sprite"
   }
 }

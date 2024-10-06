@@ -82,4 +82,9 @@ export default {
     }
     sheet.palette[cellId] = color;
   },
+  cloneSprite(sheet: Sheet, spriteIndex: number) {
+    const sprite = sheet.sprites[spriteIndex];
+    const newSprite = SpriteLogic.cloneSprite(sprite);
+    sheet.sprites.push(newSprite);
+  }
 };
