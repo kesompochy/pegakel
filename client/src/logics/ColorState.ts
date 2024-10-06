@@ -15,4 +15,7 @@ export default {
     return `#${toHex(colorState.r)}${toHex(colorState.g)}${toHex(colorState.b)}`;
   },
   createEmptyColorState,
+  getRgba(colorState: ColorState): string {
+    return `rgba(${colorState.r},${colorState.g},${colorState.b},${colorState.a})`;
+  }
 };

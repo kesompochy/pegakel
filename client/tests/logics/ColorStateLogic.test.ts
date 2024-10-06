@@ -15,4 +15,8 @@ describe("ColorStateLogic", () => {
     const colorState = new ColorState(256, 256, 256, 256);
     expect(ColorStateLogic.getHex(colorState)).toBe("#ffffff");
   });
+  it("should return a rgba color", () => {
+    const colorState = new ColorState(100, 10, 200, 0.5);
+    expect(ColorStateLogic.getRgba(colorState)).toBe("rgba(100,10,200,0.5)");
+  });
 });
