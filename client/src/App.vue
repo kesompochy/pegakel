@@ -2,7 +2,7 @@
   import { JsonRpcClient } from 'bunson';
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
-  import { onMounted, onUnmounted, computed } from 'vue'
+  import { onMounted, computed } from 'vue'
   const { currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
   const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
@@ -85,6 +85,11 @@
       console.error(response.error)
     }
   }
+  const newSheet = () => {
+    const sheet = new Sheet("sheet")
+    SheetLogic.addSprite(sheet)
+    updateSheet(sheet)
+  }
   const updateSprite = (x: number, y: number, color: ColorState) => {
     SpriteLogic.updateSprite(currentSheet.value.sprites[currentSpriteId.value], { x, y, color } )
   }
@@ -113,6 +118,7 @@
   <div>
     <div class="app-container">
       <div class="editor-container">
+        <button @click="newSheet">New</button>
         <button @click="openFile">Open</button>
         <input v-model="fileName" />
         <p class="file-name">{{ fileName }}</p>
