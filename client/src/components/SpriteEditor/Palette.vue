@@ -53,6 +53,10 @@ const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> =
   "changeColor": () => {
     changeColor()
   },
+  "confirm": () => {
+    console.log(selectingColor.value)
+    if (props.focused) confirmColor(props.colors[focusingCell.value])
+  }
 }
 useKeyHandler(manipulatorActions)
 
