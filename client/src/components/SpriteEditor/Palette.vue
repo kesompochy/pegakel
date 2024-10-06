@@ -26,7 +26,7 @@ const colors = computed(() => {
 });
 const generateCellStyle = (color: ColorState, index: number) => {
   return {
-    backgroundColor: color ? colorStateLogic.getHex(color) : 'transparent',
+    backgroundColor: color ? colorStateLogic.getRgba(color) : 'transparent',
     border: props.activeColor === index ? '3px solid black' : props.focused && focusingCell.value === index ? '2px solid black' : '1px solid black' 
   }
 }

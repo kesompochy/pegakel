@@ -56,8 +56,8 @@ const editorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
   },
 }
 const handleKeyUp = (event: KeyboardEvent) => {
-  if (KeyMapConfig['draw'] === event.key) pushingDrawingKey.value = false
-  if (KeyMapConfig['erase'] === event.key) pushingErasingKey.value = false
+  if (KeyMapConfig['draw'].key === event.key) pushingDrawingKey.value = false
+  if (KeyMapConfig['erase'].key === event.key) pushingErasingKey.value = false
 }
 onMounted(() => {
   window.addEventListener('keyup', handleKeyUp)
