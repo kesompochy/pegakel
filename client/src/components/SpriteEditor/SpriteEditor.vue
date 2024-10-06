@@ -25,6 +25,7 @@
     groupSprites: Sprite[],
     palette: ColorState[],
     updatePalette: (color: ColorState, cellId: number) => void,
+    scale: number,
   }>();
   const { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode, canvasManipulatingCell, } = useSpriteEditor()
 
@@ -162,6 +163,7 @@
         :updateSprite="props.updateSprite"
         :focused="focusingComponent === 'canvas'"
         :clipSize="props.spriteGroup.clipSize"
+        :scale="props.scale"
         class="center"
       />
       <input type="number" v-model="canvasResizeDeltaRight"  class="right"  v-show="focusingComponent === 'resize'" ref="inputElementRight">

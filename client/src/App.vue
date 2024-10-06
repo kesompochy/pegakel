@@ -2,7 +2,7 @@
   import { JsonRpcClient } from 'bunson';
   import useAppMode from '~/composables/useAppMode'
   import useAppSheet from '~/composables/useAppSheet'
-  import { onMounted, computed } from 'vue'
+  import { onMounted, computed, ref } from 'vue'
   const { currentComponent, setMode } = useAppMode()
   import { modes } from '~/composables/consts'
   const { currentSheet, currentSpriteId, initSheetForTest, currentSpriteGroupId, updateSheet, fileName, setFileName } = useAppSheet()
@@ -18,6 +18,7 @@
   import SheetLogic from '~/logics/SheetLogic';
   import KeyMapConfig from '~/configs/actionKeyMap.json'
   setMode(modes.SPRITE_EDITOR)
+  const scale = ref<number>(100)
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
   const FILE_NAME = import.meta.env.VITE_FILE_NAME || "default"
@@ -98,9 +99,16 @@
   }
 
   type ManipulationAction = "goToSheetEditor"
+  const scaleStep = 10
   const manipulationActions: Record<ManipulationAction, () => void> = {
     "goToSheetEditor": () => {
       setMode(modes.SHEET_EDITOR)
+    },
+    "zoomIn": () => {
+      scale.value += scaleStep
+    },
+    "zoomOut": () => {
+      scale.value = Math.max(scale.value - scaleStep, 10)
     }
   }
   useKeyHandler(manipulationActions)
@@ -112,11 +120,13 @@
   const clippedSpritesForPreview = computed(() => {
     return SheetLogic.getClippedSpritesInGroup(currentSheet.value, currentSpriteGroupId.value) as Sprite[]
   })
+
 </script>
 
 <template>
   <div>
     <div class="app-container">
+      <span class="scale">{{ scale }}%</span>
       <div class="editor-container">
         <button @click="newSheet">New</button>
         <button @click="openFile">Open</button>
@@ -138,7 +148,8 @@
           :currentSpriteGroupId="currentSpriteGroupId"
           :updateCurrentSpriteGroupId="(id: number) => {currentSpriteGroupId = id}"
           :palette="currentSheet.palette"
-           :updatePalette="(color, cellId) => {SheetLogic.updatePalette(currentSheet, color, cellId)}"
+          :updatePalette="(color, cellId) => {SheetLogic.updatePalette(currentSheet, color, cellId)}"
+          :scale="scale"
         />
       </div> 
       <Preview

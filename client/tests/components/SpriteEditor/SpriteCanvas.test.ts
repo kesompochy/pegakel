@@ -15,6 +15,7 @@ describe("SpriteCanvas", () => {
         activeTool: "draw",
         manipulationMode: "key",
         clipSize: undefined,
+        scale: 100,
       }
     });
   });

@@ -94,5 +94,13 @@
   "cloneSprite": {
     "key": "c",
     "description": "Clone sprite"
+  },
+  "zoomIn": {
+    "key": "+",
+    "description": "Zoom in"
+  },
+  "zoomOut": {
+    "key": "-",
+    "description": "Zoom out"
   }
 }

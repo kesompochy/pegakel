@@ -24,6 +24,7 @@ describe("SpriteEditor", () => {
         groupSprites: [],
         updatePalette: () => {},
         palette: [],
+        scale: 100,
       },
     });
   });

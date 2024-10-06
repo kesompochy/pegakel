@@ -22,6 +22,7 @@ const props = defineProps<{
   updateSprite: (x: number, y: number, color: ColorState) => void, 
   focused: boolean, 
   clipSize: {width: number, height: number} | undefined
+  scale: number,
 }>()
 
 const editorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
@@ -122,7 +123,7 @@ const handleCanvasClick = (event: MouseEvent) => {
   <div class="canvas-container">
     <SpriteCanvas 
       :sprite="props.sprite" 
-      :width="400" 
+      :width="400 * props.scale/100" 
       :afterDraw="afterDraw"
       :propsForAfterDraw="{manipulatingCell: manipulatingCell, clipSize: props.clipSize}"
       :registerCallbackCanvasPointerDownOrMove="(canvas: HTMLCanvasElement) => {registerCallbackCanvasPointerDownOrMove(canvas, handleCanvasClick)}"
