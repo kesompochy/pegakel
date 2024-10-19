@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import ColorState from '~/core/ColorState'
 import ColorSelector from './ColorSelector.vue'
 import colorStateLogic from '~/logics/ColorState'
@@ -15,9 +15,34 @@ const props = defineProps<{
 }>();
 
 const focusingCell = ref(0)
-const col = ref(16)
-const row = ref(4)
+const col = ref(4)
+const row = ref(16)
 const selectingColor = ref(false)
+const containerRef = ref<HTMLDivElement | null>(null)
+
+const cellSizePixel = 30
+const calculateLayout = () => {
+  if (!containerRef.value) return
+  const width = containerRef.value.clientWidth
+  const cellNum = 64;
+  col.value = Math.floor(width / cellSizePixel)
+  row.value = Math.ceil(cellNum / col.value)
+}
+const calculateSelectorPosition = computed(() => {
+  const cellX = focusingCell.value % col.value * cellSizePixel
+  const cellY = Math.floor(focusingCell.value / col.value) * cellSizePixel
+  const selectorX = cellX + cellSizePixel
+  const selectorY = cellY + cellSizePixel
+  return {selectorX, selectorY}
+});
+
+onMounted(() => {
+  calculateLayout()
+  window.addEventListener('resize', calculateLayout)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', calculateLayout)
+})
 
 const colors = computed(() => {
   const colors = new Array(Math.max(props.colors.length, 64)).fill(colorStateLogic.createEmptyColorState()).map((_, index) => props.colors[index])
@@ -67,35 +92,40 @@ const confirmColor = (color: ColorState) => {
 </script>
 
 <template class="palette">
-  <div class="palette-container">
-    <div
-      v-for="(color, index) in colors"
-      class="color-cell"
-      :style="generateCellStyle(color as ColorState, index)"
-      @click="props.handleChoosePaletteCell(index)"
-    ></div>
-  </div>
+  <div class="palette-wrapper" ref="containerRef">
+    <div class="palette-container container">
+      <div
+        v-for="(color, index) in colors"
+        class="color-cell"
+        :style="generateCellStyle(color as ColorState, index)"
+        @click="props.handleChoosePaletteCell(index)"
+      ></div>
+    </div>
 
-  <ColorSelector 
-    v-show="selectingColor"
-    :currentColor="props.colors[focusingCell]"
-    :handleConfirmColor="color => confirmColor(color)"
-    :focused="selectingColor"
-  />
+    <ColorSelector 
+      v-show="selectingColor"
+      :currentColor="props.colors[focusingCell]"
+      :handleConfirmColor="color => confirmColor(color)"
+      :focused="selectingColor"
+      :positionLeft="calculateSelectorPosition.selectorX"
+      :positionTop="calculateSelectorPosition.selectorY"
+    />
+  </div>
 </template>
 
 <style scoped lang="scss">
+.palette-wrapper{
+  position: relative;
+}
 .palette-container{
-  border: 1px solid black;
   display: grid;
+  margin: 10px;
   grid-template-columns: v-bind("'repeat(' + col + ', 1fr)'");
   grid-template-rows: v-bind("'repeat(' + row + ', 1fr)'");
-  width: 500px;
-  height: 120px;
+  aspect-ratio: v-bind("col / row");
 }
 .color-cell{
-  margin: 2px;
-  width: 20px;
-  height: 20px;
+  aspect-ratio: 1;
+  box-sizing: border-box;
 }
 </style>

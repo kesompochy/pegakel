@@ -8,6 +8,8 @@ const props = defineProps<{
   currentColor: ColorState | undefined;
   handleConfirmColor: (color: ColorState) => void;
   focused: boolean;
+  positionLeft: number | undefined;
+  positionTop: number | undefined;
 }>();
 
 const confirmColor = () => {
@@ -56,24 +58,45 @@ useKeyHandler(manipulatorActions)
 
 <template>
   <div class="color-selector-container">
-    <input step="1"    type="number" ref="colorRefR" @input="updateSelectingColor" :value="inputR">
-    <input step="1"    type="number" ref="colorRefG" @input="updateSelectingColor" :value="inputG">
-    <input step="1"    type="number" ref="colorRefB" @input="updateSelectingColor" :value="inputB">
-    <input step="0.01" type="number" ref="colorRefA" @input="updateSelectingColor" :value="inputA" default="1">
+    <div class="color-selector-input-container">
+      <input step="1"    type="number" ref="colorRefR" @input="updateSelectingColor" :value="inputR">
+      <input step="1"    type="number" ref="colorRefG" @input="updateSelectingColor" :value="inputG">
+      <input step="1"    type="number" ref="colorRefB" @input="updateSelectingColor" :value="inputB">
+      <input step="0.01" type="number" ref="colorRefA" @input="updateSelectingColor" :value="inputA" default="1">
+    </div>
     <div class="preview" :style="{ backgroundColor: `rgba(${inputR}, ${inputG}, ${inputB}, ${inputA})`}"/>
   </div>
 </template>
 
 <style scoped lang="scss">
 .color-selector-container {
+  .color-selector-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  padding: 5px;
+  position: absolute;
+  left: v-bind('positionLeft + "px"');
+  top: v-bind('positionTop + "px"');
   display: flex;
+  flex-direction: row;
   gap: 8px;
   align-items: center;
+  margin: 5px;
   .preview {
-    width: 10px;
-    height: 10px;
+    width: 40px;
+    height: 40px;
     border: 1px solid black;
   }
+  input {
+    width: 40px;
+  }
+
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 </style>

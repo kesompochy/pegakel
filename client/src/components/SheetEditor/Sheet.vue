@@ -13,7 +13,7 @@ const props = defineProps<{
   updateFocusedSpriteIdInSheet: (spriteId: number) => void,
   updateFocusedSpriteInGroup: (index: number) => void,
 }>()
-const pixelWidth = ref<number>(2)
+const pixelWidth = ref<number>(3)
 
 const generateSpriteStyleBorder = (groupIndex: number, spriteIndexInGroup: number, spriteIndexInSheet: number) => {
   let border = 'none'
@@ -65,30 +65,32 @@ const handleClickSpriteInGroup = (groupIndex: number, spriteIndexInGroup: number
 </script>
 
 <template>
-  <div class="sheet-container">
+  <div class="sheet-container container">
     <div class="sheet">
       <div class="sprites">
-        <SpriteCanvas 
-          v-for="(sprite, index) in props.sheet.sprites" 
-          :sprite="sprite" 
-          :width="pixelWidth * sprite.width" 
-          :border="generateSpriteStyleBorderInSheet(index)"
-          @click="() => { handleSpriteClick(index) }"
-        />
+        <div class="sprite" 
+          :key="index" 
+          v-for="(sprite, index) in props.sheet.sprites"
+          :class="{ focused: props.focusedSpriteIdInSheet === index }">
+          <SpriteCanvas 
+            :sprite="sprite" 
+            :width="pixelWidth * sprite.width" 
+            @click="() => { handleSpriteClick(index) }"
+          />
+        </div>
       </div>
       <div class="group" 
         :key="groupIndex" 
         v-for="(group, groupIndex) in props.sheet.groups"
-        :style="{
-          border: props.currentSpriteGroupId === groupIndex ? '2px solid blue' : '1px solid blue'
+        :class="{
+          focused: props.currentSpriteGroupId === groupIndex
         }"
         @click="() => { handleGroupClick(groupIndex) }"
       >
         <SpriteCanvas 
           v-for="(spriteIndex, index) in group.sprites" 
           :sprite="props.sheet.sprites[spriteIndex]" 
-          :width="pixelWidth * props.sheet.sprites[spriteIndex]?.width" 
-          :border="generateSpriteStyleBorder(groupIndex, index, spriteIndex)"
+          :width="0.8 * pixelWidth * props.sheet.sprites[spriteIndex]?.width" 
           :overlay="generateSpriteStyleOverlay(spriteIndex)"
           @click="() => { handleClickSpriteInGroup(groupIndex, index) }"
         />
@@ -98,17 +100,30 @@ const handleClickSpriteInGroup = (groupIndex: number, spriteIndexInGroup: number
 </template>
 
 <style scoped lang="scss">
-.group {
-  display: flex;
-  width: fit-content;
-}
 .sheet-container {
   width: 100%;
-  border: 1px solid black;
-  padding: 10px;
-  .sprites {
-    display: flex;
-    flex-wrap: wrap;
+  .sheet{
+    .sprites {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 100px;
+      box-sizing: border-box;
+      .sprite {
+        &.focused {
+          border: 2px solid #000;
+        }
+      }
+    }
+    .group {
+      margin: 5px;
+      display: flex;
+      width: fit-content;
+      border: 1px solid #333;
+      &.focused {
+        border: 2px solid #333;
+      }
+      box-sizing: border-box;
+    }
   }
 }
 </style>

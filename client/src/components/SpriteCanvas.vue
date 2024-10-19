@@ -88,7 +88,7 @@
 </script>
 
 <template>
-  <div class="container">
+  <div class="sprite-canvas-container">
     <canvas 
       ref="canvasRef" 
       :style="{ 
@@ -106,7 +106,7 @@
 </template>
 
 <style scoped lang="scss">
-.container {
+.sprite-canvas-container {
   position: relative;
   width: fit-content;
   height: fit-content;

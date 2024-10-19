@@ -3,11 +3,12 @@
   const props = defineProps<{
     activeTool: Tool; 
     handleChangeTool: (tool: Tool) => void;
+    handleGoToSheetEditor: () => void;
   }>();
 </script>
 
 <template>
-  <div class="toolbox">
+  <div class="toolbox container">
     <button 
       @click="props.handleChangeTool('draw')"
       :style="{ backgroundColor: props.activeTool === 'draw' ? 'lightblue' : 'white' }"
@@ -16,14 +17,19 @@
        @click="props.handleChangeTool('erase')"
        :style="{ backgroundColor: props.activeTool === 'erase' ? 'lightblue' : 'white' }"
       >Erase</button>
+    <button 
+      @click="props.handleGoToSheetEditor"
+    >Go to Sheet Editor</button>
   </div>
 </template>
 
 <style scoped lang="scss">
 .toolbox {
-  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
 }
 button {
-  margin: 5px;
+  margin: 10px;
 }
 </style>

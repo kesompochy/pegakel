@@ -53,7 +53,7 @@ const generateCanvasBorderStyle = (index: number) => {
 
 <template>
   <div>
-    <div class="container">
+    <div class="preview-container container">
       <input class="grpup-name" type="text" v-model="groupName" @input="()=>{props.updateGroupName(groupName)}"/>
       <SpriteCanvas :sprite="props.sprites[drawingSpriteNumber | 0]" :width="200" />
       <SpriteCanvas v-for="(sprite, index) in props.sprites" :key="index" :sprite="sprite" :width="100" :border="generateCanvasBorderStyle(index)" />
@@ -62,7 +62,7 @@ const generateCanvasBorderStyle = (index: number) => {
 </template>
 
 <style scoped lang="scss">
-.container {
+.preview-container {
   margin: 10px;
   display: flex;
   flex-direction: column;

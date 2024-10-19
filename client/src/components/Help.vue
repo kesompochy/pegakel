@@ -10,7 +10,7 @@
 </script>
 
 <template>
-  <div class="help-container">
+  <div class="help-container container">
     <div class="help">
       <h1>Help</h1>
       <div class="help-content">
@@ -25,14 +25,9 @@
 <style scoped lang="scss">
 .help-container {
   max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
 
   .help {
-    background-color: #f5f5f5;
-    border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
     h1 {
       font-size: 24px;

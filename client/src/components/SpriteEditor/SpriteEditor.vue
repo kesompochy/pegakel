@@ -145,42 +145,51 @@
 </script>
 
 <template>
-  <div>
-    <input type="number" :disabled="focusingComponent!=='clip'" v-model="clipSizeWidth" ref="clipSizeInputWidthElement">
-    <input type="number" :disabled="focusingComponent!=='clip'" v-model="clipSizeHeight">
-    <div class="canvas-container">
-      <input type="number" v-model="canvasResizeDeltaTop"  class="top"  v-show="focusingComponent === 'resize'" ref="inputElementTop">
-      <input type="number" v-model="canvasResizeDeltaLeft" class="left" v-show="focusingComponent === 'resize'" ref="inputElementLeft">
-      <SpriteCanvas 
-        :width="props.sprite?.width || 0" 
-        :height="props.sprite?.height || 0" 
-        :sprite="props.sprite"
-        :activeColorState="props.palette[activeColor]"
-        :activeTool="activeTool"
-        :manipulationMode="manipulationMode"
-        :updateManipulationMode="updateManipulationMode"
-        :manipulatingCell="canvasManipulatingCell"
-        :updateSprite="props.updateSprite"
-        :focused="focusingComponent === 'canvas'"
-        :clipSize="props.spriteGroup.clipSize"
-        :scale="props.scale"
-        class="center"
-      />
-      <input type="number" v-model="canvasResizeDeltaRight"  class="right"  v-show="focusingComponent === 'resize'" ref="inputElementRight">
-      <input type="number" v-model="canvasResizeDeltaBottom" class="bottom" v-show="focusingComponent === 'resize'" ref="inputElementBottom">
-    </div>
-    <Palette 
-      :colors="props.palette" 
-      :handleChoosePaletteCell="activateColor"
-      :activeColor="activeColor"
-      :handleUpdatePalette="updatePalette"
-      :focused="focusingComponent === 'palette'"
-      />
-    <ToolBox
-      :activeTool="activeTool"
-      :handleChangeTool="updateActiveTool"
-    />
-    <button @click="goToSheetEditor">Go to Sheet Editor</button>
+  <div class="sprite-editor-container">
+    <div class="canvas-tool-container">
+       <div class="sprite-editor-tools-container">
+        <div class="canvas-size-container container">
+          <span class="canvas-size-span">
+          <input type="number" :disabled="focusingComponent!=='clip'" v-model="clipSizeWidth" ref="clipSizeInputWidthElement">
+          ×
+          <input type="number" :disabled="focusingComponent!=='clip'" v-model="clipSizeHeight">
+          </span>
+        </div>
+        <ToolBox
+          :activeTool="activeTool"
+          :handleChangeTool="updateActiveTool"
+          :handleGoToSheetEditor="goToSheetEditor"
+        />
+        <Palette 
+          :colors="props.palette" 
+          :handleChoosePaletteCell="activateColor"
+          :activeColor="activeColor"
+          :handleUpdatePalette="updatePalette"
+          :focused="focusingComponent === 'palette'"
+        />
+      </div>
+        <div class="sprite-editor-canvas-container">
+        <input type="number" v-model="canvasResizeDeltaTop"  class="top sprite-editor-resize-input"  v-show="focusingComponent === 'resize'" ref="inputElementTop">
+        <input type="number" v-model="canvasResizeDeltaLeft" class="left sprite-editor-resize-input" v-show="focusingComponent === 'resize'" ref="inputElementLeft">
+        <SpriteCanvas 
+          :width="props.sprite?.width || 0" 
+          :height="props.sprite?.height || 0" 
+          :sprite="props.sprite"
+          :activeColorState="props.palette[activeColor]"
+          :activeTool="activeTool"
+          :manipulationMode="manipulationMode"
+          :updateManipulationMode="updateManipulationMode"
+          :manipulatingCell="canvasManipulatingCell"
+          :updateSprite="props.updateSprite"
+          :focused="focusingComponent === 'canvas'"
+          :clipSize="props.spriteGroup.clipSize"
+          :scale="props.scale"
+          class="center"
+        />
+        <input type="number" v-model="canvasResizeDeltaRight"  class="right sprite-editor-resize-input"  v-show="focusingComponent === 'resize'" ref="inputElementRight">
+        <input type="number" v-model="canvasResizeDeltaBottom" class="bottom sprite-editor-resize-input" v-show="focusingComponent === 'resize'" ref="inputElementBottom">
+      </div>
+   </div>
   </div>
 </template>
 
@@ -189,30 +198,59 @@ canvas{
   border: 1px solid black;
 }
 
-.canvas-container {
+.sprite-editor-canvas-container {
   display: grid;
-  grid-template-areas:
-    ".    top     ."
-    "left canvas  right"
-    ".     bottom ."
-  ;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto auto;
+  gap: 2px;
+  align-items: center;
+  justify-items: center;
+
+  width: fit-content;
+  height: fit-content;
+
   .top {
-    grid-area: top;
+    grid-area: 1 / 2 / 2 / 3;
   }
   .left {
-    grid-area: left;
+    grid-area: 2 / 1 / 3 / 2;
   }
   .right {
-    grid-area: right;
+    grid-area: 2 / 3 / 3 / 4;
   }
   .bottom {
-    grid-area: bottom;
+    grid-area: 3 / 2 / 4 / 3;
   }
   .center {
-    grid-area: canvas;
+    grid-area: 2 / 2 / 3 / 3;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .sprite-editor-resize-input {
+    text-align: center;
+    width: 100px;
+  }
+
+  margin: 5px;
+}
+
+.canvas-tool-container {
+  display: flex;
+  flex-direction: row;
+}
+.sprite-editor-tools-container {
+  width: 200px;
+  margin: 5px;
+}
+
+.canvas-size-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  input {
+    width: 50px;
   }
 }
 

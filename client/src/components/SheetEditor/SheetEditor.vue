@@ -97,24 +97,44 @@
 </script>
 
 <template>
-  <div class="container">
-    <SheetComponent 
-      :sheet="props.sheet" 
-      :currentSpriteGroupId="props.currentSpriteGroupId"
-      :focusedSpriteInGroup="focusedSpriteInGroup"
-      :focusedSpriteIdInSheet="focusedSpriteIdInSheet"
-      :updateCurrentSpriteGroupId="props.updateCurrentSpriteGroupId"
-      :updateFocusedSpriteIdInSheet="(index: number) => { focusedSpriteIdInSheet = index }"
-      :updateFocusedSpriteInGroup="(index: number) => { focusedSpriteInGroup = index }"
-    />
-    <button @click="changeModeToSpriteEditor()">Edit</button>
-    <button @click="addSprite()">Add</button>
-    <button @click="deleteSprite()">Delete</button>
-    <button @click="deleteSpriteFromGroup(props.currentSpriteGroupId, focusedSpriteInGroup)">Remove Sprite from Group</button>
-    <button @click="pickSpriteToGroup()">Pick Sprite to Group</button>
-    <button @click="swapSprites()">Swap Sprites</button>
+  <div class="sheet-editor-container">
+    <div class="sheet-editor-tools-container container">
+      <button @click="changeModeToSpriteEditor()">Edit</button>
+      <button @click="addSprite()">Add</button>
+      <button @click="deleteSprite()">Delete</button>
+      <button @click="deleteSpriteFromGroup(props.currentSpriteGroupId, focusedSpriteInGroup)">Remove Sprite from Group</button>
+      <button @click="pickSpriteToGroup()">Pick Sprite to Group</button>
+      <button @click="swapSprites()">Swap Sprites</button>
+    </div>
+    <div class="sheet-editor-sheet-wrapper">
+      <SheetComponent 
+        :sheet="props.sheet" 
+        :currentSpriteGroupId="props.currentSpriteGroupId"
+        :focusedSpriteInGroup="focusedSpriteInGroup"
+        :focusedSpriteIdInSheet="focusedSpriteIdInSheet"
+        :updateCurrentSpriteGroupId="props.updateCurrentSpriteGroupId"
+        :updateFocusedSpriteIdInSheet="(index: number) => { focusedSpriteIdInSheet = index }"
+        :updateFocusedSpriteInGroup="(index: number) => { focusedSpriteInGroup = index }"
+      />
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.sheet-editor-container {
+  display: flex;
+  flex-direction: row;
+
+  .sheet-editor-tools-container {
+    display: flex;
+    flex-direction: column;
+    width: 170px;
+  }
+
+  .sheet-editor-sheet-wrapper {
+    min-width: 500px;
+    width: fit-content;
+    margin: 80px;
+  }
+}
 </style>

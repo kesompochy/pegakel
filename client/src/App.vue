@@ -135,18 +135,22 @@
 </script>
 
 <template>
-  <div>
+  <div class="app-wrapper">
+    <input v-model="fileName" class="file-name-input" />
     <div class="app-container">
-      <span class="scale">{{ scale }}%</span>
-      <div class="editor-container">
+      <div class="metadata-tools container">
         <button @click="newSheet">New</button>
         <button @click="openFile">Open</button>
         <button @click="exportSheet">Export</button>
-        <input v-model="fileName" />
-        <p class="file-name">{{ fileName }}</p>
         <button @click="save">Save</button>
         <button @click="exportAsGif">Export as Gif</button>
-        <component 
+        <div class="scale">
+          <span>{{ scale }}%</span>
+          <button @click="manipulationActions.zoomIn">+</button>
+          <button @click="manipulationActions.zoomOut">-</button></div>
+      </div>
+      <div class="editor-wrapper">
+       <component 
           :is="currentComponent" 
           :sheet="currentSheet" 
           :sprite="currentSheet.sprites[currentSpriteId] as Sprite"
@@ -164,24 +168,53 @@
           :scale="scale"
         />
       </div> 
-      <Preview
-          :sprites="clippedSpritesForPreview"
-          :name="currentSheet.groups[currentSpriteGroupId].name"
-          :updateGroupName="(name: string) => {SpriteGroupLogic.updateName(currentSheet.groups[currentSpriteGroupId], name)}"
-      />
-      <Help :keyActionMap="KeyMapConfig"/>
+      <div class="common-tool-wrapper">
+        <Preview
+            :sprites="clippedSpritesForPreview"
+            :name="currentSheet.groups[currentSpriteGroupId].name"
+            :updateGroupName="(name: string) => {SpriteGroupLogic.updateName(currentSheet.groups[currentSpriteGroupId], name)}"
+        />
+        <div class="app-help-wrapper">
+          <Help :keyActionMap="KeyMapConfig"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.app-wrapper {
+  min-width: 60vw;
+  .editor-wrapper {
+    margin-top: 20px;
+  }
+}
 .app-container{
   display: flex;
   flex-direction: row;
   gap: 20px;
-  .file-name {
-    width: 500px;
+  width: 100%;
+}
+.metadata-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  .scale {
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }
+input.file-name-input {
+  width: 100%;
+}
 
+.common-tool-wrapper {
+  display: flex;
+  flex-direction: row;
+}
 </style>

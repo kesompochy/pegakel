@@ -126,7 +126,7 @@ const handleCanvasClick = (event: MouseEvent) => {
 </script>
 
 <template>
-  <div class="canvas-container">
+  <div class="sprite-canvas-canvas-container">
     <SpriteCanvas 
       :sprite="props.sprite" 
       :width="400 * props.scale/100" 
@@ -139,10 +139,12 @@ const handleCanvasClick = (event: MouseEvent) => {
 </template>
 
 <style scoped lang="scss">
-div.canvas-container {
-  position: relative;
-  width: 400px;
-  height: 400px;
+div.sprite-canvas-canvas-container {
+  width: 1000px;
+  height: 800px;
   margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
 }
 </style>
