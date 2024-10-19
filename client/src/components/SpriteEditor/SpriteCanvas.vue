@@ -140,7 +140,7 @@ const handleCanvasClick = (event: MouseEvent) => {
 
 <style scoped lang="scss">
 div.sprite-canvas-canvas-container {
-  width: 1000px;
+  width: 100%;
   height: 800px;
   margin: 5px;
   display: flex;

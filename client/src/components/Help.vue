@@ -27,8 +27,6 @@
   max-width: 600px;
 
   .help {
-    padding: 20px;
-
     h1 {
       font-size: 24px;
       margin-bottom: 20px;

@@ -6,8 +6,6 @@
   const props = defineProps<{ 
     sprite?: Sprite, 
     width: number,
-    border?: string,
-    overlay?: string,
     beforeDraw?: (ctx: CanvasRenderingContext2D) => void,
     afterDraw?: (ctx: CanvasRenderingContext2D) => void,
     onMounted?: (canvas: HTMLCanvasElement) => void,
@@ -15,6 +13,8 @@
     propsForAfterDraw?: Record<string, any>,
     registerCallbackCanvasPointerDownOrMove?: (canvas: HTMLCanvasElement, handler: Function) => void,
     canvasPointerHandler?: (e: PointerEvent) => void,
+    focused?: boolean,
+    same?: boolean,
   }>()
   const canvasRef = ref<HTMLCanvasElement | null>(null)
 
@@ -88,7 +88,7 @@
 </script>
 
 <template>
-  <div class="sprite-canvas-container">
+  <div class="sprite-canvas-wrapper">
     <canvas 
       ref="canvasRef" 
       :style="{ 
@@ -97,16 +97,16 @@
     />
     <div 
       class="overlay-style"
-      :style="{ 
-        border: props.border || 'none',
-        backgroundColor: props.overlay || 'none',
+      :class="{ 
+        focused: props.focused,
+        same: props.same,
       }"
     />
   </div>
 </template>
 
 <style scoped lang="scss">
-.sprite-canvas-container {
+.sprite-canvas-wrapper {
   position: relative;
   width: fit-content;
   height: fit-content;
@@ -122,5 +122,11 @@ canvas {
   top: 0; left: 0; right: 0; bottom: 0; 
   pointer-events: none;
   box-sizing: border-box;
+  &.focused {
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  }
+  &.same {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 </style>

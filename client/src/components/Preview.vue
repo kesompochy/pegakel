@@ -45,10 +45,6 @@ watch(() => props.name, () => {
   groupName.value = props.name;
 });
 
-const generateCanvasBorderStyle = (index: number) => {
-  return (index === (drawingSpriteNumber.value | 0)) ? '2px solid red' : '2px solid black'
-}
-
 </script>
 
 <template>
@@ -56,22 +52,16 @@ const generateCanvasBorderStyle = (index: number) => {
     <div class="preview-container container">
       <input class="grpup-name" type="text" v-model="groupName" @input="()=>{props.updateGroupName(groupName)}"/>
       <SpriteCanvas :sprite="props.sprites[drawingSpriteNumber | 0]" :width="200" />
-      <SpriteCanvas v-for="(sprite, index) in props.sprites" :key="index" :sprite="sprite" :width="100" :border="generateCanvasBorderStyle(index)" />
+      <SpriteCanvas v-for="(sprite, index) in props.sprites" :key="index" :sprite="sprite" :width="100" :focused="(index === (drawingSpriteNumber | 0))" />
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .preview-container {
-  margin: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px; 
-
-  canvas {
-    max-width: 100%;
-    height: auto;
-  }
 }
 </style>
