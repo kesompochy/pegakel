@@ -92,16 +92,16 @@ const handleClickSpriteInGroup = (groupIndex: number, spriteIndexInGroup: number
           border: 2px solid #000;
         }
       }
-    }
+   }
     .group {
       margin: 5px;
       display: flex;
       width: fit-content;
       border: 1px solid #333;
+      box-sizing: border-box;
       &.focused {
         border: 2px solid #333;
       }
-      box-sizing: border-box;
     }
   }
 }

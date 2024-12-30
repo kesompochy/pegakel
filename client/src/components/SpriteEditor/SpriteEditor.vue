@@ -209,6 +209,8 @@ canvas{
   width: fit-content;
   height: fit-content;
 
+  margin: 5px;
+
   .top {
     grid-area: 1 / 2 / 2 / 3;
   }
@@ -233,7 +235,6 @@ canvas{
     width: 100px;
   }
 
-  margin: 5px;
 }
 
 .canvas-tool-container {

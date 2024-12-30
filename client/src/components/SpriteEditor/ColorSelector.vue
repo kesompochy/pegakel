@@ -70,11 +70,6 @@ useKeyHandler(manipulatorActions)
 
 <style scoped lang="scss">
 .color-selector-container {
-  .color-selector-input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
   padding: 5px;
   position: absolute;
   left: v-bind('positionLeft + "px"');
@@ -84,7 +79,17 @@ useKeyHandler(manipulatorActions)
   gap: 8px;
   align-items: center;
   margin: 5px;
-  .preview {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+ 
+  .color-selector-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+ .preview {
     width: 40px;
     height: 40px;
     border: 1px solid black;
@@ -93,10 +98,6 @@ useKeyHandler(manipulatorActions)
     width: 40px;
   }
 
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 </style>
