@@ -10,3 +10,18 @@ $ cd pegakel
 $ bun run build
 $ bun start
 ```
+
+## Development
+
+```sh
+$ bun dev
+```
+
+## Testing
+
+```sh
+$ cd client
+$ bun test-w
+$ cd ../server
+$ bun test --watch
+```
