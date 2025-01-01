@@ -27,9 +27,6 @@ const generateCellStyle = (color: ColorState, index: number) => {
     border: props.activeColor === index ? '2.5px solid black' : props.focused && focusingCell.value === index ? '2px solid black' : '1px solid black' 
   }
 }
-const changeColor = () => {
-  if (props.focused) selectingColor.value = true
-}
 const getCellsPerRow = () => {
   return Math.floor((containerRef.value?.clientWidth || cellSizePixel) / cellSizePixel) || 1
 }
@@ -60,7 +57,9 @@ const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> =
     if (props.focused) props.handleChoosePaletteCell(focusingCell.value) 
   },
   "changeColor": () => {
-    changeColor()
+    if (props.focused && focusingCell.value != 0) {
+      selectingColor.value = true
+    }
   },
   "confirm": () => {
     if (props.focused) confirmColor(props.colors[focusingCell.value])
@@ -89,7 +88,9 @@ const addColorCell = () => {
         class="color-cell"
         :style="generateCellStyle(color as ColorState, index)"
         @click="props.handleChoosePaletteCell(index)"
-      ></div>
+      >
+        {{index === 0 ? 'X' : ''}}
+      </div>
       <div class="add-color-cell color-cell" @click="addColorCell">+</div>
     </div>
 
@@ -119,6 +120,9 @@ const addColorCell = () => {
   width: 20px;
   height: 20px;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .add-color-cell{
   display: flex;
