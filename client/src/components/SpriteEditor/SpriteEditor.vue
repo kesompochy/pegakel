@@ -67,7 +67,7 @@
     updateActiveColor(cellId) 
     focusingComponent.value = 'canvas'
   }
-  const updatePalette = (color: ColorState, cellId: number) => {
+  const updatePalette = (color: ColorState | null, cellId: number) => {
     if (props.palette.length <= cellId) {
     } else {
       focusingComponent.value = 'canvas'
