@@ -18,6 +18,7 @@ const props = defineProps<{
 const focusingCell = ref(0)
 const selectingColor = ref(false)
 const containerRef = ref<HTMLDivElement | null>(null)
+const addColorCellButtonRef = ref<HTMLDivElement | null>(null)
 
 const cellSizePixel = 30
 
@@ -42,10 +43,10 @@ const calculateSelectorPosition = computed(() => {
 
 const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
   "moveLeft": () => {
-    if (props.focused) focusingCell.value = (focusingCell.value - 1 + props.colors.length) % props.colors.length
+    if (props.focused) focusingCell.value = (focusingCell.value - 1 + props.colors.length + 1) % (props.colors.length + 1)
   },
   "moveRight": () => {
-    if (props.focused) focusingCell.value = (focusingCell.value + 1) % props.colors.length
+    if (props.focused) focusingCell.value = (focusingCell.value + 1) % (props.colors.length + 1)
   },
   "moveUp": () => {
     if (props.focused) focusingCell.value = (focusingCell.value - getCellsPerRow() + props.colors.length) % props.colors.length + 1
@@ -54,7 +55,7 @@ const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> =
     if (props.focused) focusingCell.value = (focusingCell.value + getCellsPerRow()) % props.colors.length - 1
   },
   "selectColor": () => {
-    if (props.focused) props.handleChoosePaletteCell(focusingCell.value) 
+    if (props.focused) props.handleChoosePaletteCell(focusingCell.value % props.colors.length) 
   },
   "changeColor": () => {
     if (props.focused && focusingCell.value != 0) {
@@ -65,7 +66,14 @@ const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> =
     if (props.focused) confirmColor(props.colors[focusingCell.value])
   },
   "addColorCell": () => {
-    if (props.focused) addColorCell()
+    if (props.focused) {
+      if (focusingCell.value === props.colors.length) {
+        addColorCell()
+        selectingColor.value = true
+      } else {
+        focusingCell.value = props.colors.length
+      }
+    }
   },
   "deleteColorCell": () => {
     if (props.focused && focusingCell.value != 0) {
@@ -83,7 +91,7 @@ const confirmColor = (color: ColorState) => {
 }
 
 const addColorCell = () => {
-  props.handleUpdatePalette({r: 255, g: 0, b: 0, a: 1}, props.colors.length)
+  props.handleUpdatePalette({r: 0, g: 0, b: 0, a: 1}, props.colors.length)
 }
 </script>
 
@@ -98,7 +106,12 @@ const addColorCell = () => {
       >
         {{index === 0 ? 'X' : ''}}
       </div>
-      <div class="add-color-cell color-cell" @click="addColorCell">+</div>
+      <div 
+        class="add-color-cell color-cell"
+        @click="addColorCell"
+        ref="addColorCellButtonRef"
+        :style="{border: props.focused && focusingCell === props.colors.length ? '2px solid black' : ''}"
+      >+</div>
     </div>
 
     <ColorSelector 

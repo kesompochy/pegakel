@@ -50,10 +50,12 @@ const editorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
   },
   'draw': () => {
     if (props.activeColor == undefined) return
+    if (!props.focused) return
     props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, props.activeColor)
     pushingDrawingKey.value = true
   },
   'erase': () => {
+    if (!props.focused) return
     props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, 0)
     pushingErasingKey.value = true
   },
