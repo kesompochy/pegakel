@@ -110,5 +110,9 @@
   "toggleAnimation": {
     "key": ">",
     "description": "Toggle animation"
+  },
+  "deleteColorCell": {
+    "key": "x",
+    "description": "Delete color cell"
   }
 }

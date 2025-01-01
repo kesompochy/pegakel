@@ -76,11 +76,18 @@ export default {
     const defaultName = `group-${sheet.groups.length}`;
     sheet.groups.push(SpriteGroupLogic.createSpriteGroup(defaultName));
   },
-  updatePalette(sheet: Sheet, color: ColorState, cellId: number) {
+  updatePalette(sheet: Sheet, color: ColorState | null, cellId: number) {
     if (!sheet.palette) {
       sheet.palette = [];
     }
-    sheet.palette[cellId] = color;
+    if (color === null) {
+      if (cellId === 0) {
+        return;
+      }
+      sheet.palette.splice(cellId, 1);
+    } else {
+      sheet.palette[cellId] = color;
+    }
   },
   cloneSprite(sheet: Sheet, spriteIndex: number) {
     const sprite = sheet.sprites[spriteIndex];

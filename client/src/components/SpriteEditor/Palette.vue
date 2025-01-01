@@ -66,6 +66,13 @@ const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> =
   },
   "addColorCell": () => {
     if (props.focused) addColorCell()
+  },
+  "deleteColorCell": () => {
+    if (props.focused && focusingCell.value != 0) {
+      if (window.confirm("Are you sure to delete this color?")) {
+        props.handleUpdatePalette(null, focusingCell.value)
+      }
+    }
   }
 }
 useKeyHandler(manipulatorActions, () => props.acceptKeyInput)

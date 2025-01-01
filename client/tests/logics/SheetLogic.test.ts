@@ -34,4 +34,13 @@ describe("SheetLogic", () => {
     expect(sheet.sprites.length).toBe(2);
     expect(sheet.sprites[1]).toStrictEqual(sheet.sprites[0]);
   });
+  it("should delete color cell from palette", () => {
+    const sheet = SheetLogic.createSheet("sheet");
+    SheetLogic.init(sheet);
+    const originalColorCellNumber = sheet.palette.length;
+    const originalColorCell = sheet.palette[1];
+    SheetLogic.updatePalette(sheet, null, 1);
+    expect(sheet.palette.length).toBe(originalColorCellNumber - 1);
+    expect(sheet.palette[1]).not.toStrictEqual(originalColorCell);
+  });
 });
