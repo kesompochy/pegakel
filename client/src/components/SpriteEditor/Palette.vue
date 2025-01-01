@@ -45,11 +45,6 @@ onUnmounted(() => {
   window.removeEventListener('resize', calculateLayout)
 })
 
-const colors = computed(() => {
-  const colors = new Array(Math.max(props.colors.length, 64)).fill(colorStateLogic.createEmptyColorState()).map((_, index) => props.colors[index])
-  
-  return colors
-});
 const generateCellStyle = (color: ColorState, index: number) => {
   return {
     backgroundColor: color ? colorStateLogic.getRgba(color) : 'transparent',
@@ -81,6 +76,9 @@ const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> =
   },
   "confirm": () => {
     if (props.focused) confirmColor(props.colors[focusingCell.value])
+  },
+  "addColorCell": () => {
+    if (props.focused) addColorCell()
   }
 }
 useKeyHandler(manipulatorActions, () => props.acceptKeyInput)
@@ -89,17 +87,22 @@ const confirmColor = (color: ColorState) => {
   props.handleUpdatePalette(color, focusingCell.value)
   selectingColor.value = false
 }
+
+const addColorCell = () => {
+  props.handleUpdatePalette({r: 255, g: 0, b: 0, a: 1}, props.colors.length)
+}
 </script>
 
 <template class="palette">
   <div class="palette-wrapper" ref="containerRef">
     <div class="palette-container container">
       <div
-        v-for="(color, index) in colors"
+        v-for="(color, index) in props.colors"
         class="color-cell"
         :style="generateCellStyle(color as ColorState, index)"
         @click="props.handleChoosePaletteCell(index)"
       ></div>
+      <div class="add-color-cell color-cell" @click="addColorCell">+</div>
     </div>
 
     <ColorSelector 
@@ -128,5 +131,12 @@ const confirmColor = (color: ColorState) => {
 .color-cell{
   aspect-ratio: 1;
   box-sizing: border-box;
+}
+.add-color-cell{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  cursor: pointer;
 }
 </style>

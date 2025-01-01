@@ -12,6 +12,6 @@ export default class Sheet implements ISheet {
     this.name = name;
     this.sprites = [];
     this.groups = [new SpriteGroup("default")];
-    this.palette = [];
+    this.palette = [new ColorState(0, 0, 0, 0), new ColorState(100, 100, 100, 1)];
   }
 }
