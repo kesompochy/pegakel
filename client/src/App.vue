@@ -11,7 +11,6 @@
   import Sprite from '~/core/Sprite';
   import Sheet from '~/core/Sheet';
   import SpriteLogic from '~/logics/SpriteLogic';
-  import ColorState from '~/core/ColorState';
   import SpriteGroupLogic from '~/logics/SpriteGroupLogic';
   import Preview from './components/Preview.vue';
   import Help from './components/Help.vue';
@@ -22,7 +21,9 @@
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
   const FILE_NAME = import.meta.env.VITE_FILE_NAME || "default"
-  setFileName(FILE_NAME)
+  const urlParams = new URLSearchParams(window.location.search)
+  const fileNameFromUrl = urlParams.get('file')
+  setFileName(fileNameFromUrl || FILE_NAME)
 
   onMounted(() => {
     if (import.meta.env.MODE === 'test') {
@@ -59,6 +60,7 @@
     const response = await jsonRpcClient.call('exportGroup', { 
       format: 'gif',
       sprites: sprites,
+      palette: currentSheet.value.palette,
       localPath: `${fileName.value}0.gif`,
       options: {
         gif: {
@@ -102,14 +104,14 @@
   }
 
 
-  const updateSprite = (x: number, y: number, color: ColorState) => {
+  const updateSprite = (x: number, y: number, color: number) => {
     SpriteLogic.updateSprite(currentSheet.value.sprites[currentSpriteId.value], { x, y, color } )
   }
   const updateSpriteSize = (left: number, top: number, bottom: number, right: number) => {
     SpriteLogic.updateSpriteSize(currentSheet.value.sprites[currentSpriteId.value], left, top, bottom, right)
   }
 
-  type ManipulationAction = "goToSheetEditor"
+  type ManipulationAction = "goToSheetEditor" | "zoomIn" | "zoomOut"
   const scaleStep = 10
   const manipulationActions: Record<ManipulationAction, () => void> = {
     "goToSheetEditor": () => {
@@ -173,6 +175,7 @@
             :sprites="clippedSpritesForPreview"
             :name="currentSheet.groups[currentSpriteGroupId].name"
             :updateGroupName="(name: string) => {SpriteGroupLogic.updateName(currentSheet.groups[currentSpriteGroupId], name)}"
+            :palette="currentSheet.palette"
         />
         <div class="app-help-wrapper">
           <Help :keyActionMap="KeyMapConfig"/>

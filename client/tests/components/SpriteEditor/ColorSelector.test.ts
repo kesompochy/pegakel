@@ -8,6 +8,8 @@ describe("ColorSelector", () => {
       currentColor: new ColorState(),
       handleConfirmColor: () => {},
       focused: false,
+      positionLeft: 0,
+      positionTop: 0,
     },
     global: {
       stubs: {},

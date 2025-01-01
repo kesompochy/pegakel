@@ -2,6 +2,7 @@
   import { onMounted, onUnmounted, ref, watch, defineProps } from 'vue'
   import Sprite from '~/core/Sprite'
   import * as CanvasUtils from '~/utils/canvas'
+  import ColorState from '~/core/ColorState'
 
   const props = defineProps<{ 
     sprite?: Sprite, 
@@ -15,6 +16,7 @@
     canvasPointerHandler?: (e: PointerEvent) => void,
     focused?: boolean,
     same?: boolean,
+    palette: ColorState[]
   }>()
   const canvasRef = ref<HTMLCanvasElement | null>(null)
 
@@ -36,7 +38,8 @@
     if (props.beforeDraw) props.beforeDraw(ctx)
     sprite.pixels.map((row, y) => {
       row.map((color, x) => {
-        const colorString = `rgba(${color.r},${color.g},${color.b},${color.a})`
+        const colorState = props.palette[color] || new ColorState(0, 0, 0, 0)
+        const colorString = `rgba(${colorState.r},${colorState.g},${colorState.b},${colorState.a})`
         CanvasUtils.drawPixel(ctx, x, y, pixelSizeWidth, pixelSizeHeight, colorString)
      })
     })

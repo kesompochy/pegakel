@@ -23,12 +23,7 @@ describe('exportGroup', () => {
         {
           width: 16,
           height: 16,
-          pixels: new Array(16).fill(new Array(16).fill({
-            r: 0,
-            g: 0,
-            b: 0,
-            a: 0,
-          })),
+          pixels: new Array(16).fill(new Array(16).fill(0)),
           clipX: 0,
           clipY: 0,
         },
@@ -41,6 +36,9 @@ describe('exportGroup', () => {
             height: 16,
           },
         },
+      ],
+      palette: [
+        { r: 100, g: 0, b: 255, a: 1 },
       ],
     } as unknown as ISheet;
     const fileName = 'export_sheet_test';

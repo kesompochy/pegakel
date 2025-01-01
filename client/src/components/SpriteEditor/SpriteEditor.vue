@@ -19,7 +19,7 @@
     handleChangeMode: (mode: string, spriteId: number) => void,
     spriteId: number,
     spriteGroup: SpriteGroup, 
-    updateSprite: (x: number, y: number, color: ColorState) => void,
+    updateSprite: (x: number, y: number, color: number) => void,
     updateSpriteSize: (left: number, top: number, bottom: number, right: number) => void,
     updateClipSize: (width: number, height: number) => void,
     groupSprites: Sprite[],
@@ -175,7 +175,7 @@
           :width="props.sprite?.width || 0" 
           :height="props.sprite?.height || 0" 
           :sprite="props.sprite"
-          :activeColorState="props.palette[activeColor]"
+          :activeColor="activeColor"
           :activeTool="activeTool"
           :manipulationMode="manipulationMode"
           :updateManipulationMode="updateManipulationMode"
@@ -184,6 +184,7 @@
           :focused="focusingComponent === 'canvas'"
           :clipSize="props.spriteGroup.clipSize"
           :scale="props.scale"
+          :palette="props.palette"
           class="center"
         />
         <input type="number" v-model="canvasResizeDeltaRight"  class="right sprite-editor-resize-input"  v-show="focusingComponent === 'resize'" ref="inputElementRight">

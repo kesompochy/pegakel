@@ -1,5 +1,6 @@
 import { mount } from "@vue/test-utils";
 import Preview from "~/components/Preview.vue"
+import ColorState from "~/core/ColorState";
 
 describe("Preview", () => {
   let wrapper: any;
@@ -9,6 +10,7 @@ describe("Preview", () => {
         sprites: [],
         name: "test",
         updateGroupName: () => {},
+        palette: [new ColorState(0, 0, 0, 0)],
       }
     });
   });

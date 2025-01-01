@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Sheet from '~/core/Sheet'
+import ColorState from '~/core/ColorState'
 
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
 import { ref, defineProps } from 'vue'
@@ -12,6 +13,7 @@ const props = defineProps<{
   updateCurrentSpriteGroupId: (groupId: number) => void,
   updateFocusedSpriteIdInSheet: (spriteId: number) => void,
   updateFocusedSpriteInGroup: (index: number) => void,
+  palette: ColorState[],
 }>()
 const pixelWidth = ref<number>(3)
 
@@ -54,6 +56,7 @@ const handleClickSpriteInGroup = (groupIndex: number, spriteIndexInGroup: number
             :width="pixelWidth * sprite.width" 
             :focused="props.focusedSpriteIdInSheet === index"
             @click="() => { handleSpriteClick(index) }"
+            :palette="props.palette"
           />
         </div>
       </div>
@@ -72,6 +75,7 @@ const handleClickSpriteInGroup = (groupIndex: number, spriteIndexInGroup: number
           :overlay="generateSpriteStyleOverlay(spriteIndex)"
           @click="() => { handleClickSpriteInGroup(groupIndex, index) }"
           :same="props.focusedSpriteIdInSheet === spriteIndex"
+          :palette="props.palette"
         />
       </div>
     </div>

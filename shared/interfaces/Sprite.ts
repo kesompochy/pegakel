@@ -1,9 +1,7 @@
-import ColorState from "./ColorState";
-
 export default interface Sprite {
   width: number;
   height: number;
-  pixels: ColorState[][];
+  pixels: number[][];
   clipX: number;
   clipY: number;
 }

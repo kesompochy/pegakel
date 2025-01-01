@@ -15,14 +15,15 @@ const pushingErasingKey = ref(false)
 
 const props = defineProps<{
   sprite: Sprite | undefined, 
-  activeColorState: ColorState | undefined, 
+  activeColor: number | undefined,
   activeTool: Tool | undefined,
   manipulationMode: ManipulationMode | undefined,
   updateManipulationMode: (mode: ManipulationMode) => void, 
-  updateSprite: (x: number, y: number, color: ColorState) => void, 
+  updateSprite: (x: number, y: number, color: number) => void, 
   focused: boolean, 
   clipSize: {width: number, height: number} | undefined
   scale: number,
+  palette: ColorState[],
 }>()
 
 const editorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
@@ -47,12 +48,12 @@ const editorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
     if (pushingErasingKey.value) (editorActions['erase'] as ()=>void)()
   },
   'draw': () => {
-    if (!props.activeColorState) return
-    props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, props.activeColorState)
+    if (props.activeColor == undefined) return
+    props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, props.activeColor)
     pushingDrawingKey.value = true
   },
   'erase': () => {
-    props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, new ColorState(0, 0, 0, 0))
+    props.updateSprite(manipulatingCell.value.x, manipulatingCell.value.y, 0)
     pushingErasingKey.value = true
   },
 }
@@ -113,11 +114,11 @@ const handleCanvasClick = (event: MouseEvent) => {
  
   let color;
   if (props.activeTool === "draw") {
-    color = props.activeColorState 
+    color = props.activeColor
   } else if (props.activeTool === "erase") {
     color = new ColorState(0, 0, 0, 0)
   }
-  color = color || new ColorState(0, 0, 0, 1)
+  color = color || 0
   props.updateSprite(x, y, color)
 
   props.updateManipulationMode('touch')
@@ -134,6 +135,7 @@ const handleCanvasClick = (event: MouseEvent) => {
       :propsForAfterDraw="{manipulatingCell: manipulatingCell, clipSize: props.clipSize}"
       :registerCallbackCanvasPointerDownOrMove="(canvas: HTMLCanvasElement) => {registerCallbackCanvasPointerDownOrMove(canvas, handleCanvasClick)}"
       :canvasPointerHandler="handleCanvasClick"
+      :palette="props.palette"
     />
   </div>
 </template>

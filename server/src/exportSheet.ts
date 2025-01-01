@@ -81,10 +81,11 @@ const exportSheet = async (params: IParams): Promise<string | Error> => {
 
     packingResult.packedSprites.forEach(packedSprite => {
       const originalSprite = sheet.sprites[packedSprite.index];
+      const palette = sheet.palette;
       
       for (let y = 0; y < packedSprite.height; y++) {
         for (let x = 0; x < packedSprite.width; x++) {
-          const pixelColor: IColorState = originalSprite.pixels[y][x];
+          const pixelColor: IColorState = palette[originalSprite.pixels[y][x]];
           bp.plotPixel(
             packedSprite.x + x, 
             packedSprite.y + y, 

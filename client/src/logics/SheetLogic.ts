@@ -29,7 +29,7 @@ export default {
           SpriteLogic.updateSprite(sprite, {
             x,
             y,
-            color: new ColorState((Math.random() * 255) | 0, (Math.random() * 255) | 0, (Math.random() * 255) | 0, 1),
+            color: 0
           });
         }
       }

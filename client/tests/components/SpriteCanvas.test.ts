@@ -7,7 +7,8 @@ describe('SpriteCanvas', () => {
   beforeEach(() => {
     const props = {
       width: 100,
-      sprite: new Sprite(10, 10)
+      sprite: new Sprite(10, 10),
+      palette: [{ r: 0, g: 0, b: 0, a: 0 }]
     }
     wrapper = mount(SpriteCanvas, {
       props

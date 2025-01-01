@@ -1,10 +1,12 @@
 import type ISprite from '@shared/interfaces/Sprite';
+import type IColorState from '@shared/interfaces/ColorState';
 import { createCanvas } from 'canvas';
 import GIFEncoder from 'gifencoder';
 import fs from 'fs';
 
 export interface IParams {
   sprites: ISprite[];
+  palette: IColorState[];
   format: 'gif' | 'png' | 'json';
   localPath: string;
   options?: {
@@ -52,11 +54,13 @@ const exportGroup = async (params: IParams): Promise<string | Error> => {
     encoder.setDelay(delay);
     encoder.setQuality(quality);
     console.log('Start adding frames');
+    const palette = params.palette
     for (const sprite of params.sprites) {
       ctx.clearRect(0, 0, sprite.width, sprite.height);
       sprite.pixels.forEach((row, y) => {
         row.forEach((pixel, x) => {
-          ctx.fillStyle = `rgba(${pixel.r},${pixel.g},${pixel.b},${pixel.a})`;
+          const color = palette[pixel];
+          ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${color.a})`;
           ctx.fillRect(x, y, 1, 1);
         });
       });

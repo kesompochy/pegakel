@@ -23,10 +23,13 @@ describe('exportGroup', () => {
         width: 1,
         height: 1,
         pixels: [
-          [{ r: 100, g: 0, b: 255, a: 1 }]
-        ]
+          [0]
+        ],
+        clipX: 0,
+        clipY: 0
       },
     ]
+    const palette = [{ r: 100, g: 0, b: 255, a: 1 }];
     const format = 'gif';
     const fineName = 'test.gif';
     const options = {
@@ -40,6 +43,7 @@ describe('exportGroup', () => {
       format,
       localPath: path.resolve(__dirname, testDir, fineName),
       sprites,
+      palette,
       options
     } as IParams;
     const result = await exportGroup(params);
