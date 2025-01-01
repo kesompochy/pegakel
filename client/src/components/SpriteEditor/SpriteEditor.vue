@@ -173,27 +173,27 @@
         />
       </div>
         <div class="sprite-editor-canvas-container">
-        <input type="number" v-model="canvasResizeDeltaTop"  class="top sprite-editor-resize-input"  v-show="focusingComponent === 'resize'" ref="inputElementTop">
-        <input type="number" v-model="canvasResizeDeltaLeft" class="left sprite-editor-resize-input" v-show="focusingComponent === 'resize'" ref="inputElementLeft">
-        <SpriteCanvas 
-          :width="props.sprite?.width || 0" 
-          :height="props.sprite?.height || 0" 
-          :sprite="props.sprite"
-          :activeColor="activeColor"
-          :activeTool="activeTool"
-          :manipulationMode="manipulationMode"
-          :updateManipulationMode="updateManipulationMode"
-          :manipulatingCell="canvasManipulatingCell"
-          :updateSprite="props.updateSprite"
-          :focused="focusingComponent === 'canvas'"
-          :clipSize="props.spriteGroup.clipSize"
-          :scale="props.scale"
-          :palette="props.palette"
-                                                                                                                           :acceptKeyInput="props.acceptKeyInput"
-          class="center"
-        />
-        <input type="number" v-model="canvasResizeDeltaRight"  class="right sprite-editor-resize-input"  v-show="focusingComponent === 'resize'" ref="inputElementRight">
-        <input type="number" v-model="canvasResizeDeltaBottom" class="bottom sprite-editor-resize-input" v-show="focusingComponent === 'resize'" ref="inputElementBottom">
+          <input type="number" v-model="canvasResizeDeltaTop"  class="top sprite-editor-resize-input"  v-show="focusingComponent === 'resize'" ref="inputElementTop">
+          <input type="number" v-model="canvasResizeDeltaLeft" class="left sprite-editor-resize-input" v-show="focusingComponent === 'resize'" ref="inputElementLeft">
+          <SpriteCanvas 
+            :width="props.sprite?.width || 0" 
+            :height="props.sprite?.height || 0" 
+            :sprite="props.sprite"
+            :activeColor="activeColor"
+            :activeTool="activeTool"
+            :manipulationMode="manipulationMode"
+            :updateManipulationMode="updateManipulationMode"
+            :manipulatingCell="canvasManipulatingCell"
+            :updateSprite="props.updateSprite"
+            :focused="focusingComponent === 'canvas'"
+            :clipSize="props.spriteGroup.clipSize"
+            :scale="props.scale"
+            :palette="props.palette"
+                                                                                                                             :acceptKeyInput="props.acceptKeyInput"
+            class="center"
+          />
+          <input type="number" v-model="canvasResizeDeltaRight"  class="right sprite-editor-resize-input"  v-show="focusingComponent === 'resize'" ref="inputElementRight">
+          <input type="number" v-model="canvasResizeDeltaBottom" class="bottom sprite-editor-resize-input" v-show="focusingComponent === 'resize'" ref="inputElementBottom">
       </div>
    </div>
   </div>
@@ -215,7 +215,7 @@ canvas{
   width: fit-content;
   height: fit-content;
 
-  margin: 5px;
+  margin: 40px;
 
   .top {
     grid-area: 1 / 2 / 2 / 3;
