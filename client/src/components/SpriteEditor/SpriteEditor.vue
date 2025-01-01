@@ -102,8 +102,7 @@
         canvasResizeDeltaLeft.value = 0
         canvasResizeDeltaRight.value = 0
         canvasResizeDeltaBottom.value = 0
-      }
-      if (focusingComponent.value === 'clip') {
+      } else if (focusingComponent.value === 'clip') {
         SpriteGroupLogic.changeClipSize(props.spriteGroup, {width: clipSizeWidth.value, height: clipSizeHeight.value})
         focusingComponent.value = 'canvas'
       }
