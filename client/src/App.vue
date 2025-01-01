@@ -23,7 +23,8 @@
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
   const FILE_NAME = import.meta.env.VITE_FILE_NAME || "default"
   const urlParams = new URLSearchParams(window.location.search)
-  const fileNameFromUrl = urlParams.get('file')
+  const queryForFileName = 'file'
+  const fileNameFromUrl = urlParams.get(queryForFileName)
   setFileName(fileNameFromUrl || FILE_NAME)
 
   onMounted(() => {
@@ -52,6 +53,8 @@
         localPath: `${fileName.value}.json`
       }
     }, 0)
+    urlParams.set(queryForFileName, fileName.value)
+    history.pushState({}, '', `${location.pathname}?${urlParams.toString()}`)
     if ('error' in response) {
       console.error(response.error)
     }
@@ -85,6 +88,8 @@
       updateSheet(response.result as Sheet)
       currentSpriteId.value = 0
       currentSpriteGroupId.value = 0
+      urlParams.set(queryForFileName, fileName.value)
+      history.pushState({}, '', `${location.pathname}?${urlParams.toString()}`)
     } else if ('error' in response) {
       console.error(response.error)
     }
