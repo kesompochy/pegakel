@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { computed, ref } from 'vue';
 import ColorState from '~/core/ColorState'
 import ColorSelector from './ColorSelector.vue'
 import colorStateLogic from '~/logics/ColorState'
@@ -10,7 +10,7 @@ const props = defineProps<{
   colors: ColorState[];
   handleChoosePaletteCell: (cellId: number) => void;
   activeColor: number;
-  handleUpdatePalette: (color: ColorState, cellId: number) => void;
+  handleUpdatePalette: (color: ColorState | null, cellId: number) => void;
   focused: boolean;
   acceptKeyInput: boolean;
 }>();

@@ -24,7 +24,7 @@
     updateClipSize: (width: number, height: number) => void,
     groupSprites: Sprite[],
     palette: ColorState[],
-    updatePalette: (color: ColorState, cellId: number) => void,
+    updatePalette: (color: ColorState | null, cellId: number) => void,
     scale: number,
     acceptKeyInput: boolean 
   }>();
