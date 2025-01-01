@@ -77,6 +77,9 @@
   watch(() => props.width, () => {
     handlePropsChange()
   })
+  watch(() => props.palette, () => {
+    handlePropsChange()
+  }, {deep: true})
 
   onMounted(() => {
     handlePropsChange()

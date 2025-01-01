@@ -46,6 +46,9 @@ watch(() => props.sprites, () => {
 watch(() => props.name, () => {
   groupName.value = props.name;
 });
+watch(() => props.palette, () => {
+  setupCanvases();
+});
 
 </script>
 
