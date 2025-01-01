@@ -6,6 +6,7 @@
   import SpriteGroupLogics from '~/logics/SpriteGroupLogic'
   import { useKeyHandler } from '~/composables/useKeyHandler'
   import KeyMapConfig from '~/configs/actionKeyMap.json'
+  import ColorState from '~/core/ColorState'
 
   import { ref } from 'vue'
   const props = defineProps<{ 
@@ -13,6 +14,7 @@
     handleChangeMode: Function, 
     currentSpriteGroupId: number,
     updateCurrentSpriteGroupId: (groupId: number) => void,
+    palette: ColorState[],
   }>()
 
   const focusedSpriteInGroup = ref<number>(0)
@@ -115,6 +117,7 @@
         :updateCurrentSpriteGroupId="props.updateCurrentSpriteGroupId"
         :updateFocusedSpriteIdInSheet="(index: number) => { focusedSpriteIdInSheet = index }"
         :updateFocusedSpriteInGroup="(index: number) => { focusedSpriteInGroup = index }"
+        :palette="props.palette"
       />
     </div>
   </div>

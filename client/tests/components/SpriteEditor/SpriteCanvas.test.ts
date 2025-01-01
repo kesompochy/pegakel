@@ -11,11 +11,12 @@ describe("SpriteCanvas", () => {
         updateSprite: () => {},
         focused: true, 
         sprite: new Sprite(16, 16),
-        activeColorState: { r: 0, g: 0, b: 0, a: 1 },
+        activeColor: 0,
         activeTool: "draw",
         manipulationMode: "key",
         clipSize: undefined,
         scale: 100,
+        palette: [{ r: 0, g: 0, b: 0, a: 0 }],
       }
     });
   });

@@ -9,6 +9,7 @@ describe("ToolBox", () => {
       propsData: {
         activeTool: "draw",
         handleChangeTool: (tool: Tool) => {},
+        handleGoToSheetEditor: () => {},
       }
     });
   });

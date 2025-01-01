@@ -2,6 +2,7 @@
 import Sprite from "~/core/Sprite";
 import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
 import SpriteCanvas from '~/components/SpriteCanvas.vue'
+import ColorState from '~/core/ColorState'
 
 const drawingSpriteNumber = ref<number>(0);
 const fps = ref<number>(5);
@@ -12,6 +13,7 @@ const props = defineProps<{
   sprites: Sprite[],
   name: string,
   updateGroupName: (name: string) => void
+  palette: ColorState[]
 }>();
 
 const animationCallback = () => {
@@ -51,8 +53,8 @@ watch(() => props.name, () => {
   <div>
     <div class="preview-container container">
       <input class="grpup-name" type="text" v-model="groupName" @input="()=>{props.updateGroupName(groupName)}"/>
-      <SpriteCanvas :sprite="props.sprites[drawingSpriteNumber | 0]" :width="200" />
-      <SpriteCanvas v-for="(sprite, index) in props.sprites" :key="index" :sprite="sprite" :width="100" :focused="(index === (drawingSpriteNumber | 0))" />
+      <SpriteCanvas :sprite="props.sprites[drawingSpriteNumber | 0]" :width="200" :palette="props.palette" />
+      <SpriteCanvas v-for="(sprite, index) in props.sprites" :key="index" :sprite="sprite" :width="100" :focused="(index === (drawingSpriteNumber | 0))" :palette="props.palette"/>
     </div>
   </div>
 </template>
