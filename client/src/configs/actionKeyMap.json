@@ -114,5 +114,13 @@
   "deleteColorCell": {
     "key": "x",
     "description": "Delete color cell"
+  },
+  "undo": {
+    "key": "u",
+    "description": "Undo"
+  },
+  "redo": {
+    "key": "R",
+    "description": "Redo"
   }
 }

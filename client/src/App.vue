@@ -10,6 +10,7 @@
   import SpriteGroup from '~/core/SpriteGroup';
   import Sprite from '~/core/Sprite';
   import Sheet from '~/core/Sheet';
+  import ColorState from '~/core/ColorState';
   import SpriteLogic from '~/logics/SpriteLogic';
   import SpriteGroupLogic from '~/logics/SpriteGroupLogic';
   import Preview from './components/Preview.vue';
@@ -26,6 +27,9 @@
   const queryForFileName = 'file'
   const fileNameFromUrl = urlParams.get(queryForFileName)
   setFileName(fileNameFromUrl || FILE_NAME)
+
+  const sheetHistory = ref<string[]>([])
+  const historyIndex = ref(0)
 
   onMounted(() => {
     if (import.meta.env.MODE === 'test') {
@@ -93,6 +97,7 @@
       currentSpriteGroupId.value = 0
       urlParams.set(queryForFileName, fileName.value)
       history.pushState({}, '', `${location.pathname}?${urlParams.toString()}`)
+      updateSheetHistory()
     } else if ('error' in response) {
       console.error(response.error)
     }
@@ -113,15 +118,7 @@
     }
   }
 
-
-  const updateSprite = (x: number, y: number, color: number) => {
-    SpriteLogic.updateSprite(currentSheet.value.sprites[currentSpriteId.value], { x, y, color } )
-  }
-  const updateSpriteSize = (left: number, top: number, bottom: number, right: number) => {
-    SpriteLogic.updateSpriteSize(currentSheet.value.sprites[currentSpriteId.value], left, top, bottom, right)
-  }
-
-  type ManipulationAction = "goToSheetEditor" | "zoomIn" | "zoomOut"
+  type ManipulationAction = "goToSheetEditor" | "zoomIn" | "zoomOut" | "undo" | "redo"
   const scaleStep = 10
   const manipulationActions: Record<ManipulationAction, () => void> = {
     "goToSheetEditor": () => {
@@ -132,12 +129,66 @@
     },
     "zoomOut": () => {
       scale.value = Math.max(scale.value - scaleStep, 10)
-    }
+    },
+    "undo": () => {
+      if (sheetHistory.value.length === 0) {
+        return
+      }
+      historyIndex.value = Math.max(historyIndex.value - 1, 0)
+      updateSheet(JSON.parse(sheetHistory.value[historyIndex.value]) as Sheet)
+    },
+    "redo": () => {
+      if (sheetHistory.value.length === 0) {
+        return
+      }
+      historyIndex.value = Math.min(historyIndex.value + 1, sheetHistory.value.length - 1)
+      updateSheet(JSON.parse(sheetHistory.value[historyIndex.value]) as Sheet)
+    },
   }
   useKeyHandler(manipulationActions)
 
+  const updateSheetHistory = () => {
+    historyIndex.value = historyIndex.value + 1
+    sheetHistory.value = sheetHistory.value.slice(0, historyIndex.value)
+    sheetHistory.value.push(JSON.stringify(currentSheet.value))
+  }
+
+  const updateSprite = (x: number, y: number, color: number) => {
+    const originalSheet = JSON.stringify(currentSheet.value)
+    SpriteLogic.updateSprite(currentSheet.value.sprites[currentSpriteId.value], { x, y, color } )
+    if (originalSheet !== JSON.stringify(currentSheet.value)) {
+      updateSheetHistory()
+    }
+  }
+  const updateSpriteSize = (left: number, top: number, bottom: number, right: number) => {
+    const originalSheet = JSON.stringify(currentSheet.value)
+    SpriteLogic.updateSpriteSize(currentSheet.value.sprites[currentSpriteId.value], left, top, bottom, right)
+    if (originalSheet !== JSON.stringify(currentSheet.value)) {
+      updateSheetHistory()
+    }
+  }
+
   const updateClipSize = (width: number, height: number) => {
+    const originalSheet = JSON.stringify(currentSheet.value)
     SpriteGroupLogic.changeClipSize(currentSheet.value.groups[currentSpriteGroupId.value], {width, height})
+    if (originalSheet !== JSON.stringify(currentSheet.value)) {
+      updateSheetHistory()
+    }
+  }
+  const updatePalette = (color: ColorState | null, cellId: number) => {
+    const originalSheet = JSON.stringify(currentSheet.value)
+    SheetLogic.updatePalette(currentSheet.value, color, cellId)
+    if (originalSheet !== JSON.stringify(currentSheet.value)) {
+      updateSheetHistory()
+    }
+  }
+
+  const updateGroupName = (name: string) => {
+    const originalSheet = JSON.stringify(currentSheet.value)
+    SpriteGroupLogic.updateName(currentSheet.value.groups[currentSpriteGroupId.value], name)
+    if (originalSheet !== JSON.stringify(currentSheet.value)) {
+      updateSheetHistory()
+    }
   }
 
   const clippedSpritesForPreview = computed(() => {
@@ -176,7 +227,7 @@
           :currentSpriteGroupId="currentSpriteGroupId"
           :updateCurrentSpriteGroupId="(id: number) => {currentSpriteGroupId = id}"
           :palette="currentSheet.palette"
-          :updatePalette="(color, cellId) => {SheetLogic.updatePalette(currentSheet, color, cellId)}"
+          :updatePalette="updatePalette"
           :scale="scale"
           :acceptKeyInput="!focusingFileNameInput"
           :updateCurrentSpriteId="updateCurrentSpriteId"
@@ -186,7 +237,7 @@
         <Preview
             :sprites="clippedSpritesForPreview"
             :name="currentSheet.groups[currentSpriteGroupId].name"
-            :updateGroupName="(name: string) => {SpriteGroupLogic.updateName(currentSheet.groups[currentSpriteGroupId], name)}"
+            :updateGroupName="updateGroupName"
             :palette="currentSheet.palette"
             :acceptKeyInput="!focusingFileNameInput"
             :focusedSpriteIndex="currentSheet.groups[currentSpriteGroupId].sprites.indexOf(currentSpriteId)"
