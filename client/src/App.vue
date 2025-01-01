@@ -97,6 +97,7 @@
   const newSheet = () => {
     const sheet = new Sheet("sheet")
     SheetLogic.addSprite(sheet)
+    SpriteGroupLogic.addSprite(sheet.groups[0], 0)
     updateSheet(sheet)
   }
   const exportSheet = async () => {

@@ -24,7 +24,7 @@
     "description": "Confirm selected color"
   },
   "selectColor": {
-    "key": "a",
+    "key": "i",
     "description": "Select a color"
   },
   "changeColor": {

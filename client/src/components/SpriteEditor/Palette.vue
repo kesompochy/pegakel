@@ -16,44 +16,32 @@ const props = defineProps<{
 }>();
 
 const focusingCell = ref(0)
-const col = ref(4)
-const row = ref(16)
 const selectingColor = ref(false)
 const containerRef = ref<HTMLDivElement | null>(null)
 
 const cellSizePixel = 30
-const calculateLayout = () => {
-  if (!containerRef.value) return
-  const width = containerRef.value.clientWidth
-  const cellNum = 64;
-  col.value = Math.floor(width / cellSizePixel)
-  row.value = Math.ceil(cellNum / col.value)
-}
-const calculateSelectorPosition = computed(() => {
-  const cellX = focusingCell.value % col.value * cellSizePixel
-  const cellY = Math.floor(focusingCell.value / col.value) * cellSizePixel
-  const selectorX = cellX + cellSizePixel
-  const selectorY = cellY + cellSizePixel
-  return {selectorX, selectorY}
-});
-
-onMounted(() => {
-  calculateLayout()
-  window.addEventListener('resize', calculateLayout)
-})
-onUnmounted(() => {
-  window.removeEventListener('resize', calculateLayout)
-})
 
 const generateCellStyle = (color: ColorState, index: number) => {
   return {
     backgroundColor: color ? colorStateLogic.getRgba(color) : 'transparent',
-    border: props.activeColor === index ? '3px solid black' : props.focused && focusingCell.value === index ? '2px solid black' : '1px solid black' 
+    border: props.activeColor === index ? '2.5px solid black' : props.focused && focusingCell.value === index ? '2px solid black' : '1px solid black' 
   }
 }
 const changeColor = () => {
   if (props.focused) selectingColor.value = true
 }
+const getCellsPerRow = () => {
+  return Math.floor((containerRef.value?.clientWidth || cellSizePixel) / cellSizePixel) || 1
+}
+
+const calculateSelectorPosition = computed(() => {
+  const cellsPerRow = getCellsPerRow()
+  const cellX = focusingCell.value % cellsPerRow * cellSizePixel
+  const cellY = Math.floor(focusingCell.value / cellsPerRow) * cellSizePixel
+  const selectorX = cellX + cellSizePixel
+  const selectorY = cellY + cellSizePixel
+  return {selectorX, selectorY}
+});
 
 const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
   "moveLeft": () => {
@@ -63,10 +51,10 @@ const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> =
     if (props.focused) focusingCell.value = (focusingCell.value + 1) % props.colors.length
   },
   "moveUp": () => {
-    if (props.focused) focusingCell.value = (focusingCell.value - col.value + props.colors.length) % props.colors.length
+    if (props.focused) focusingCell.value = (focusingCell.value - getCellsPerRow() + props.colors.length) % props.colors.length + 1
   },
   "moveDown": () => {
-    if (props.focused) focusingCell.value = (focusingCell.value + col.value) % props.colors.length
+    if (props.focused) focusingCell.value = (focusingCell.value + getCellsPerRow()) % props.colors.length - 1
   },
   "selectColor": () => {
     if (props.focused) props.handleChoosePaletteCell(focusingCell.value) 
@@ -124,12 +112,12 @@ const addColorCell = () => {
 .palette-container{
   display: grid;
   margin: 10px;
-  grid-template-columns: v-bind("'repeat(' + col + ', 1fr)'");
-  grid-template-rows: v-bind("'repeat(' + row + ', 1fr)'");
-  aspect-ratio: v-bind("col / row");
+  grid-template-columns: repeat(auto-fill, 20px);
+  gap: 5px;
 }
 .color-cell{
-  aspect-ratio: 1;
+  width: 20px;
+  height: 20px;
   box-sizing: border-box;
 }
 .add-color-cell{

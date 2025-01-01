@@ -68,9 +68,12 @@
     focusingComponent.value = 'canvas'
   }
   const updatePalette = (color: ColorState, cellId: number) => {
+    if (props.palette.length <= cellId) {
+    } else {
+      focusingComponent.value = 'canvas'
+    }
     props.updatePalette(color, cellId)
     updateActiveColor(cellId)
-    focusingComponent.value = 'canvas'
   }
 
   const actionProcessMap: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
