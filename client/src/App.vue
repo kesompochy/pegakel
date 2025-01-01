@@ -18,6 +18,7 @@
   import KeyMapConfig from '~/configs/actionKeyMap.json'
   setMode(modes.SPRITE_EDITOR)
   const scale = ref<number>(100)
+  const focusingFileNameInput = ref<boolean>(false)
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
   const FILE_NAME = import.meta.env.VITE_FILE_NAME || "default"
@@ -138,7 +139,7 @@
 
 <template>
   <div class="app-wrapper">
-    <input v-model="fileName" class="file-name-input" />
+    <input v-model="fileName" class="file-name-input" @focus="focusingFileNameInput=true" @blur="focusingFileNameInput=false" />
     <div class="app-container">
       <div class="metadata-tools container">
         <button @click="newSheet">New</button>
@@ -168,6 +169,7 @@
           :palette="currentSheet.palette"
           :updatePalette="(color, cellId) => {SheetLogic.updatePalette(currentSheet, color, cellId)}"
           :scale="scale"
+          :acceptKeyInput="!focusingFileNameInput"
         />
       </div> 
       <div class="common-tool-wrapper">

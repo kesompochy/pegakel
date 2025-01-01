@@ -9,6 +9,7 @@ describe("Palette", () => {
       activeColor: 0,
       handleUpdatePalette: () => {},
       focused: true,
+      acceptKeyInput: true,
     },
   });
   it("is should have a div element", () => {

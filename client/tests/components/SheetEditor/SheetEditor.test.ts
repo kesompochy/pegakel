@@ -10,6 +10,7 @@ const props = {
   currentSpriteGroupId: 0,
   updateCurrentSpriteGroupId: vi.fn(),
   palette: [{ r: 0, g: 0, b: 0, a: 0 }],
+  acceptKeyInput: true,
 };
 
 describe("SheetEditor", () => {

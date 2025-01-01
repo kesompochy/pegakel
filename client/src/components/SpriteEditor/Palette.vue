@@ -12,6 +12,7 @@ const props = defineProps<{
   activeColor: number;
   handleUpdatePalette: (color: ColorState, cellId: number) => void;
   focused: boolean;
+  acceptKeyInput: boolean;
 }>();
 
 const focusingCell = ref(0)
@@ -83,7 +84,7 @@ const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> =
     if (props.focused) confirmColor(props.colors[focusingCell.value])
   }
 }
-useKeyHandler(manipulatorActions)
+useKeyHandler(manipulatorActions, () => props.acceptKeyInput)
 
 const confirmColor = (color: ColorState) => {
   props.handleUpdatePalette(color, focusingCell.value)
@@ -109,6 +110,7 @@ const confirmColor = (color: ColorState) => {
       :focused="selectingColor"
       :positionLeft="calculateSelectorPosition.selectorX"
       :positionTop="calculateSelectorPosition.selectorY"
+      :acceptKeyInput="props.acceptKeyInput"
     />
   </div>
 </template>

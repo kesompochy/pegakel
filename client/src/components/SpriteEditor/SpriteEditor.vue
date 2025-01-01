@@ -26,6 +26,7 @@
     palette: ColorState[],
     updatePalette: (color: ColorState, cellId: number) => void,
     scale: number,
+    acceptKeyInput: boolean 
   }>();
   const { activeColor, updateActiveColor, activeTool, updateActiveTool, manipulationMode, updateManipulationMode, canvasManipulatingCell, } = useSpriteEditor()
 
@@ -140,7 +141,7 @@
       }
     },
   }
-  useKeyHandler(actionProcessMap)
+  useKeyHandler(actionProcessMap, ()=>props.acceptKeyInput)
   
 </script>
 
@@ -166,6 +167,7 @@
           :activeColor="activeColor"
           :handleUpdatePalette="updatePalette"
           :focused="focusingComponent === 'palette'"
+          :acceptKeyInput="props.acceptKeyInput"
         />
       </div>
         <div class="sprite-editor-canvas-container">
@@ -185,6 +187,7 @@
           :clipSize="props.spriteGroup.clipSize"
           :scale="props.scale"
           :palette="props.palette"
+                                                                                                                           :acceptKeyInput="props.acceptKeyInput"
           class="center"
         />
         <input type="number" v-model="canvasResizeDeltaRight"  class="right sprite-editor-resize-input"  v-show="focusingComponent === 'resize'" ref="inputElementRight">

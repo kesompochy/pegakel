@@ -7,7 +7,7 @@ interface KeyFunctionMap {
 
 export const registeredActions = reactive<Set<keyof typeof KeyMapConfig>>(new Set());
 
-export const useKeyHandler = (actionFunctionMap: Partial<Record<keyof typeof KeyMapConfig, ()=>void>>) => {
+export const useKeyHandler = (actionFunctionMap: Partial<Record<keyof typeof KeyMapConfig, ()=>void>>, shouldHandle: () => boolean = () => true) => {
   const keyFunctionMap: KeyFunctionMap  = Object.fromEntries(
     Object.entries(actionFunctionMap).map(([action, func]) => [
       KeyMapConfig[action as keyof typeof KeyMapConfig].key,
@@ -15,6 +15,7 @@ export const useKeyHandler = (actionFunctionMap: Partial<Record<keyof typeof Key
     ])
   );
   const handleKeyDown = (event: KeyboardEvent) => {
+    if (!shouldHandle()) return;
     if (event.key in keyFunctionMap) {
       keyFunctionMap[event.key]();
     }

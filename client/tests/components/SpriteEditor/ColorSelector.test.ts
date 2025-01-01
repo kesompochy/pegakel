@@ -10,6 +10,7 @@ describe("ColorSelector", () => {
       focused: false,
       positionLeft: 0,
       positionTop: 0,
+      acceptKeyInput: true,
     },
     global: {
       stubs: {},

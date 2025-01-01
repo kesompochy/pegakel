@@ -25,6 +25,7 @@ describe("SpriteEditor", () => {
         updatePalette: () => {},
         palette: [],
         scale: 100,
+        acceptKeyInput: true,
       },
     });
   });

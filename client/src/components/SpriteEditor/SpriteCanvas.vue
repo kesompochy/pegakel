@@ -24,6 +24,7 @@ const props = defineProps<{
   clipSize: {width: number, height: number} | undefined
   scale: number,
   palette: ColorState[],
+  acceptKeyInput: boolean,
 }>()
 
 const editorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> = {
@@ -73,7 +74,7 @@ onUnmounted(() => {
     props.updateManipulationMode('key')
   });
 })
-useKeyHandler(editorActions)
+useKeyHandler(editorActions, ()=>props.acceptKeyInput)
 
 const drawManipulatingCell = (ctx: CanvasRenderingContext2D, pixelSizeWidth: number, pixelSizeHeight: number) => {
   if ( props.manipulationMode === 'key' && props.focused ) {

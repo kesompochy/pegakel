@@ -10,6 +10,7 @@ const props = defineProps<{
   focused: boolean;
   positionLeft: number | undefined;
   positionTop: number | undefined;
+  acceptKeyInput: boolean;
 }>();
 
 const confirmColor = () => {
@@ -52,7 +53,7 @@ const manipulatorActions: Partial<Record<keyof typeof KeyMapConfig, ()=>void>> =
     }
   },
 }
-useKeyHandler(manipulatorActions)
+useKeyHandler(manipulatorActions, () => props.acceptKeyInput)
 
 </script>
 

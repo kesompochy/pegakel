@@ -15,6 +15,7 @@
     currentSpriteGroupId: number,
     updateCurrentSpriteGroupId: (groupId: number) => void,
     palette: ColorState[],
+    acceptKeyInput: boolean,
   }>()
 
   const focusedSpriteInGroup = ref<number>(0)
@@ -95,7 +96,7 @@
       sheetLogics.cloneSprite(props.sheet, focusedSpriteIdInSheet.value)
     },
   }
-  useKeyHandler(manipulationActions)
+  useKeyHandler(manipulationActions, () => props.acceptKeyInput)
 </script>
 
 <template>
