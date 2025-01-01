@@ -184,6 +184,7 @@
             :name="currentSheet.groups[currentSpriteGroupId].name"
             :updateGroupName="(name: string) => {SpriteGroupLogic.updateName(currentSheet.groups[currentSpriteGroupId], name)}"
             :palette="currentSheet.palette"
+            :acceptKeyInput="!focusingFileNameInput"
         />
         <div class="app-help-wrapper">
           <Help :keyActionMap="KeyMapConfig"/>

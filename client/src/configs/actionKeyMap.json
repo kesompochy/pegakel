@@ -106,5 +106,9 @@
   "addColorCell": {
     "key": "a",
     "description": "Add new color cell"
+  },
+  "toggleAnimation": {
+    "key": ">",
+    "description": "Toggle animation"
   }
 }

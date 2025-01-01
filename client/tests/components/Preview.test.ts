@@ -11,6 +11,7 @@ describe("Preview", () => {
         name: "test",
         updateGroupName: () => {},
         palette: [new ColorState(0, 0, 0, 0)],
+        acceptKeyInput: true,
       }
     });
   });
