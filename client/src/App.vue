@@ -60,6 +60,7 @@
     const response = await jsonRpcClient.call('exportGroup', { 
       format: 'gif',
       sprites: sprites,
+      palette: currentSheet.value.palette,
       localPath: `${fileName.value}0.gif`,
       options: {
         gif: {
