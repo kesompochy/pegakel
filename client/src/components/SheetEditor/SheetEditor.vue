@@ -16,6 +16,7 @@
     updateCurrentSpriteGroupId: (groupId: number) => void,
     palette: ColorState[],
     acceptKeyInput: boolean,
+    updateCurrentSpriteId: (spriteId: number) => void,
   }>()
 
   const focusedSpriteInGroup = ref<number>(0)
@@ -52,6 +53,10 @@
     }
     SpriteGroupLogics.swapSprites(group, spriteIndex, nextSpriteIndex)
   }
+  const focusSprite = (spriteIndex: number) => {
+    focusedSpriteIdInSheet.value = spriteIndex
+    props.updateCurrentSpriteId(spriteIndex)
+  }
 
   const manipulationActions: Partial<Record<keyof typeof KeyMapConfig, () => void>> = {
     "goToSpriteEditor": () => {
@@ -74,14 +79,14 @@
       SpriteGroupLogics.addSprite(props.sheet.groups[props.sheet.groups.length - 1], focusedSpriteIdInSheet.value)
     },
     "moveLeft": () => {
-      focusedSpriteIdInSheet.value = Math.max(0, focusedSpriteIdInSheet.value - 1)
+      focusSprite(Math.max(0, focusedSpriteIdInSheet.value - 1))
     },
     "moveDown": () => {
     },
     "moveUp": () => {
     },
     "moveRight": () => {
-      focusedSpriteIdInSheet.value = Math.min(props.sheet.sprites.length - 1, focusedSpriteIdInSheet.value + 1)
+      focusSprite(Math.min(props.sheet.sprites.length - 1, focusedSpriteIdInSheet.value + 1))
     },
     "pickSpriteToGroup": () => {
       pickSpriteToGroup()

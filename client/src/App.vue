@@ -44,6 +44,9 @@
     setMode(mode)
     currentSpriteId.value = spriteId
   }
+  const updateCurrentSpriteId = (id: number) => {
+    currentSpriteId.value = id
+  }
 
   const save = async () => {
     const response = await jsonRpcClient.call('save', { 
@@ -176,6 +179,7 @@
           :updatePalette="(color, cellId) => {SheetLogic.updatePalette(currentSheet, color, cellId)}"
           :scale="scale"
           :acceptKeyInput="!focusingFileNameInput"
+          :updateCurrentSpriteId="updateCurrentSpriteId"
         />
       </div> 
       <div class="common-tool-wrapper">
@@ -185,6 +189,7 @@
             :updateGroupName="(name: string) => {SpriteGroupLogic.updateName(currentSheet.groups[currentSpriteGroupId], name)}"
             :palette="currentSheet.palette"
             :acceptKeyInput="!focusingFileNameInput"
+            :focusedSpriteIndex="currentSheet.groups[currentSpriteGroupId].sprites.indexOf(currentSpriteId)"
         />
         <div class="app-help-wrapper">
           <Help :keyActionMap="KeyMapConfig"/>

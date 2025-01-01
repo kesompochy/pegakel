@@ -17,6 +17,7 @@ const props = defineProps<{
   updateGroupName: (name: string) => void
   palette: ColorState[],
   acceptKeyInput: boolean
+  focusedSpriteIndex: number
 }>();
 
 const animationCallback = () => {
@@ -76,8 +77,20 @@ useKeyHandler(manipulatorActions, () => props.acceptKeyInput)
   <div>
     <div class="preview-container container">
       <input class="grpup-name" type="text" v-model="groupName" @input="()=>{props.updateGroupName(groupName)}"/>
-      <SpriteCanvas :sprite="props.sprites[drawingSpriteNumber | 0]" :width="200" :palette="props.palette" />
-      <SpriteCanvas v-for="(sprite, index) in props.sprites" :key="index" :sprite="sprite" :width="100" :focused="(index === (drawingSpriteNumber | 0))" :palette="props.palette"/>
+      <SpriteCanvas 
+        :sprite="props.sprites[drawingSpriteNumber | 0]" 
+        :width="200" 
+        :palette="props.palette" 
+      />
+      <SpriteCanvas 
+        v-for="(sprite, index) in props.sprites" 
+        :key="index" 
+        :sprite="sprite" 
+        :width="100" 
+        :focused="(index === (drawingSpriteNumber | 0))" 
+        :palette="props.palette"
+        :class="{ focused: (index === focusedSpriteIndex) }"
+      />
 
       <div class="tools-container">
         <span><input type="number" v-model="fps" class="fps-input" />fps</span>
@@ -96,5 +109,9 @@ useKeyHandler(manipulatorActions, () => props.acceptKeyInput)
 }
 .fps-input {
   width: 50px;
+}
+.focused {
+  // border: 100px solid black;
+  box-shadow: black 1px 1px 3px;
 }
 </style>
