@@ -119,7 +119,7 @@ const handleCanvasClick = (event: MouseEvent) => {
   if (props.activeTool === "draw") {
     color = props.activeColor
   } else if (props.activeTool === "erase") {
-    color = new ColorState(0, 0, 0, 0)
+    color = 0
   }
   color = color || 0
   props.updateSprite(x, y, color)
